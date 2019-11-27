@@ -1,6 +1,6 @@
 resource "google_project_service" "cloudkms_api" {
   provider           = "google"
-  project            = var.project_id
+  project            = var.gcp_project
   service            = "cloudkms.googleapis.com"
   disable_on_destroy = false
 }
@@ -24,7 +24,7 @@ resource "google_kms_crypto_key" "vault_crypto_key" {
 
 resource "google_storage_bucket" "vault_bucket" {
   provider      = "google"
-  name          = "${var.project_id}-vault"
+  name          = "${var.gcp_project}-vault"
   location      = "US"
   force_destroy = "true"
 }
@@ -59,7 +59,7 @@ resource "google_service_account_iam_binding" "vault_sa_workload_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.project_id}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.vault_sa_suffix}]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.vault_sa_suffix}]",
   ]
 
   depends_on = [

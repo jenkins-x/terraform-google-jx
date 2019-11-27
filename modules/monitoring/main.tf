@@ -1,5 +1,5 @@
 resource "google_monitoring_uptime_check_config" "hook" {
-  display_name = "[JX] hook-${var.jx_namespace}.${var.project_id}.${var.parent_domain}"
+  display_name = "[JX] hook-${var.jx_namespace}.${var.gcp_project}.${var.parent_domain}"
   timeout      = "10s"
   project      = "${var.monitoring_project_id}"
   period       = "60s"
@@ -14,14 +14,14 @@ resource "google_monitoring_uptime_check_config" "hook" {
   monitored_resource {
     type = "uptime_url"
     labels = {
-      host       = "hook-${var.jx_namespace}.${var.project_id}.${var.parent_domain}"
+      host       = "hook-${var.jx_namespace}.${var.gcp_project}.${var.parent_domain}"
       project_id = "${var.monitoring_project_id}"
     }
   }
 }
 
 resource "google_monitoring_uptime_check_config" "deck" {
-  display_name = "[JX] deck-${var.jx_namespace}.${var.project_id}.${var.parent_domain}"
+  display_name = "[JX] deck-${var.jx_namespace}.${var.gcp_project}.${var.parent_domain}"
   timeout = "10s"
   project = "${var.monitoring_project_id}"
   period = "60s"
@@ -40,7 +40,7 @@ resource "google_monitoring_uptime_check_config" "deck" {
   monitored_resource {
     type   = "uptime_url"
     labels = {
-      host = "deck-${var.jx_namespace}.${var.project_id}.${var.parent_domain}"
+      host = "deck-${var.jx_namespace}.${var.gcp_project}.${var.parent_domain}"
       project_id = "${var.monitoring_project_id}"
     }
   }

@@ -1,6 +1,6 @@
 resource "google_storage_bucket" "backup_bucket" {
   provider      = "google"
-  name          = "${var.project_id}-backup"
+  name          = "${var.gcp_project}-backup"
   location      = "US"
   force_destroy = "true"
 }

@@ -1,5 +1,8 @@
-variable "project_id" {
-  description = "consumer project id"
+// ----------------------------------------------------
+// Required Variables
+// ----------------------------------------------------
+variable "gcp_project" {
+  description = "The name of the GCP project to create all resources"
 }
 
 variable "zone" {
@@ -19,6 +22,9 @@ variable "organisation" {
   default     = "cloudbees-poc"
 }
 
+// ----------------------------------------------------
+// Optional Variables
+// ----------------------------------------------------
 variable "cluster_size" {
   type        = "string"
   description = "small|medium|large"

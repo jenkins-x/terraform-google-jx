@@ -1,6 +1,6 @@
 resource "google_project_service" "dns_api" {
   provider           = "google"
-  project            = var.project_id
+  project            = var.gcp_project
   service            = "dns.googleapis.com"
   disable_on_destroy = false
 }
@@ -23,7 +23,7 @@ resource "google_service_account_iam_binding" "externaldns_sa_workload_binding" 
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.project_id}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.externaldns_sa_suffix}]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.externaldns_sa_suffix}]",
   ]
 
   depends_on = [
