@@ -1,0 +1,27 @@
+buildPack: none
+pipelineConfig:
+  pipelines:
+    pullRequest:
+      pipeline:
+        agent:
+          image: gcr.io/jenkinsxio/builder-terraform:2.0.1023-355
+        stages:
+        - name: ci
+          steps:
+          - name: terraform-version
+            command: terraform
+            args:
+            - -version
+          - name: terraform-init
+            command: terraform
+            args:
+            - init
+          - name: terraform-fmt
+            command: terraform
+            args:
+            - fmt
+            - -check
+          - name: terraform-validate
+            command: terraform
+            args:
+            - validate
