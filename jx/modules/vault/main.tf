@@ -59,10 +59,10 @@ resource "google_service_account_iam_binding" "vault_sa_workload_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.vault_sa_suffix}]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.vault_sa_suffix}]",
   ]
 
-  depends_on = [
-    "google_container_cluster.jx_cluster"
-  ]
+  //depends_on = [
+  //  "google_container_cluster.jx_cluster"
+  //]
 }

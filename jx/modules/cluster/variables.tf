@@ -17,11 +17,6 @@ variable "cluster_name" {
   description = "Name of the K8s cluster"
 }
 
-variable "organisation" {
-  description = "Organisation name for the cluster"
-  default     = "cloudbees-poc"
-}
-
 // ----------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------
@@ -119,11 +114,6 @@ variable "vault_sa_suffix" {
   default     = "vt"
 }
 
-variable "externaldns_sa_suffix" {
-  description = "The string to append to the external-dns service-account name"
-  default     = "dn"
-}
-
 variable "jxboot_sa_suffix" {
   description = "The string to append to the jx-boot service-account name"
   default     = "jb"
@@ -146,35 +136,11 @@ variable "velero_sa_suffix" {
 
 variable "test_cluster_label" {
   description = "Describes whether the cluster is going to be used for BDD tests"
-}
-
-variable "boot_git_url" {
-  description = "The URL of the Boot config"
-}
-
-variable "boot_git_ref" {
-  description = "The Git Ref of the Boot config"
-}
-
-variable "ingress_tls_production" {
-  description = "Whether to use production TLS"
+  default     = ""
 }
 
 variable "user_email" {
   description = "Email address of the user who requested the creation of the instance"
-}
-
-variable "versions_git_url" {
-  description = "The URL of the Versions Stream"
-}
-
-variable "versions_git_ref" {
-  description = "The Git Ref of the Versions Stream"
-}
-
-variable "monitoring_project_id" {
-  description = "The project to send stackdriver alerts to"
-  default     = "jxaas-dev-monitoring"
 }
 
 variable "parent_domain" {
@@ -183,10 +149,10 @@ variable "parent_domain" {
 
 variable "repository_kind" {
   description = "Select which artifact repository to install"
+  default     = "nexus"
 }
 
 variable "jx_namespace" {
   default = "jx"
 }
-
 
