@@ -114,11 +114,6 @@ variable "vault_sa_suffix" {
   default     = "vt"
 }
 
-variable "externaldns_sa_suffix" {
-  description = "The string to append to the external-dns service-account name"
-  default     = "dn"
-}
-
 variable "jxboot_sa_suffix" {
   description = "The string to append to the jx-boot service-account name"
   default     = "jb"

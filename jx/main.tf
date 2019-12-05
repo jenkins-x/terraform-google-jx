@@ -84,3 +84,12 @@ module "backup" {
   zone = var.zone
   cluster_name = var.cluster_name
 }
+
+module "dns" {
+  source = "./modules/dns"
+
+  gcp_project = var.gcp_project
+  region = var.region
+  zone = var.zone
+  cluster_name = var.cluster_name
+}
