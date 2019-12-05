@@ -80,7 +80,7 @@ resource "google_service_account_iam_binding" "kaniko_sa_workload_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.kaniko_sa_suffix}]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.kaniko_sa_suffix}]",
   ]
 
   depends_on = [
@@ -124,7 +124,7 @@ resource "google_service_account_iam_binding" "jxboot_sa_workload_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.service_name}/${var.cluster_name}-${var.jxboot_sa_suffix}]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.jxboot_sa_suffix}]",
   ]
 
   depends_on = [

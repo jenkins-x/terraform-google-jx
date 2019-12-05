@@ -17,11 +17,6 @@ variable "cluster_name" {
   description = "Name of the K8s cluster"
 }
 
-variable "organisation" {
-  description = "Organisation name for the cluster"
-  default     = "cloudbees-poc"
-}
-
 // ----------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------
@@ -29,33 +24,6 @@ variable "cluster_size" {
   type        = "string"
   description = "small|medium|large"
   default     = "small"
-}
-
-variable "min_node_counts" {
-  type = "map"
-  default = {
-    "small"  = "5"
-    "medium" = "7"
-    "large"  = "10"
-  }
-}
-
-variable "max_node_counts" {
-  type = "map"
-  default = {
-    "small"  = "10"
-    "medium" = "20"
-    "large"  = "30"
-  }
-}
-
-variable "node_machine_types" {
-  type = "map"
-  default = {
-    "small"  = "n1-standard-2"
-    "medium" = "n1-standard-4"
-    "large"  = "n1-standard-8"
-  }
 }
 
 variable "node_preemptible" {
@@ -146,35 +114,11 @@ variable "velero_sa_suffix" {
 
 variable "test_cluster_label" {
   description = "Describes whether the cluster is going to be used for BDD tests"
-}
-
-variable "boot_git_url" {
-  description = "The URL of the Boot config"
-}
-
-variable "boot_git_ref" {
-  description = "The Git Ref of the Boot config"
-}
-
-variable "ingress_tls_production" {
-  description = "Whether to use production TLS"
+  default     = ""
 }
 
 variable "user_email" {
   description = "Email address of the user who requested the creation of the instance"
-}
-
-variable "versions_git_url" {
-  description = "The URL of the Versions Stream"
-}
-
-variable "versions_git_ref" {
-  description = "The Git Ref of the Versions Stream"
-}
-
-variable "monitoring_project_id" {
-  description = "The project to send stackdriver alerts to"
-  default     = "jxaas-dev-monitoring"
 }
 
 variable "parent_domain" {
@@ -183,10 +127,10 @@ variable "parent_domain" {
 
 variable "repository_kind" {
   description = "Select which artifact repository to install"
+  default     = "nexus"
 }
 
 variable "jx_namespace" {
   default = "jx"
 }
-
 
