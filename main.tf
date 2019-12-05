@@ -5,10 +5,10 @@ terraform {
 module "jx" {
   source = "./jx"
 
-  gcp_project = "terraform-test"
-  region = "europe-west1"
-  zone = "europe-west1-b"
+  gcp_project   = "terraform-test"
+  region        = "europe-west1"
+  zone          = "europe-west1-b"
   cluster_name  = "test-cluster"
-  user_email = "test@test.com"
+  user_email    = "test@test.com"
   parent_domain = ""
 }
