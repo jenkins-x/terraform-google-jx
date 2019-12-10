@@ -20,10 +20,16 @@ variable "cluster_name" {
 // ----------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------
-variable "cluster_size" {
-  type        = "string"
-  description = "small|medium|large"
-  default     = "small"
+variable "min_node_count" {
+  default = "3"
+}
+
+variable "max_node_count" {
+  default = "7"
+}
+
+variable "node_machine_type" {
+  default = "n1-standard-2"
 }
 
 variable "node_preemptible" {
@@ -117,17 +123,8 @@ variable "test_cluster_label" {
   default     = ""
 }
 
-variable "user_email" {
-  description = "Email address of the user who requested the creation of the instance"
-}
-
 variable "parent_domain" {
   description = "The parent domain which the instance will be provisioned with - this is issued by the tenant-service"
-}
-
-variable "repository_kind" {
-  description = "Select which artifact repository to install"
-  default     = "nexus"
 }
 
 variable "jx_namespace" {
