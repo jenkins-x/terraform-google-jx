@@ -19,9 +19,9 @@ resource "local_file" "jx-requirements" {
     cluster_name = module.jx.cluster_name
     gcp_project  = module.jx.gcp_project
     zone  = module.jx.zone
-    lts_bucket = ""
-    backup_bucket = ""
-    vault_bucket = ""
+    lts_bucket = module.jx.lts_bucket_url
+    backup_bucket = module.jx.backup_bucket_url
+    vault_bucket = module.jx.vault_bucket_name
     vault_key =  ""
     vault_keyring = ""
     vault_name = ""
