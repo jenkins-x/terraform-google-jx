@@ -25,6 +25,13 @@ pipelineConfig:
             command: terraform
             args:
             - validate
+          - name: comment
+            command: jx
+            args:
+            - step
+            - pr
+            - comment
+            - --comment="running terraform plan"
           - name: terraform-plan
             command: terraform
             args:
