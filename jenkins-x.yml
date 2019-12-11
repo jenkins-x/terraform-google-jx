@@ -25,3 +25,7 @@ pipelineConfig:
             command: terraform
             args:
             - validate
+          - name: terraform-plan
+            command: terraform
+            args:
+            - plan
