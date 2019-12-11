@@ -25,6 +25,8 @@ pipelineConfig:
             command: terraform
             args:
             - validate
+          - name: env
+            command: env
           - name: comment
             command: jx
             args:
