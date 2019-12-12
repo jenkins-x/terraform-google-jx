@@ -28,19 +28,4 @@ pipelineConfig:
           - name: find-pwd
             command: pwd
           - name: terraform-plan
-            command: terraform
-            args:
-            - plan
-            - >
-            - /workspace/source/plan.txt
-          - name: cat-terraform-plan
-            command: cat
-            args:
-            - /workspace/source/plan.txt
-          - name: comment
-            command: jx
-            args:
-            - step
-            - pr
-            - comment
-            - --comment="running terraform plan"
+            command: ./log_plan.sh
