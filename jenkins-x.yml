@@ -25,6 +25,8 @@ pipelineConfig:
             command: terraform
             args:
             - validate
+          - name: find-pwd
+            command: pwd
           - name: terraform-plan
             command: terraform
             args:
