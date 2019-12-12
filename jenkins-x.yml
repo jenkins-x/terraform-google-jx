@@ -29,7 +29,8 @@ pipelineConfig:
             command: terraform
             args:
             - plan
-            - -out=plan.txt
+            - >
+            - plan.txt
           - name: cat-terraform-plan
             command: cat
             args:
