@@ -32,11 +32,11 @@ pipelineConfig:
             args:
             - plan
             - >
-            - plan.txt
+            - /workspace/source/plan.txt
           - name: cat-terraform-plan
             command: cat
             args:
-            - plan.txt
+            - /workspace/source/plan.txt
           - name: comment
             command: jx
             args:
