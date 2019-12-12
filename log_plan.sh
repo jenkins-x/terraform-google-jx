@@ -3,5 +3,8 @@
 set -e
 set -u
 
-PLAN=$(terraform plan)
-jx step pr comment --comment="${PLAN}"
+echo "Generating Plan..."
+PLAN=$(terraform plan -no-color)
+
+echo "Logging Plan..."
+jx step pr comment --comment="```${PLAN}```"
