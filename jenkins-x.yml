@@ -25,8 +25,11 @@ pipelineConfig:
             command: terraform
             args:
             - validate
-          - name: env
-            command: env
+          - name: terraform-plan
+            command: terraform
+            args:
+            - plan
+            - -out=plan.txt
           - name: comment
             command: jx
             args:
@@ -34,7 +37,3 @@ pipelineConfig:
             - pr
             - comment
             - --comment="running terraform plan"
-          - name: terraform-plan
-            command: terraform
-            args:
-            - plan
