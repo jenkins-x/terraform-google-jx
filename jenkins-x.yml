@@ -30,6 +30,10 @@ pipelineConfig:
             args:
             - plan
             - -out=plan.txt
+          - name: cat-terraform-plan
+            command: cat
+            args:
+            - plan.txt
           - name: comment
             command: jx
             args:
