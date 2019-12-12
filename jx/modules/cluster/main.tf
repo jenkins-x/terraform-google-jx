@@ -5,13 +5,13 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.zone
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  initial_node_count      = var.min_node_counts[var.cluster_size]
+  initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
 
   node_config {
     preemptible  = var.node_preemptible
-    machine_type = var.node_machine_types[var.cluster_size]
+    machine_type = var.node_machine_type
     disk_size_gb = var.node_disk_size
 
     oauth_scopes = [

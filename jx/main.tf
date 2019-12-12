@@ -63,8 +63,11 @@ module "cluster" {
   region = var.region
   zone = var.zone
   cluster_name = var.cluster_name
-  user_email = var.user_email
   parent_domain = var.parent_domain
+
+  min_node_count = var.min_node_count
+  max_node_count = var.max_node_count
+  node_machine_type = var.node_machine_type
 }
 
 module "vault" {

@@ -4,7 +4,7 @@ pipelineConfig:
     pullRequest:
       pipeline:
         agent:
-          image: gcr.io/jenkinsxio/builder-terraform:2.0.1023-355
+          image: gcr.io/jenkinsxio/builder-terraform:2.0.1075-406
         stages:
         - name: ci
           steps:
@@ -25,3 +25,7 @@ pipelineConfig:
             command: terraform
             args:
             - validate
+          - name: find-pwd
+            command: pwd
+          - name: terraform-plan
+            command: ./log_plan.sh
