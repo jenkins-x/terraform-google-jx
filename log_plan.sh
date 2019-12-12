@@ -9,4 +9,4 @@ PLAN=$(terraform plan -no-color)
 echo $PLAN
 
 echo "Logging Plan..."
-jx step pr comment --comment="${PLAN}"
+jx step pr comment --comment="\`\`\`\r${PLAN}"
