@@ -3,24 +3,21 @@
 set -e
 set -u
 
+PROJECT=terraform-test
+CLUSTER_NAME=tf-${BRANCH_NAME}-${BUILD_NUMBER}
+CLUSTER_NAME=$( echo ${CLUSTER_NAME} | tr  '[:upper:]' '[:lower:]')
+VARS="-var gcp_project=terraform-test -var region=europe-west1 -var zone=europe-west1-b -var cluster_name=${CLUSTER_NAME}"
+
 echo "Generating Plan..."
-PLAN=$(terraform plan -no-color)
+PLAN=$(terraform plan $VARS -no-color)
 
 echo "Logging Plan..."
 jx step pr comment --code --comment="${PLAN}"
 
-PROJECT_NAME=terraform-${BRANCH_NAME}-${BUILD_NUMBER}
-PROJECT_NAME=$( echo $PROJECT_NAME | tr  '[:upper:]' '[:lower:]')
-FOLDER=xxx
-
-echo "Creating project ${PROJECT_NAME} under folder ${FOLDER}..."
-
-echo "Enabling API(s)..."
+echo "Creating cluster ${CLUSTER_NAME} in project ${PROJECT}..."
 
 echo "Applying Terraform..."
 
 echo "Test???"
-
 echo "Cleanup..."
-
-echo "Delete Project..."
+terraform destroy
