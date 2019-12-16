@@ -17,7 +17,9 @@ jx step pr comment --code --comment="${PLAN}"
 echo "Creating cluster ${CLUSTER_NAME} in project ${PROJECT}..."
 
 echo "Applying Terraform..."
+terrform apply $VARS -auto-approve
 
 echo "Test???"
+
 echo "Cleanup..."
-terraform destroy
+terraform destroy $VARS -auto-approve
