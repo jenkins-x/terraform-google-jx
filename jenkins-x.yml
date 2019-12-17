@@ -7,6 +7,9 @@ pipelineConfig:
           image: gcr.io/jenkinsxio/builder-terraform:2.0.1080-413
         stages:
         - name: ci
+          environment:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /secret/sa/ci_bot.json
           options:
             volumes:
             - name: sa
