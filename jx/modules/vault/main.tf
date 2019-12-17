@@ -9,6 +9,7 @@ resource "google_kms_key_ring" "vault_keyring" {
   provider = "google"
   name     = "${var.cluster_name}-keyring"
   location = "global"
+  depends_on = [google_project_service.cloudkms_api]
 }
 
 resource "google_kms_crypto_key" "vault_crypto_key" {
@@ -16,6 +17,7 @@ resource "google_kms_crypto_key" "vault_crypto_key" {
   name            = "${var.cluster_name}-crypto-key"
   key_ring        = "${google_kms_key_ring.vault_keyring.self_link}"
   rotation_period = "100000s"
+  depends_on = [google_project_service.cloudkms_api]
 
   //lifecycle {
   //  prevent_destroy = true

@@ -4,9 +4,24 @@ pipelineConfig:
     pullRequest:
       pipeline:
         agent:
-          image: gcr.io/jenkinsxio/builder-terraform:2.0.1075-406
+          image: gcr.io/jenkinsxio/builder-terraform:2.0.1080-413
         stages:
         - name: ci
+          environment:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /secret/sa/ci_bot.json
+          options:
+            volumes:
+            - name: sa
+              secret:
+                secretName: terraform-secret
+                items:
+                - key: ci_sa
+                  path: sa/ci_bot.json
+            containerOptions:
+              volumeMounts:
+              - mountPath: /secret
+                name: sa
           steps:
           - name: terraform-version
             command: terraform
@@ -25,7 +40,5 @@ pipelineConfig:
             command: terraform
             args:
             - validate
-          - name: find-pwd
-            command: pwd
-          - name: terraform-plan
-            command: ./log_plan.sh
+          - name: run-ci-checks
+            command: ./ci.sh
