@@ -3,6 +3,9 @@
 set -e
 set -u
 
+echo $GOOGLE_APPLICATION_CREDENTIALS
+cat $GOOGLE_APPLICATION_CREDENTIALS
+
 PROJECT=terraform-test
 CLUSTER_NAME=tf-${BRANCH_NAME}-${BUILD_NUMBER}
 CLUSTER_NAME=$( echo ${CLUSTER_NAME} | tr  '[:upper:]' '[:lower:]')
