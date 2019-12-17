@@ -38,6 +38,6 @@ vault:
   name: ${vault_name}
   serviceAccount: ${vault_sa}
 versionStream:
-  ref: "master"
-  url: https://github.com/jenkins-x/jenkins-x-versions.git
-webhook: prow
+  ref: ${version_stream_ref}
+  url: ${version_stream_url}
+webhook: ${webhook}

@@ -26,6 +26,10 @@ resource "local_file" "jx-requirements" {
     vault_keyring = module.jx.vault_keyring
     vault_name    = module.jx.vault_name
     vault_sa      = module.jx.vault_sa
+    // from variables
+    version_stream_ref = var.version_stream_ref
+    version_stream_url = var.version_stream_url
+    webhook            = var.webhook
   })
   filename = "${path.module}/jx-requirements.yaml"
 }
