@@ -31,3 +31,5 @@ echo "Creating cluster ${CLUSTER_NAME} in project ${PROJECT}..."
 echo "Applying Terraform..."
 terraform apply $VARS -auto-approve
 
+JX_REQUIREMENTS=$(cat jx-requirements.yaml)
+jx step pr comment --code --comment="${JX_REQUIREMENTS}"
