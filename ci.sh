@@ -6,10 +6,11 @@ set -u
 echo $GOOGLE_APPLICATION_CREDENTIALS
 cat $GOOGLE_APPLICATION_CREDENTIALS
 
-PROJECT=terraform-test
+PROJECT=terraform-test-261120
+#PROJECT=terraform-test
 CLUSTER_NAME=tf-${BRANCH_NAME}-${BUILD_NUMBER}
 CLUSTER_NAME=$( echo ${CLUSTER_NAME} | tr  '[:upper:]' '[:lower:]')
-VARS="-var gcp_project=terraform-test -var region=europe-west1 -var zone=europe-west1-b -var cluster_name=${CLUSTER_NAME}"
+VARS="-var gcp_project=${PROJECT} -var region=europe-west1 -var zone=europe-west1-b -var cluster_name=${CLUSTER_NAME}"
 
 function cleanup()
 {
