@@ -15,7 +15,7 @@ variable "cluster_name" {
 }
 
 variable "parent_domain" {
-  description = "domain assigned to the kubernetes cluster"
+  description = "The parent domain to be allocated to the cluster"
 }
 
 // ----------------------------------------------------
