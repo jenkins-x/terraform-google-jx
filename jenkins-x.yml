@@ -16,7 +16,7 @@ pipelineConfig:
               secret:
                 secretName: terraform-secret
                 items:
-                - key: ci_sa
+                - key: terraform_google_jx_sa
                   path: sa/ci_bot.json
             containerOptions:
               volumeMounts:
