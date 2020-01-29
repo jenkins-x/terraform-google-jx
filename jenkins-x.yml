@@ -42,3 +42,22 @@ pipelineConfig:
             - validate
           - name: run-ci-checks
             command: ./ci.sh
+    release:
+      pipeline:
+        agent:
+          image: gcr.io/jenkinsxio/builder-go:2.0.1080-413
+        stages:
+        - name: release
+          environment:
+          - name: GIT_COMMITTER_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_COMMITTER_NAME
+            value: jenkins-x-bot
+          - name: GIT_AUTHOR_EMAIL
+            value: jenkins-x@googlegroups.com
+          - name: GIT_AUTHOR_NAME
+            value: jenkins-x-bot
+          steps:
+          # Create the release notes
+          - name: changelog
+            command: ./scripts/changelog.sh
