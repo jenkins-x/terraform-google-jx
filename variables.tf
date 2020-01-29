@@ -14,6 +14,10 @@ variable "cluster_name" {
   description = "Name of the K8s cluster"
 }
 
+variable "parent_domain" {
+  description = "domain assigned to the kubernetes cluster"
+}
+
 // ----------------------------------------------------
 variable "version_stream_ref" {
   default = "master"
