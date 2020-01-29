@@ -10,7 +10,7 @@ environments:
 - key: staging
 - key: production
 ingress:
-  domain: ""
+  domain: "${parent_domain}"
   externalDNS: true
   tls:
     email: ""
