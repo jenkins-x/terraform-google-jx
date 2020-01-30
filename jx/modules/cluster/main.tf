@@ -45,7 +45,7 @@ resource "google_container_cluster" "jx_cluster" {
 
 resource "google_storage_bucket" "lts_bucket" {
   provider      = "google"
-  name          = "${var.gcp_project}-lts"
+  name          = "${var.gcp_project}-${random_id.rnd.hex}-lts"
   location      = "US"
   force_destroy = "true"
 }
@@ -136,4 +136,8 @@ resource "google_service_account" "storage_sa" {
   provider     = "google"
   account_id   = "${var.cluster_name}-${var.storage_sa_suffix}"
   display_name = "Storage service account for ${var.cluster_name}"
+}
+
+resource "random_id" "rnd" {
+  byte_length = 6
 }

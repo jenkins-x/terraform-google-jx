@@ -1,6 +1,6 @@
 resource "google_storage_bucket" "backup_bucket" {
   provider      = "google"
-  name          = "${var.gcp_project}-backup"
+  name          = "${var.gcp_project}-${random_id.rnd.hex}-backup"
   location      = "US"
   force_destroy = "true"
 }
@@ -27,4 +27,8 @@ resource "google_project_iam_member" "velero_sa_storage_object_creator_binding" 
   provider = "google"
   role     = "roles/storage.objectCreator"
   member   = "serviceAccount:${google_service_account.velero_sa.email}"
+}
+
+resource "random_id" "rnd" {
+  byte_length = 6
 }
