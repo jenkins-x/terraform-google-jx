@@ -18,6 +18,10 @@ variable "parent_domain" {
   description = "The parent domain to be allocated to the cluster"
 }
 
+variable "domain_enabled" {
+  description = "Boolean value enabled when a parent_domain is set"
+}
+
 // ----------------------------------------------------
 variable "version_stream_ref" {
   default = "master"
