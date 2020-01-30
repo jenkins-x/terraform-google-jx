@@ -37,6 +37,11 @@ vault:
   keyring: ${vault_keyring}
   name: ${vault_name}
   serviceAccount: ${vault_sa}
+velero:
+  namespace: ${velero_namespace}
+  schedule: "${velero_schedule}"
+  serviceAccount: ${velero_sa}
+  ttl: "${velero_ttl}"
 versionStream:
   ref: ${version_stream_ref}
   url: ${version_stream_url}
