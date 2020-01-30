@@ -9,16 +9,16 @@ module "jx" {
   region        = var.region
   zone          = var.zone
   cluster_name  = var.cluster_name
-  parent_domain = "test.com"
+  parent_domain = var.parent_domain
 
 
 }
 
 resource "local_file" "jx-requirements" {
   content = templatefile("${path.module}/jx-requirements.yaml.tpl", {
-    cluster_name  = module.jx.cluster_name
     gcp_project   = module.jx.gcp_project
     zone          = module.jx.zone
+    cluster_name  = module.jx.cluster_name
     lts_bucket    = module.jx.lts_bucket_url
     backup_bucket = module.jx.backup_bucket_url
     vault_bucket  = module.jx.vault_bucket_name
@@ -27,6 +27,7 @@ resource "local_file" "jx-requirements" {
     vault_name    = module.jx.vault_name
     vault_sa      = module.jx.vault_sa
     // from variables
+    parent_domain      = var.parent_domain
     version_stream_ref = var.version_stream_ref
     version_stream_url = var.version_stream_url
     webhook            = var.webhook

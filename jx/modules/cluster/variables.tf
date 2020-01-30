@@ -111,7 +111,7 @@ variable "test_cluster_label" {
 }
 
 variable "parent_domain" {
-  description = "The parent domain which the instance will be provisioned with - this is issued by the tenant-service"
+  description = "The parent domain to be allocated to the cluster"
 }
 
 variable "jx_namespace" {

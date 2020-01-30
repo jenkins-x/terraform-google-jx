@@ -26,3 +26,23 @@ resource "google_service_account_iam_binding" "externaldns_sa_workload_binding" 
     "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.externaldns_sa_suffix}]",
   ]
 }
+
+resource "google_dns_managed_zone" "externaldns_managed_zone" {
+  name = "${replace(var.parent_domain, ".", "-")}-managed-zone"
+  dns_name = "${var.parent_domain}."
+  description = "JX DNS managed zone managed by terraform"
+
+  count    = "${var.dns_enabled}"
+}
+
+resource "google_dns_record_set" "externaldns_record_set" {
+  name         = "${google_dns_managed_zone.externaldns_managed_zone[count.index].dns_name}"
+  managed_zone = "${google_dns_managed_zone.externaldns_managed_zone[count.index].name}"
+  type         = "NS"
+  ttl          = 60
+  project      = "${var.gcp_project}"
+  rrdatas      = "${flatten(google_dns_managed_zone.externaldns_managed_zone[count.index].name_servers)}"
+  depends_on   = ["google_dns_managed_zone.externaldns_managed_zone"]
+
+  count    = "${var.dns_enabled}"
+}

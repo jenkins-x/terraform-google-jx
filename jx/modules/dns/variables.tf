@@ -1,6 +1,10 @@
 // ----------------------------------------------------
 // Required Variables
 // ----------------------------------------------------
+variable "dns_enabled" {
+  description = "Toggle on whether the dns module is enabled"
+}
+
 variable "gcp_project" {
   description = "The name of the GCP project to create all resources"
 }
@@ -26,3 +30,6 @@ variable "jx_namespace" {
   default = "jx"
 }
 
+variable "parent_domain" {
+  description = "The parent domain to be allocated to the cluster"
+}

@@ -91,6 +91,8 @@ module "backup" {
 module "dns" {
   source = "./modules/dns"
 
+  dns_enabled = var.parent_domain != "" ? 1 : 0
+  parent_domain = var.parent_domain
   gcp_project = var.gcp_project
   region = var.region
   zone = var.zone
