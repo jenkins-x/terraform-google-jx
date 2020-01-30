@@ -26,7 +26,7 @@ resource "google_kms_crypto_key" "vault_crypto_key" {
 
 resource "google_storage_bucket" "vault_bucket" {
   provider      = "google"
-  name          = "${var.gcp_project}-vault"
+  name          = "${var.gcp_project}-${random_id.rnd.hex}-vault"
   location      = "US"
   force_destroy = "true"
 }
@@ -67,4 +67,8 @@ resource "google_service_account_iam_binding" "vault_sa_workload_binding" {
   //depends_on = [
   //  "google_container_cluster.jx_cluster"
   //]
+}
+
+resource "random_id" "rnd" {
+  byte_length = 6
 }
