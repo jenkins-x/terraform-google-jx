@@ -17,11 +17,6 @@ variable "cluster_name" {
 variable "parent_domain" {
   description = "The parent domain to be allocated to the cluster"
 }
-
-variable "domain_enabled" {
-  description = "Boolean value enabled when a parent_domain is set"
-}
-
 // ----------------------------------------------------
 variable "velero_namespace" {
   default = "velero"
@@ -29,10 +24,12 @@ variable "velero_namespace" {
 
 variable "velero_schedule" {
   description = "The parent domain to be allocated to the cluster - check https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml for defaults"
+  default     = "0 * * * *"
 }
 
 variable "velero_ttl" {
   description = "The time allocated that defines the lifetime of a velero backup - check https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml for defaults"
+  default     = "720h0m0s"
 }
 
 variable "version_stream_ref" {
