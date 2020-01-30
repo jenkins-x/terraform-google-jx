@@ -27,7 +27,7 @@ variable "storage_sa_suffix" {
 
 variable "velero_sa_suffix" {
   description = "The string to append to the velero service-account name"
-  default     = "velero"
+  default     = "vo"
 }
 
 variable "jx_namespace" {
