@@ -20,10 +20,6 @@ resource "google_container_cluster" "jx_cluster" {
     }
   }
 
-  workload_identity_config {
-    identity_namespace = "${var.gcp_project}.svc.id.goog"
-  }
-
   //lifecycle {
   //  prevent_destroy = true
   //}
@@ -98,20 +94,6 @@ resource "google_project_iam_member" "kaniko_sa_storage_object_creator_binding" 
   member   = "serviceAccount:${google_service_account.kaniko_sa.email}"
 }
 
-resource "google_service_account_iam_binding" "kaniko_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.kaniko_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.kaniko_sa_suffix}]",
-  ]
-
-  depends_on = [
-    "google_container_cluster.jx_cluster"
-  ]
-}
-
 resource "google_service_account" "jxboot_sa" {
   provider     = "google"
   account_id   = "${var.cluster_name}-${var.jxboot_sa_suffix}"
@@ -140,20 +122,6 @@ resource "google_project_iam_member" "jxboot_sa_storage_admin_binding" {
   provider = "google"
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.jxboot_sa.email}"
-}
-
-resource "google_service_account_iam_binding" "jxboot_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.jxboot_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.jxboot_sa_suffix}]",
-  ]
-
-  depends_on = [
-    "google_container_cluster.jx_cluster"
-  ]
 }
 
 resource "google_service_account" "storage_sa" {

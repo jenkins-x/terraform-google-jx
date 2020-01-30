@@ -55,20 +55,6 @@ resource "google_project_iam_member" "vault_sa_cloudkms_crypto_binding" {
   member   = "serviceAccount:${google_service_account.vault_sa.email}"
 }
 
-resource "google_service_account_iam_binding" "vault_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.vault_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.vault_sa_suffix}]",
-  ]
-
-  //depends_on = [
-  //  "google_container_cluster.jx_cluster"
-  //]
-}
-
 resource "random_id" "rnd" {
   byte_length = 6
 }
