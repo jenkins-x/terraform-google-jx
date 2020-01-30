@@ -14,7 +14,7 @@ ingress:
   externalDNS: true
   tls:
     email: ""
-    enabled: true
+    enabled: ${domain_enabled}
     production: true
 kaniko: true
 secretStorage: vault

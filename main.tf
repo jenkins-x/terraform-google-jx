@@ -27,6 +27,7 @@ resource "local_file" "jx-requirements" {
     vault_name    = module.jx.vault_name
     vault_sa      = module.jx.vault_sa
     // from variables
+    domain_enabled     = var.parent_domain != "" ? true : false
     parent_domain      = var.parent_domain
     version_stream_ref = var.version_stream_ref
     version_stream_url = var.version_stream_url
