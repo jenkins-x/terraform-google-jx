@@ -17,16 +17,6 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
   member   = "serviceAccount:${google_service_account.externaldns_sa.email}"
 }
 
-resource "google_service_account_iam_binding" "externaldns_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.externaldns_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.externaldns_sa_suffix}]",
-  ]
-}
-
 resource "google_dns_managed_zone" "externaldns_managed_zone" {
   name = "${replace(var.parent_domain, ".", "-")}-managed-zone"
   dns_name = "${var.parent_domain}."

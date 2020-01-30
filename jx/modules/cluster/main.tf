@@ -1,13 +1,36 @@
 resource "google_container_cluster" "jx_cluster" {
+  provider                 = "google-beta"
+  name                     = var.cluster_name
+  description              = "jx k8s cluster"
+  location                 = var.zone
+  enable_kubernetes_alpha  = var.enable_kubernetes_alpha
+  enable_legacy_abac       = var.enable_legacy_abac
+  initial_node_count       = var.min_node_count
+  logging_service          = var.logging_service
+  monitoring_service       = var.monitoring_service
+  remove_default_node_pool = "true"
+
+  resource_labels = {
+    type = var.test_cluster_label
+  }
+
+  maintenance_policy {
+    daily_maintenance_window {
+      start_time = "03:00"
+    }
+  }
+
+  //lifecycle {
+  //  prevent_destroy = true
+  //}
+}
+
+resource "google_container_node_pool" "jx_node_pool" {
   provider                = "google-beta"
-  name                    = var.cluster_name
-  description             = "jx k8s cluster"
+  name                    = "autoscale-pool"
   location                = var.zone
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-  enable_legacy_abac      = var.enable_legacy_abac
-  initial_node_count      = var.min_node_count
-  logging_service         = var.logging_service
-  monitoring_service      = var.monitoring_service
+  cluster                 = google_container_cluster.jx_cluster.name
+  node_count              = var.min_node_count
 
   node_config {
     preemptible  = var.node_preemptible
@@ -24,23 +47,20 @@ resource "google_container_cluster" "jx_cluster" {
       "https://www.googleapis.com/auth/monitoring",
     ]
   }
-  resource_labels = {
-    type = var.test_cluster_label
+
+  autoscaling {
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
   }
 
-  maintenance_policy {
-    daily_maintenance_window {
-      start_time = "03:00"
-    }
+  management {
+    auto_repair  = "true"
+    auto_upgrade = "false"
   }
 
-  workload_identity_config {
-    identity_namespace = "${var.gcp_project}.svc.id.goog"
-  }
-
-  //lifecycle {
-  //  prevent_destroy = true
-  //}
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }
 
 resource "google_storage_bucket" "lts_bucket" {
@@ -74,20 +94,6 @@ resource "google_project_iam_member" "kaniko_sa_storage_object_creator_binding" 
   member   = "serviceAccount:${google_service_account.kaniko_sa.email}"
 }
 
-resource "google_service_account_iam_binding" "kaniko_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.kaniko_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.kaniko_sa_suffix}]",
-  ]
-
-  depends_on = [
-    "google_container_cluster.jx_cluster"
-  ]
-}
-
 resource "google_service_account" "jxboot_sa" {
   provider     = "google"
   account_id   = "${var.cluster_name}-${var.jxboot_sa_suffix}"
@@ -116,20 +122,6 @@ resource "google_project_iam_member" "jxboot_sa_storage_admin_binding" {
   provider = "google"
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.jxboot_sa.email}"
-}
-
-resource "google_service_account_iam_binding" "jxboot_sa_workload_binding" {
-  provider           = "google"
-  service_account_id = "${google_service_account.jxboot_sa.name}"
-  role               = "roles/iam.workloadIdentityUser"
-
-  members = [
-    "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jx_namespace}/${var.cluster_name}-${var.jxboot_sa_suffix}]",
-  ]
-
-  depends_on = [
-    "google_container_cluster.jx_cluster"
-  ]
 }
 
 resource "google_service_account" "storage_sa" {
