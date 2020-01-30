@@ -36,6 +36,7 @@ pipelineConfig:
             args:
             - fmt
             - -check
+            - -diff
           - name: terraform-validate
             command: terraform
             args:
