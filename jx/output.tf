@@ -37,3 +37,7 @@ output "vault_name" {
 output "vault_sa" {
   value = module.vault.vault_sa
 }
+
+output "velero_sa" {
+  value = module.backup.velero_sa
+}

@@ -26,9 +26,13 @@ resource "local_file" "jx-requirements" {
     vault_keyring = module.jx.vault_keyring
     vault_name    = module.jx.vault_name
     vault_sa      = module.jx.vault_sa
+    velero_sa     = module.jx.velero_sa
     // from variables
     domain_enabled     = var.parent_domain != "" ? true : false
     parent_domain      = var.parent_domain
+    velero_namespace   = module.jx.backup_bucket_url != "" ? var.velero_namespace : ""
+    velero_schedule    = var.velero_schedule
+    velero_ttl         = var.velero_ttl
     version_stream_ref = var.version_stream_ref
     version_stream_url = var.version_stream_url
     webhook            = var.webhook
