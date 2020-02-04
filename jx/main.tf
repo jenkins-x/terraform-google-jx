@@ -68,6 +68,7 @@ module "cluster" {
   min_node_count = var.min_node_count
   max_node_count = var.max_node_count
   node_machine_type = var.node_machine_type
+  repository_enabled = 0
 }
 
 module "vault" {
