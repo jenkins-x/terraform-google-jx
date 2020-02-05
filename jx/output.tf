@@ -41,3 +41,7 @@ output "vault_sa" {
 output "velero_sa" {
   value = module.backup.velero_sa
 }
+
+output "externaldns_ns" {
+  value = module.dns.externaldns_ns
+}
