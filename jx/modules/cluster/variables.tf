@@ -118,3 +118,6 @@ variable "jx_namespace" {
   default = "jx"
 }
 
+variable "repository_enabled" {
+  description = "Toggle on whether the repository module is enabled"
+}

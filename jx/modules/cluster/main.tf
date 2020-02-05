@@ -70,6 +70,14 @@ resource "google_storage_bucket" "lts_bucket" {
   force_destroy = "true"
 }
 
+resource "google_storage_bucket" "repository_bucket" {
+  provider      = "google"
+  name          = "${var.gcp_project}-${random_id.rnd.hex}-repository"
+  location      = "US"
+  force_destroy = "true"
+  count         = "${var.repository_enabled}"
+}
+
 resource "google_service_account" "kaniko_sa" {
   provider     = "google"
   account_id   = "${var.cluster_name}-${var.kaniko_sa_suffix}"
