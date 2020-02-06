@@ -5,3 +5,7 @@ output "externaldns_sa" {
 output "externaldns_ns" {
   value = google_dns_managed_zone.externaldns_managed_zone.*.name_servers
 }
+
+output "externaldns_dns_name" {
+  value = google_dns_managed_zone.externaldns_managed_zone.*.dns_name
+}

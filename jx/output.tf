@@ -45,3 +45,7 @@ output "velero_sa" {
 output "externaldns_ns" {
   value = module.dns.externaldns_ns
 }
+
+output "externaldns_dns_name" {
+  value = module.dns.externaldns_dns_name
+}
