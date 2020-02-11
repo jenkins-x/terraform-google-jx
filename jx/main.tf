@@ -56,6 +56,13 @@ resource "google_project_service" "containeranalysis_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "serviceusage_api" {
+  provider           = "google"
+  project            = var.gcp_project
+  service            = "serviceusage.googleapis.com"
+  disable_on_destroy = false
+}
+
 module "cluster" {
   source = "./modules/cluster"
 
