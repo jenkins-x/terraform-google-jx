@@ -26,10 +26,11 @@ resource "google_container_cluster" "jx_cluster" {
 }
 
 resource "google_container_node_pool" "jx_node_pool" {
-  provider                = "google-beta"
-  name                    = "autoscale-pool"
-  location                = var.zone
-  cluster                 = google_container_cluster.jx_cluster.name
+  provider           = "google-beta"
+  name               = "autoscale-pool"
+  location           = var.zone
+  cluster            = google_container_cluster.jx_cluster.name
+  initial_node_count = var.min_node_count
 
   node_config {
     preemptible  = var.node_preemptible
