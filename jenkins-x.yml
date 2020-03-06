@@ -42,7 +42,7 @@ pipelineConfig:
             args:
             - validate
           - name: run-ci-checks
-            command: ./ci.sh
+            command: ./scripts/ci.sh
     release:
       pipeline:
         agent:
