@@ -1,11 +1,27 @@
-output "lts_bucket_name" {
-  value = "${google_storage_bucket.lts_bucket.name}"
+output "cluster_name" {
+    value = google_container_cluster.jx_cluster.name
 }
 
-output "lts_bucket_url" {
-  value = "${google_storage_bucket.lts_bucket.url}"
+output "cluster_location" {
+    value = google_container_cluster.jx_cluster.location
 }
 
-output "kaniko_sa" {
-  value = "${google_service_account.kaniko_sa.account_id}"
+output "cluster_endpoint" {
+    value = google_container_cluster.jx_cluster.endpoint
+}
+
+output "cluster_ca_certificate" {
+    value = google_container_cluster.jx_cluster.master_auth[0].cluster_ca_certificate
+}
+
+output "log_storage_url" {
+    value = google_storage_bucket.log_bucket[0].url
+}
+
+output "report_storage_url" {
+    value = google_storage_bucket.report_bucket[0].url
+}
+
+output "repository_storage_url" {
+    value = google_storage_bucket.repository_bucket[0].url
 }

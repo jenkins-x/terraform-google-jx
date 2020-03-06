@@ -3,34 +3,20 @@
 // ----------------------------------------------------
 variable "gcp_project" {
   description = "The name of the GCP project to create all resources"
+  type = string
 }
 
 variable "zone" {
-  type = "string"
-}
-
-variable "region" {
-  type = "string"
+  description = "The GCloud zone in which to create the resources"
+  type = string
 }
 
 variable "cluster_name" {
   description = "Name of the K8s cluster"
+  type = string
 }
 
-// ----------------------------------------------------
-// Optional Variables
-// ----------------------------------------------------
-variable "storage_sa_suffix" {
-  description = "The string to append to the storage service-account name"
-  default     = "st"
+variable "cluster_id" {
+  description = "A random generated to uniqly name cluster resources"
+  type = string
 }
-
-variable "velero_sa_suffix" {
-  description = "The string to append to the velero service-account name"
-  default     = "vo"
-}
-
-variable "jx_namespace" {
-  default = "jx"
-}
-

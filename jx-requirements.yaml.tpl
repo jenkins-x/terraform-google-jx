@@ -1,6 +1,12 @@
+autoUpdate:
+  enabled: false
+  schedule: ""
 cluster:
   clusterName: "${cluster_name}"
-  environmentGitOwner: ""
+  devEnvApprovers:
+%{ for name in dev_env_approvers }  - ${name} 
+%{ endfor }
+  environmentGitOwner: "${git_owner_requirement_repos}"
   project: "${gcp_project}"
   provider: gke
   zone: "${zone}"
@@ -9,40 +15,40 @@ environments:
 - key: dev
 - key: staging
 - key: production
-ingress:
+%{ if domain_enabled }ingress:
   domain: "${parent_domain}"
   externalDNS: true
   tls:
     email: ""
     enabled: ${domain_enabled}
-    production: true
+    production: true%{ endif }    
 kaniko: true
-secretStorage: vault
 storage:
   backup:
-    enabled: true
-    url: ${backup_bucket}
+    enabled: %{ if backup_bucket_url != "" }true%{ else }false%{ endif }
+    url: ${backup_bucket_url}
   logs:
-    enabled: true
-    url: ${lts_bucket}
+    enabled: %{ if log_storage_url != "" }true%{ else }false%{ endif }
+    url: ${log_storage_url}
   reports:
-    enabled: false
-    url: ""
+    enabled: %{ if report_storage_url != "" }true%{ else }false%{ endif }
+    url: ${report_storage_url}
   repository:
-    enabled: false
-    url: ""
+    enabled: %{ if repository_storage_url != "" }true%{ else }false%{ endif }
+    url: ${repository_storage_url}
+secretStorage: vault
 vault:
+  name: ${vault_name}
   bucket: ${vault_bucket}
   key: ${vault_key}
   keyring: ${vault_keyring}
-  name: ${vault_name}
   serviceAccount: ${vault_sa}
 velero:
   namespace: ${velero_namespace}
   schedule: "${velero_schedule}"
   serviceAccount: ${velero_sa}
-  ttl: "${velero_ttl}"
+  ttl: "${velero_ttl}"  
 versionStream:
   ref: ${version_stream_ref}
   url: ${version_stream_url}
-webhook: ${webhook}
+webhook: prow
