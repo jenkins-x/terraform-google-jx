@@ -1,35 +1,31 @@
 // ----------------------------------------------------
 // Required Variables
 // ----------------------------------------------------
-variable "dns_enabled" {
-  description = "Toggle on whether the dns module is enabled"
-}
-
 variable "gcp_project" {
   description = "The name of the GCP project to create all resources"
-}
-
-variable "zone" {
-  type = "string"
-}
-
-variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "cluster_name" {
   description = "Name of the K8s cluster"
-}
-
-variable "externaldns_sa_suffix" {
-  description = "The string to append to the external-dns service-account name"
-  default     = "dn"
-}
-
-variable "jx_namespace" {
-  default = "jx"
+  type = string
 }
 
 variable "parent_domain" {
   description = "The parent domain to be allocated to the cluster"
+  type        = string
+}
+
+variable "jenkins_x_namespace" {
+  description = "K8s namespace to install Jenkins X in"
+  type = string
+}
+
+// ----------------------------------------------------------------------------
+// Optional Variables
+// ----------------------------------------------------------------------------
+variable "cert-manager-namespace" {
+  description = "K8s namespace for cert-manager"
+  type        = string
+  default     = "cert-manager"
 }
