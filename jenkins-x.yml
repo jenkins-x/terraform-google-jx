@@ -22,27 +22,13 @@ pipelineConfig:
               volumeMounts:
               - mountPath: /secret
                 name: sa
-          steps:
-          - name: terraform-version
-            command: terraform
+          steps:  
+          - name: terraform-lint
+            command: make
             args:
-            - -version
-          - name: terraform-init
-            command: terraform
-            args:
-            - init
-          - name: terraform-fmt
-            command: terraform
-            args:
-            - fmt
-            - -check
-            - -diff
-          - name: terraform-validate
-            command: terraform
-            args:
-            - validate
-          - name: run-ci-checks
-            command: ./scripts/ci.sh
+            - lint
+          - name: terraform-apply-and-test
+            command: ./scripts/ci.sh           
     release:
       pipeline:
         agent:
@@ -59,6 +45,5 @@ pipelineConfig:
           - name: GIT_AUTHOR_NAME
             value: jenkins-x-bot
           steps:
-          # Create the release notes
           - name: changelog
             command: ./scripts/changelog.sh
