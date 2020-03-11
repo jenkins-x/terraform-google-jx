@@ -1,15 +1,32 @@
-# EXPERIMENTAL terraform-google-jx
+# Jenkins X GKE Terraform provisioner
+<a id="markdown-jenkins-x-gke-terraform-provisioner" name="jenkins-x-gke-terraform-provisioner"></a>
 
 ![Build Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatusbadge-jx.jenkins-x.live%2Fterraform-google-jx)
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
 
+----
+
+<!-- TOC depthfrom:2 -->
+
+- [Basic instructions](#basic-instructions)
+    - [Terraform Requirements](#terraform-requirements)
+- [Storing State](#storing-state)
+
+<!-- /TOC -->
+
+----
+
+external DNS vs nip.io
+
 ## Basic instructions
+<a id="markdown-basic-instructions" name="basic-instructions"></a>
 
 ### Terraform Requirements
+<a id="markdown-terraform-requirements" name="terraform-requirements"></a>
 
 This module requires terraform v0.12 and above.
 
-```
+```terraform
 terraform {
   required_version = ">= 0.12.0"
 }
@@ -17,7 +34,7 @@ terraform {
 
 The module can be configured as follows:
 
-```
+```terraform
 module "jx" {
   source = "./jx"
 
@@ -32,7 +49,7 @@ module "jx" {
 It is possible to template out the jx-requirements.yaml so that `jx boot` can be run directly
 against the generated file.
 
-```
+```terraform
 resource "local_file" "jx-requirements" {
   content = templatefile("${path.module}/jx-requirements.yaml.tpl", {
     cluster_name  = module.jx.cluster_name
@@ -54,11 +71,12 @@ resource "local_file" "jx-requirements" {
 }
 ```
 
-```
+```bash
 jx boot --requirements jx-requirements.yaml
 ```
 
-# Storing State
+## Storing State
+<a id="markdown-storing-state" name="storing-state"></a>
 
 Its recommended to store the terraform state in a remote bucket to avoid persisting this to local disk.
 
