@@ -8,12 +8,12 @@ help:
 	@grep -h -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: apply 
-apply: ## Applies Terraform plan
+apply: ## Applies Terraform plan w/ auto approve
 	@test -s $(TERRAFORM_VAR_FILE) || { echo "The 'apply' rule assumes that variables are provided $(TERRAFORM_VAR_FILE)"; exit 1; }
 	terraform apply -auto-approve --var-file $(TERRAFORM_VAR_FILE)
 
 .PHONY: destroy 
-destroy: ## Destroys Terraform infrastructure
+destroy: ## Destroys Terraform infrastructure w/ auto approve
 	terraform destroy -auto-approve --var-file $(TERRAFORM_VAR_FILE)
 
 .PHONY: plan
@@ -46,4 +46,8 @@ test-focus: ## Runs focused ShellSpec tests
 clean: ## Deletes temporary files
 	rm -rf report
 	rm jx-requirements.yml
+
+.PHONY: markdown-table
+markdown-table: ## Creates markdown tables for in- and output of this module
+	terraform-docs markdown table .
 			
