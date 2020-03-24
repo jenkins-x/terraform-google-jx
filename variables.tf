@@ -40,13 +40,13 @@ variable "tls_email" {
 }
 
 variable "velero_schedule" {
-  description = "The Velero backup schedule in cron notation - check https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml for defaults"
+  description = "The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml))"
   type        = string
   default     = "0 * * * *"
 }
 
 variable "velero_ttl" {
-  description = "The time allocated that defines the lifetime of a velero backup - check https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml for defaults"
+  description = "The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup))"
   type        = string
   default     = "720h0m0s"
 }
