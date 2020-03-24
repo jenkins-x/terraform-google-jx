@@ -3,7 +3,7 @@ autoUpdate:
   schedule: ""
 cluster:
   clusterName: "${cluster_name}"
-  devEnvApprovers:
+  devEnvApprovers: %{ if length(dev_env_approvers) == 0 }[]%{ endif }
 %{ for name in dev_env_approvers }  - ${name} 
 %{ endfor }
   environmentGitOwner: "${git_owner_requirement_repos}"
