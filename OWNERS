@@ -1,6 +1,7 @@
 approvers:
 - cagiti
 - ccojocar
+- dgozalo
 - garethjevans
 - hferentschik
 - jstrachan
@@ -10,6 +11,7 @@ approvers:
 reviewers:
 - cagiti
 - ccojocar
+- dgozalo
 - garethjevans
 - hferentschik
 - jstrachan
