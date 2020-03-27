@@ -21,6 +21,18 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
+variable "jenkins_x_namespace" {
+  description = "K8s namespace to install Jenkins X in"
+  type        = string
+  default     = "jx"
+}
+
+variable "velero_namespace" {
+  description = "K8s namespace for Velero"
+  type        = string
+  default     = "velero"
+}
+
 variable "force_destroy" {
   description = "Flag to determine whether storage buckets get forcefully destroyed"
   type        = bool
