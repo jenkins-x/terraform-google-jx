@@ -1,7 +1,6 @@
 # Jenkins X GKE Module
 <a id="markdown-jenkins-x-gke-module" name="jenkins-x-gke-module"></a>
 
-![Build Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatusbadge-jx.jenkins-x.live%2Fterraform-google-jx)
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
 
 This repo contains a [Terraform](https://www.terraform.io/) Module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
@@ -16,6 +15,8 @@ This repo contains a [Terraform](https://www.terraform.io/) Module for provision
         - [Outputs](#outputs)
     - [Running `jx boot`](#running-jx-boot)
     - [Using a custom domain](#using-a-custom-domain)
+- [Development](#development)
+    - [Releasing](#releasing)
 - [How do I contribute](#how-do-i-contribute)
 
 <!-- /TOC -->
@@ -158,6 +159,22 @@ You can use [DNS checker](https://dnschecker.org/) to check whether your domain 
 When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) together with [cert-manager](https://github.com/jetstack/cert-manager) to create A record entries in your managed zone for the various exposed applications.
 
 If _parent_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
+
+## Development
+<a id="markdown-development" name="development"></a>
+
+### Releasing
+<a id="markdown-releasing" name="releasing"></a>
+
+At the moment there is no release pipeline defined in [jenkins-x.yml](./jenkins-x.yml).
+A Terraform release does not require building an artifact, only a tag needs to be created and pushed.
+To make this task easier and there is a helper script `release.sh` which simplifies this process and creates the changelog as well:
+
+```sh
+./scripts/release.sh <release-version>
+```
+
+This can be executed on demand whenever a release is required.
 
 ## How do I contribute
 <a id="markdown-how-do-i-contribute" name="how-do-i-contribute"></a>
