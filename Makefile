@@ -44,8 +44,8 @@ test-focus: ## Runs focused ShellSpec tests
 
 .PHONY: clean
 clean: ## Deletes temporary files
-	rm -rf report
-	rm jx-requirements.yml
+	@rm -rf report
+	@rm -f jx-requirements.yml
 
 .PHONY: markdown-table
 markdown-table: ## Creates markdown tables for in- and output of this module
