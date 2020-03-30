@@ -17,7 +17,7 @@ echo $version | grep -q 'v[0-9]\+\.[0-9]\+\.[0-9]\+' || (echo "Specified release
 
 # make sure we are on  master and have no uncommited changes
 branch=$(git rev-parse --abbrev-ref HEAD)
-if [ "$branch" != "issue-47" ]; then
+if [ "$branch" != "master" ]; then
     echo "You need to be on master to release" >&2
     exit 1
 fi
