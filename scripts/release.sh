@@ -36,4 +36,4 @@ current_tag=$(git for-each-ref --sort=-creatordate --format="%(objectname)" refs
 current_tag_base=$(git merge-base $current_tag master)
 
 # actual changelog creation
-jx step changelog -p $prev_tag_base -r $current_tag_base --generate-yaml=false --no-dev-release --update-release=true
+jx step changelog -v $version -p $prev_tag_base -r $current_tag_base --generate-yaml=false --no-dev-release --update-release=true
