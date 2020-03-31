@@ -10,7 +10,7 @@ output "zone" {
 
 output "cluster_name" {
   description = "The name of the created K8s cluster"
-  value       = var.cluster_name
+  value       = local.cluster_name
 }
 
 output "log_storage_url" {
