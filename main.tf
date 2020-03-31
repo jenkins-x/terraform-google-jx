@@ -56,6 +56,19 @@ resource "random_id" "random" {
   byte_length = 6
 }
 
+resource "random_pet" "current" {
+  prefix    = "tf-jx"
+  separator = "-"
+  keepers = {
+    # Keep the name consistent on executions
+    cluster_name = var.cluster_name
+  }
+}
+
+locals {
+  cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
+}
+
 // ----------------------------------------------------------------------------
 // Enable all required GCloud APIs
 //
@@ -118,7 +131,7 @@ module "cluster" {
 
   gcp_project         = var.gcp_project
   zone                = var.zone
-  cluster_name        = var.cluster_name
+  cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
@@ -134,7 +147,7 @@ module "vault" {
 
   gcp_project         = var.gcp_project
   zone                = var.zone
-  cluster_name        = var.cluster_name
+  cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
@@ -148,7 +161,7 @@ module "backup" {
 
   gcp_project         = var.gcp_project
   zone                = var.zone
-  cluster_name        = var.cluster_name
+  cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
@@ -161,7 +174,7 @@ module "dns" {
   source = "./modules/dns"
 
   gcp_project         = var.gcp_project
-  cluster_name        = var.cluster_name
+  cluster_name        = local.cluster_name
   parent_domain       = var.parent_domain
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
 }
@@ -173,7 +186,7 @@ resource "local_file" "jx-requirements" {
   content = templatefile("${path.cwd}/modules/jx-requirements.yaml.tpl", {
     gcp_project                 = var.gcp_project
     zone                        = var.zone
-    cluster_name                = var.cluster_name
+    cluster_name                = local.cluster_name
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers
     // Storage buckets
@@ -209,6 +222,6 @@ resource "local_file" "jx-requirements" {
 // ----------------------------------------------------------------------------
 resource "null_resource" "kubeconfig" {
   provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials ${var.cluster_name} --zone=${module.cluster.cluster_location} --project=${var.gcp_project}"
+    command = "gcloud container clusters get-credentials ${local.cluster_name} --zone=${module.cluster.cluster_location} --project=${var.gcp_project}"
   }
 }

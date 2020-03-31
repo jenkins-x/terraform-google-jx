@@ -74,12 +74,12 @@ terraform init
 terraform apply
 ```
 
-This creates a cluster within the specified Google Cloud project with all names and settings defaulted.
-The default cluster name is _jenkins-x_.
+This creates a cluster within the specified Google Cloud project with all possible configuration options defaulted.
 On completion of `terraform apply` there will also be a _jx-requirements.yaml_ in the working directory which can be used as input to `jx boot`.
 Refer to [Running `jx boot`](#running-jx-boot) for more information.
-Per default, no custom domain is used.
-Instead DNS resolution is via [nip.io](https://nip.io/).
+
+No custom domain is used.
+Instead DNS resolution occurs via [nip.io](https://nip.io/).
 For more information on how to configure and use a custom domain, refer to [Using a custom domain](#using-a-custom-domain).
 
 If you just want to experiment with Jenkins X, you can set `force_destroy` to `true`.

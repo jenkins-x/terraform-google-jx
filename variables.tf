@@ -12,7 +12,7 @@ variable "gcp_project" {
 variable "cluster_name" {
   description = "Name of the K8s cluster to create"
   type        = string
-  default     = "jenkins-x"
+  default     = ""
 }
 
 variable "zone" {
