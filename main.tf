@@ -11,13 +11,13 @@ terraform {
 // Configure providers
 // ----------------------------------------------------------------------------
 provider "google" {
-  version = "~> 3.10.0"
+  version = "~> 2.12.0"
   project = var.gcp_project
   zone    = var.zone
 }
 
 provider "google-beta" {
-  version = "~> 3.10.0"
+  version = "~> 2.12.0"
   project = var.gcp_project
   zone    = var.zone
 }
