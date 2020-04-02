@@ -1,5 +1,5 @@
 # Jenkins X GKE Module
-<a id="markdown-jenkins-x-gke-module" name="jenkins-x-gke-module"></a>
+<a id="markdown-Jenkins%20X%20GKE%20Module" name="Jenkins%20X%20GKE%20Module"></a>
 
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
 
@@ -22,16 +22,16 @@ This repo contains a [Terraform](https://www.terraform.io/) Module for provision
 <!-- /TOC -->
 
 ## What is a Terraform Module
-<a id="markdown-what-is-a-terraform-module" name="what-is-a-terraform-module"></a>
+<a id="markdown-What%20is%20a%20Terraform%20Module" name="What%20is%20a%20Terraform%20Module"></a>
 
 A Terraform Module refers to a self-contained package of Terraform configurations that are managed as a group.
 For more information around Modules refer to the Terraform [documentation](https://www.terraform.io/docs/modules/index.html).
 
 ## How do you use this Module
-<a id="markdown-how-do-you-use-this-module" name="how-do-you-use-this-module"></a>
+<a id="markdown-How%20do%20you%20use%20this%20Module" name="How%20do%20you%20use%20this%20Module"></a>
 
 ### Prerequisites
-<a id="markdown-prerequisites" name="prerequisites"></a>
+<a id="markdown-Prerequisites" name="Prerequisites"></a>
 
 To make use of this Module, you need a Google Cloud project.
 Instructions on how to do this can be found [here](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup).
@@ -55,7 +55,7 @@ Last but not least, ensure you have the following binaries installed:
     - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
 
 ### Cluster provisioning
-<a id="markdown-cluster-provisioning" name="cluster-provisioning"></a>
+<a id="markdown-Cluster%20provisioning" name="Cluster%20provisioning"></a>
 
 A default Jenkins X ready cluster can be provisioned by creating a file _main.tf_ in an empty directory with the following content:
 
@@ -88,7 +88,7 @@ This allows you to remove all generated resources when running `terraform destro
 The following two paragraphs provide the full list of configuration and output variables of this Terraform Module.
 
 #### Inputs
-<a id="markdown-inputs" name="inputs"></a>
+<a id="markdown-Inputs" name="Inputs"></a>
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
@@ -111,7 +111,7 @@ The following two paragraphs provide the full list of configuration and output v
 | zone | Zone in which to create the cluster | `string` | `"us-central1-a"` | no |
 
 #### Outputs
-<a id="markdown-outputs" name="outputs"></a>
+<a id="markdown-Outputs" name="Outputs"></a>
 
 | Name | Description |
 |------|-------------|
@@ -125,7 +125,7 @@ The following two paragraphs provide the full list of configuration and output v
 | zone | The zone of the created K8s cluster |
 
 ### Running `jx boot`
-<a id="markdown-running-jx-boot" name="running-jx-boot"></a>
+<a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>
 
 As an output of applying this Terraform Module a _jx-requirements.yaml_ file is generated in the current directory.
 This file can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this Module.
@@ -140,7 +140,7 @@ You have to provide some more required configuration via interactive prompts.
 The number of prompts depends on how much you have [pre-configured](#inputs) via your Terraform variables.
 
 ### Using a custom domain
-<a id="markdown-using-a-custom-domain" name="using-a-custom-domain"></a>
+<a id="markdown-Using%20a%20custom%20domain" name="Using%20a%20custom%20domain"></a>
 
 If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _parent_domain_ and _tls_email_.
 _parent_domain_ is the fully qualified domain name you want to use and _tls_email_ is the email you want to use for issuing Let's Encrypt TLS certificates.
@@ -161,22 +161,23 @@ When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.co
 If _parent_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
 
 ## Development
-<a id="markdown-development" name="development"></a>
+<a id="markdown-Development" name="Development"></a>
 
 ### Releasing
-<a id="markdown-releasing" name="releasing"></a>
+<a id="markdown-Releasing" name="Releasing"></a>
 
 At the moment there is no release pipeline defined in [jenkins-x.yml](./jenkins-x.yml).
 A Terraform release does not require building an artifact, only a tag needs to be created and pushed.
 To make this task easier and there is a helper script `release.sh` which simplifies this process and creates the changelog as well:
 
 ```sh
-./scripts/release.sh <release-version>
+./scripts/release.sh
 ```
 
 This can be executed on demand whenever a release is required.
+For the script to work the envrionment variable _$GH_TOKEN_ must be exported and reference a valid GitHub API token.
 
 ## How do I contribute
-<a id="markdown-how-do-i-contribute" name="how-do-i-contribute"></a>
+<a id="markdown-How%20do%20I%20contribute" name="How%20do%20I%20contribute"></a>
 
 Contributions are very welcome! Check out the [Contribution Guidelines](./CONTRIBUTING.md) for instructions.
