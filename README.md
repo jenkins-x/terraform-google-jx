@@ -98,6 +98,7 @@ The following two paragraphs provide the full list of configuration and output v
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
+| lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
@@ -120,10 +121,10 @@ The following two paragraphs provide the full list of configuration and output v
 |------|-------------|
 | backup\_bucket\_url | The URL to the bucket for backup storage |
 | cluster\_name | The name of the created Kubernetes cluster |
-| gcp\_project | The GCP project in which the resources got created in |
+| gcp\_project | The GCP project in which the resources got created |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |
-| repository\_storage\_url | The URL to the bucket for artefact storage |
+| repository\_storage\_url | The URL to the bucket for artifact storage |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
 | zone | The zone of the created Kubernetes cluster |
 

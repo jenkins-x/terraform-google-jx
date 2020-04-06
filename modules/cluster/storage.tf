@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
-// Create storage buckets for build related artefacts - logs, reports and 
-// build artefacts 
+// Create storage buckets for build related artifacts - logs, reports and 
+// build artifacts 
 //
 // https://www.terraform.io/docs/providers/google/r/storage_bucket.html
 // ----------------------------------------------------------------------------

@@ -111,6 +111,12 @@ variable "dev_env_approvers" {
   default     = []
 }
 
+variable "lets_encrypt_production" {
+  description = "Flag to determine wether or not to use the Let's Encrypt production server."
+  type        = bool
+  default     = true
+}
+
 variable "webhook" {
   description = "Jenkins X webhook handler for git provider"
   type        = string
