@@ -1,3 +1,5 @@
+#shellcheck shell=sh
+
 Describe "K8s"
   Describe "Service Accounts"
     service_account_get_annotation() {

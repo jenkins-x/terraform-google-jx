@@ -1,3 +1,5 @@
+#shellcheck shell=sh
+
 Describe "GCloud"
   Describe "Services"
 

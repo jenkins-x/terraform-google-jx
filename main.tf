@@ -183,7 +183,7 @@ module "dns" {
 // Let's generate jx-requirements.yml 
 // ----------------------------------------------------------------------------
 resource "local_file" "jx-requirements" {
-  content = templatefile("${path.module}/modules/jx-requirements.yaml.tpl", {
+  content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
     gcp_project                 = var.gcp_project
     zone                        = var.zone
     cluster_name                = local.cluster_name
@@ -214,7 +214,7 @@ resource "local_file" "jx-requirements" {
     version_stream_url = var.version_stream_url
     webhook            = var.webhook
   })
-  filename = "${path.cwd}/jx-requirements.yaml"
+  filename = "${path.cwd}/jx-requirements.yml"
 }
 
 // ----------------------------------------------------------------------------
