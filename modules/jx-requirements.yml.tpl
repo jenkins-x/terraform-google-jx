@@ -15,13 +15,13 @@ environments:
 - key: dev
 - key: staging
 - key: production
-%{ if domain_enabled }ingress:
+ingress:
   domain: "${parent_domain}"
-  externalDNS: true
+  externalDNS: ${domain_enabled}
   tls:
     email: "${tls_email}"
     enabled: ${domain_enabled}
-    production: true%{ endif }    
+    production: ${lets_encrypt_production}
 kaniko: true
 storage:
   backup:

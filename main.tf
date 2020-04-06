@@ -194,6 +194,7 @@ resource "local_file" "jx-requirements" {
     cluster_name                = local.cluster_name
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers
+    lets_encrypt_production     = var.lets_encrypt_production
     // Storage buckets
     log_storage_url        = module.cluster.log_storage_url
     report_storage_url     = module.cluster.report_storage_url
