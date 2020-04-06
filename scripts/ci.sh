@@ -33,8 +33,8 @@ echo "" >> terraform.tfvars
 make plan
 make apply
 
-echo "Logging generated jx-requirements.yaml..."
-cat jx-requirements.yaml
+echo "Logging generated jx-requirements.yml..."
+cat jx-requirements.yml
 
 echo "Installing shellspec"
 pushd /var/tmp

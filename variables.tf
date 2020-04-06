@@ -91,7 +91,7 @@ variable "node_disk_size" {
 }
 
 // ----------------------------------------------------------------------------
-// jx-requirements.yaml specific variables only used for template rendering
+// jx-requirements.yml specific variables only used for template rendering
 // ----------------------------------------------------------------------------
 variable "git_owner_requirement_repos" {
   description = "The git id of the owner for the requirement repositories"

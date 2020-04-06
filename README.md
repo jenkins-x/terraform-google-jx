@@ -75,7 +75,7 @@ terraform apply
 ```
 
 This creates a cluster within the specified Google Cloud project with all possible configuration options defaulted.
-On completion of `terraform apply` there will also be a _jx-requirements.yaml_ in the working directory which can be used as input to `jx boot`.
+On completion of `terraform apply` there will also be a _jx-requirements.yml_ in the working directory which can be used as input to `jx boot`.
 Refer to [Running `jx boot`](#running-jx-boot) for more information.
 
 No custom domain is used.
@@ -127,13 +127,13 @@ The following two paragraphs provide the full list of configuration and output v
 ### Running `jx boot`
 <a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>
 
-As an output of applying this Terraform Module a _jx-requirements.yaml_ file is generated in the current directory.
+As an output of applying this Terraform Module a _jx-requirements.yml_ file is generated in the current directory.
 This file can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this Module.
 
-Copy the generated _jx-requirements.yaml_ into an empty directory, change into this directory and execute:
+Copy the generated _jx-requirements.yml_ into an empty directory, change into this directory and execute:
 
 ```bash
-jx boot --requirements jx-requirements.yaml
+jx boot --requirements jx-requirements.yml
 ```
 
 You have to provide some more required configuration via interactive prompts.
