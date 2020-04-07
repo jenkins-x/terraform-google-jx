@@ -136,6 +136,9 @@ module "cluster" {
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
   node_machine_type   = var.node_machine_type
+  node_disk_size      = var.node_disk_size
+  min_node_count      = var.min_node_count
+  max_node_count      = var.max_node_count
 }
 
 // ----------------------------------------------------------------------------
