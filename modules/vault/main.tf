@@ -38,7 +38,7 @@ resource "google_kms_crypto_key" "vault_crypto_key" {
 resource "google_storage_bucket" "vault_bucket" {
   provider      = google
   name          = "vault-${var.cluster_name}-${var.cluster_id}"
-
+  location      = var.zone
   force_destroy = var.force_destroy
 }
 

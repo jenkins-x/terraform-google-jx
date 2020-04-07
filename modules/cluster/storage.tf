@@ -9,7 +9,7 @@ resource "google_storage_bucket" "log_bucket" {
 
   provider      = google
   name          = "logs-${var.cluster_name}-${var.cluster_id}"
-
+  location      = var.zone
   force_destroy = var.force_destroy
 }
 
@@ -18,7 +18,7 @@ resource "google_storage_bucket" "report_bucket" {
 
   provider      = google
   name          = "reports-${var.cluster_name}-${var.cluster_id}"
-
+  location      = var.zone
   force_destroy = var.force_destroy
 }
 
@@ -27,6 +27,6 @@ resource "google_storage_bucket" "repository_bucket" {
 
   provider      = google
   name          = "repository-${var.cluster_name}-${var.cluster_id}"
-
+  location      = var.zone
   force_destroy = var.force_destroy
 }
