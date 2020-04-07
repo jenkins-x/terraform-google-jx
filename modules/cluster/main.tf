@@ -1,12 +1,12 @@
 // ----------------------------------------------------------------------------
-// Create and configure the K8s cluster
+// Create and configure the Kubernetes cluster
 //
 // https://www.terraform.io/docs/providers/google/r/container_cluster.html
 // ----------------------------------------------------------------------------
 resource "google_container_cluster" "jx_cluster" {
   provider                 = google-beta
   name                     = var.cluster_name
-  description              = "jenkins-x k8s cluster"
+  description              = "jenkins-x cluster"
   location                 = var.zone
   enable_kubernetes_alpha  = var.enable_kubernetes_alpha
   enable_legacy_abac       = var.enable_legacy_abac
@@ -28,6 +28,8 @@ resource "google_container_cluster" "jx_cluster" {
   workload_identity_config {
     identity_namespace = "${var.gcp_project}.svc.id.goog"
   }
+
+  resource_labels = var.resource_labels
 }
 
 // ----------------------------------------------------------------------------
@@ -75,7 +77,7 @@ resource "google_container_node_pool" "jx_node_pool" {
 }
 
 // ----------------------------------------------------------------------------
-// Add main Jenkins X K8s namespace
+// Add main Jenkins X Kubernetes namespace
 // 
 // https://www.terraform.io/docs/providers/kubernetes/r/namespace.html
 // ----------------------------------------------------------------------------

@@ -12,7 +12,7 @@ variable "zone" {
 }
 
 variable "cluster_name" {
-  description = "Name of the K8s cluster"
+  description = "Name of the Kubernetes cluster"
   type = string
 }
 
@@ -22,7 +22,7 @@ variable "cluster_id" {
 }
 
 variable "jenkins_x_namespace" {
-  description = "K8s namespace to install Jenkins X in"
+  description = "Kubernetes namespace to install Jenkins X in"
   type = string
 }
 
@@ -30,7 +30,7 @@ variable "jenkins_x_namespace" {
 // Optional Variables
 // ----------------------------------------------------------------------------
 variable "velero_namespace" {
-  description = "K8s namespace for Velero"
+  description = "Kubernetes namespace for Velero"
   type        = string
   default     = "velero"
 }

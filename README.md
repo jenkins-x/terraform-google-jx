@@ -92,17 +92,20 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| cluster\_name | Name of the K8s cluster to create | `string` | `"jenkins-x"` | no |
+| cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
+| jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
-| node\_machine\_type | Node type for the K8s cluster | `string` | `"n1-standard-2"` | no |
+| node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
+| resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified. | `string` | `""` | no |
+| velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |
 | velero\_schedule | The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml)) | `string` | `"0 * * * *"` | no |
 | velero\_ttl | The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup)) | `string` | `"720h0m0s"` | no |
 | version\_stream\_ref | The git ref for version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"master"` | no |
@@ -116,13 +119,13 @@ The following two paragraphs provide the full list of configuration and output v
 | Name | Description |
 |------|-------------|
 | backup\_bucket\_url | The URL to the bucket for backup storage |
-| cluster\_name | The name of the created K8s cluster |
+| cluster\_name | The name of the created Kubernetes cluster |
 | gcp\_project | The GCP project in which the resources got created in |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |
 | repository\_storage\_url | The URL to the bucket for artefact storage |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
-| zone | The zone of the created K8s cluster |
+| zone | The zone of the created Kubernetes cluster |
 
 ### Running `jx boot`
 <a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>

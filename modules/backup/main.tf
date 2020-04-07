@@ -49,7 +49,7 @@ resource "google_service_account_iam_member" "velero_sa_workload_identity_user" 
 }
 
 // ----------------------------------------------------------------------------
-// Setup K8s Velero namespace and service account
+// Setup Kubernetes Velero namespace and service account
 // ----------------------------------------------------------------------------
 resource "kubernetes_namespace" "velero_namespace" {
   metadata {

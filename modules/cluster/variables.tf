@@ -12,12 +12,12 @@ variable "zone" {
 }
 
 variable "cluster_name" {
-  description = "Name of the K8s cluster"
+  description = "Name of the Kubernetes cluster"
   type = string
 }
 
 variable "jenkins_x_namespace" {
-  description = "K8s namespace to install Jenkins X in"
+  description = "Kubernetes namespace to install Jenkins X in"
   type = string
 }
 
@@ -56,7 +56,7 @@ variable "force_destroy" {
 
 // cluster configuration
 variable "node_machine_type" {
-  description = "Node type foe the K8s cluster"
+  description = "Node type foe the Kubernetes cluster"
   type = string
 }
 
@@ -70,6 +70,12 @@ variable "max_node_count" {
   description = "Maximum number of cluster nodes"
   type        = number
   default     = 5
+}
+
+variable "resource_labels" {
+  description = "Set of labels to be applied to the cluster"
+  type        = map
+  default     = {}
 }
 
 variable "node_preemptible" {

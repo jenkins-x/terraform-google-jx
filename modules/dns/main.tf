@@ -67,7 +67,7 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 # }
 
 // ----------------------------------------------------------------------------
-// Create K8s service accounts for ExternalDNS
+// Create Kubernetes service accounts for ExternalDNS
 // See https://github.com/kubernetes-sigs/external-dns
 // ----------------------------------------------------------------------------
 resource "google_service_account_iam_member" "exdns_external_dns_workload_identity_user" {
@@ -100,7 +100,7 @@ resource "kubernetes_service_account" "exdns-external-dns" {
 }
 
 // ----------------------------------------------------------------------------
-// Create K8s namespace and service accounts for cert-manager
+// Create Kubernetes namespace and service accounts for cert-manager
 // See https://github.com/jetstack/cert-manager
 // ----------------------------------------------------------------------------
 resource "kubernetes_namespace" "cert-manager" {
