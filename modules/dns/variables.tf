@@ -7,7 +7,7 @@ variable "gcp_project" {
 }
 
 variable "cluster_name" {
-  description = "Name of the K8s cluster"
+  description = "Name of the Kubernetes cluster"
   type = string
 }
 
@@ -17,7 +17,7 @@ variable "parent_domain" {
 }
 
 variable "jenkins_x_namespace" {
-  description = "K8s namespace to install Jenkins X in"
+  description = "Kubernetes namespace to install Jenkins X in"
   type = string
 }
 
@@ -25,7 +25,7 @@ variable "jenkins_x_namespace" {
 // Optional Variables
 // ----------------------------------------------------------------------------
 variable "cert-manager-namespace" {
-  description = "K8s namespace for cert-manager"
+  description = "Kubernetes namespace for cert-manager"
   type        = string
   default     = "cert-manager"
 }

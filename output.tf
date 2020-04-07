@@ -4,12 +4,12 @@ output "gcp_project" {
 }
 
 output "zone" {
-  description = "The zone of the created K8s cluster"
+  description = "The zone of the created Kubernetes cluster"
   value       = var.zone
 }
 
 output "cluster_name" {
-  description = "The name of the created K8s cluster"
+  description = "The name of the created Kubernetes cluster"
   value       = local.cluster_name
 }
 
