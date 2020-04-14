@@ -1,6 +1,8 @@
 approvers:
+- apg84
 - cagiti
 - ccojocar
+- daveconde
 - dgozalo
 - garethjevans
 - hferentschik
@@ -8,10 +10,11 @@ approvers:
 - macox
 - pmuir
 - rawlingsj
-- daveconde
 reviewers:
+- apg84
 - cagiti
 - ccojocar
+- daveconde
 - dgozalo
 - garethjevans
 - hferentschik
@@ -19,4 +22,3 @@ reviewers:
 - macox
 - pmuir
 - rawlingsj
-- daveconde
