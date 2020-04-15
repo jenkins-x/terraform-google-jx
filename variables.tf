@@ -10,7 +10,7 @@ variable "gcp_project" {
 // Optional Variables
 // ----------------------------------------------------------------------------
 variable "cluster_name" {
-  description = "Name of the K8s cluster to create"
+  description = "Name of the Kubernetes cluster to create"
   type        = string
   default     = ""
 }
@@ -22,13 +22,13 @@ variable "zone" {
 }
 
 variable "jenkins_x_namespace" {
-  description = "K8s namespace to install Jenkins X in"
+  description = "Kubernetes namespace to install Jenkins X in"
   type        = string
   default     = "jx"
 }
 
 variable "velero_namespace" {
-  description = "K8s namespace for Velero"
+  description = "Kubernetes namespace for Velero"
   type        = string
   default     = "velero"
 }
@@ -67,7 +67,7 @@ variable "velero_ttl" {
 // cluster configuration
 // ----------------------------------------------------------------------------
 variable "node_machine_type" {
-  description = "Node type for the K8s cluster"
+  description = "Node type for the Kubernetes cluster"
   type        = string
   default     = "n1-standard-2"
 }
@@ -90,6 +90,12 @@ variable "node_disk_size" {
   default     = "100"
 }
 
+variable "resource_labels" {
+  description = "Set of labels to be applied to the cluster"
+  type        = map
+  default     = {}
+}
+
 // ----------------------------------------------------------------------------
 // jx-requirements.yml specific variables only used for template rendering
 // ----------------------------------------------------------------------------
@@ -103,6 +109,12 @@ variable "dev_env_approvers" {
   description = "List of git users allowed to approve pull request for dev enviornment repository"
   type        = list(string)
   default     = []
+}
+
+variable "lets_encrypt_production" {
+  description = "Flag to determine wether or not to use the Let's Encrypt production server."
+  type        = bool
+  default     = true
 }
 
 variable "webhook" {

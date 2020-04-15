@@ -73,7 +73,7 @@ resource "google_project_iam_member" "vault_sa_cloudkms_crypto_binding" {
 }
 
 // ----------------------------------------------------------------------------
-// Setup K8s Vault service accounts
+// Setup Kubernetes Vault service accounts
 //
 // https://www.terraform.io/docs/providers/google/r/google_service_account_iam.html#google_service_account_iam_member
 // https://www.terraform.io/docs/providers/kubernetes/r/service_account.html

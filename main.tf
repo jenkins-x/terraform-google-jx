@@ -124,7 +124,7 @@ resource "google_project_service" "serviceusage_api" {
 }
 
 // ----------------------------------------------------------------------------
-// Create K8s cluster
+// Create Kubernetes cluster
 // ----------------------------------------------------------------------------
 module "cluster" {
   source = "./modules/cluster"
@@ -139,6 +139,7 @@ module "cluster" {
   node_disk_size      = var.node_disk_size
   min_node_count      = var.min_node_count
   max_node_count      = var.max_node_count
+  resource_labels     = var.resource_labels
 }
 
 // ----------------------------------------------------------------------------
@@ -192,6 +193,7 @@ resource "local_file" "jx-requirements" {
     cluster_name                = local.cluster_name
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers
+    lets_encrypt_production     = var.lets_encrypt_production
     // Storage buckets
     log_storage_url        = module.cluster.log_storage_url
     report_storage_url     = module.cluster.report_storage_url

@@ -24,11 +24,13 @@ gcloud auth list
 gcloud config set project $PROJECT
 
 echo "Creating cluster ${CLUSTER_NAME} in project ${PROJECT}..."
-echo "gcp_project   = \"${PROJECT}\"" >> terraform.tfvars
-echo "zone          = \"europe-west1-b\"" >> terraform.tfvars
-echo "cluster_name  = \"${CLUSTER_NAME}\"" >> terraform.tfvars
-echo "parent_domain = \"${PARENT_DOMAIN}\"" >> terraform.tfvars
-echo "force_destroy = true" >> terraform.tfvars
+echo "gcp_project             = \"${PROJECT}\"" >> terraform.tfvars
+echo "zone                    = \"europe-west1-b\"" >> terraform.tfvars
+echo "cluster_name            = \"${CLUSTER_NAME}\"" >> terraform.tfvars
+echo "parent_domain           = \"${PARENT_DOMAIN}\"" >> terraform.tfvars
+echo "resource_labels         = {powered-by = \"jenkins-x\"}" >> terraform.tfvars
+echo "lets_encrypt_production = false" >> terraform.tfvars
+echo "force_destroy           = true" >> terraform.tfvars
 echo "" >> terraform.tfvars
 make plan
 make apply

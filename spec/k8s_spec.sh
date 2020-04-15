@@ -1,6 +1,6 @@
 #shellcheck shell=sh
 
-Describe "K8s"
+Describe "Kubernetes"
   Describe "Service Accounts"
     service_account_get_annotation() {
       kubectl get sa $1 -n $2 -o json | jq -r '.metadata.annotations["iam.gke.io/gcp-service-account"]'
@@ -100,5 +100,16 @@ Describe "K8s"
       When call workload_identity_test exdns-external-dns jx
       The output should include "$(terraform output cluster_name)-dn@$(terraform output gcp_project).iam.gserviceaccount.com"
     End        
+  End
+
+  Describe "Cluster"
+    get_resource_label() {
+      gcloud container clusters describe $(terraform output cluster_name)  --zone $(terraform output zone) | yq r - 'resourceLabels['$1']'
+    }
+
+    It "The cluster has resource labels"
+      When call get_resource_label "powered-by"
+      The output should eq "jenkins-x"
+    End
   End
 End
