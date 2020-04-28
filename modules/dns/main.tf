@@ -1,7 +1,3 @@
-locals {
-    dns_enabled = var.parent_domain != "" ? true : false
-}
-
 // ----------------------------------------------------------------------------
 // Enable DNS API
 //
@@ -71,8 +67,6 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 // See https://github.com/kubernetes-sigs/external-dns
 // ----------------------------------------------------------------------------
 resource "google_service_account_iam_member" "exdns_external_dns_workload_identity_user" {
-  count = local.dns_enabled ? 1 : 0
-  
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
@@ -80,8 +74,6 @@ resource "google_service_account_iam_member" "exdns_external_dns_workload_identi
 }
 
 resource "kubernetes_service_account" "exdns-external-dns" {
-  count = local.dns_enabled ? 1 : 0
-  
   automount_service_account_token = true
   metadata {
     name = "exdns-external-dns"
@@ -104,8 +96,6 @@ resource "kubernetes_service_account" "exdns-external-dns" {
 // See https://github.com/jetstack/cert-manager
 // ----------------------------------------------------------------------------
 resource "kubernetes_namespace" "cert-manager" {
-  count = local.dns_enabled ? 1 : 0
-  
   metadata {
     name = var.cert-manager-namespace
   }
@@ -118,8 +108,6 @@ resource "kubernetes_namespace" "cert-manager" {
 }
 
 resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_user" {
-  count = local.dns_enabled ? 1 : 0
-  
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
@@ -127,8 +115,6 @@ resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_
 }
 
 resource "kubernetes_service_account" "cm-cert-manager" {
-  count = local.dns_enabled ? 1 : 0
-
   automount_service_account_token = true
   metadata {
     name = "cm-cert-manager"
@@ -149,9 +135,7 @@ resource "kubernetes_service_account" "cm-cert-manager" {
   ]
 }
 
-resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" {
-  count = local.dns_enabled ? 1 : 0
-  
+resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" { 
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
@@ -159,8 +143,6 @@ resource "google_service_account_iam_member" "cm_cainjector_workload_identity_us
 }
 
 resource "kubernetes_service_account" "cm-cainjector" {
-  count = local.dns_enabled ? 1 : 0
-
   automount_service_account_token = true
   metadata {
     name = "cm-cainjector"
