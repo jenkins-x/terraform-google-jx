@@ -90,8 +90,8 @@ Refer to [Production cluster considerations](#production-cluster-considerations)
 On completion of `terraform apply` there will be a _jx-requirements.yml_ in the working directory which can be used as input to `jx boot`.
 Refer to [Running `jx boot`](#running-jx-boot) for more information.
 
-No custom domain is used.
-Instead DNS resolution occurs via [nip.io](https://nip.io/).
+In the default configuration, no custom domain is used.
+DNS resolution occurs via [nip.io](https://nip.io/).
 For more information on how to configure and use a custom domain, refer to [Using a custom domain](#using-a-custom-domain).
 
 If you just want to experiment with Jenkins X, you can set `force_destroy` to `true`.
@@ -146,6 +146,10 @@ The following two paragraphs provide the full list of configuration and output v
 An output of applying this Terraform module is a _jx-requirements.yml_ file in the current directory.
 This file can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this module.
 
+:warning: **Note**: The generated _jx-requirements.yml_ is only used for the first run of `jx boot`.
+During this first run a git repository containing the source code for Jenkins X Boot is created.
+This repository contains the _jx-requirements.yml_ used by successive runs of `jx boot`.
+
 Change into  an empty directory and execute:
 
 ```bash
@@ -158,8 +162,8 @@ The number of prompts depends on how much you have [pre-configured](#inputs) via
 ### Using a custom domain
 <a id="markdown-Using%20a%20custom%20domain" name="Using%20a%20custom%20domain"></a>
 
-If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _parent_domain_ and _tls_email_.
-_parent_domain_ is the fully qualified domain name you want to use and _tls_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
+If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _parent\_domain_ and _tls\_email_.
+_parent\_domain_ is the fully qualified domain name you want to use and _tls\_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
 
 Before you apply the Terraform configuration, you also need to create a [Cloud DNS managed zone](https://cloud.google.com/dns/zones), with the DNS name in the managed zone matching your custom domain name, for example in the case of _example.jenkins-x.rocks_ as domain:
 
