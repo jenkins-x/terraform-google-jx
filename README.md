@@ -236,6 +236,23 @@ gsutil versioning get gs://<my-bucket-name>
 terraform init -upgrade
 ```
 
+### How to I specify a specific google provider version
+<a id="markdown-How%20to%20I%20specify%20a%20specific%20google%20provider%20version" name="How%20to%20I%20specify%20a%20specific%20google%20provider%20version"></a>
+
+```yaml
+provider "google" {
+  version = "~> 2.12.0"
+  project = var.gcp_project
+  zone    = var.zone
+}
+
+provider "google-beta" {
+  version = "~> 2.12.0"
+  project = var.gcp_project
+  zone    = var.zone
+}
+```
+
 ### Why do I need Application Default Credentials
 <a id="markdown-Why%20do%20I%20need%20Application%20Default%20Credentials" name="Why%20do%20I%20need%20Application%20Default%20Credentials"></a>
 
