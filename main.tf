@@ -10,6 +10,16 @@ terraform {
 // ----------------------------------------------------------------------------
 // Configure providers
 // ----------------------------------------------------------------------------
+provider "google" {
+  project = var.gcp_project
+  zone    = var.zone
+}
+
+provider "google-beta" {
+  project = var.gcp_project
+  zone    = var.zone
+}
+
 provider "random" {
   version = "~> 2.2.0"
 }
