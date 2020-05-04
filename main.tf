@@ -13,11 +13,13 @@ terraform {
 provider "google" {
   project = var.gcp_project
   zone    = var.zone
+  version = ">= 2.12.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
   zone    = var.zone
+  version = ">= 2.12.0"
 }
 
 provider "random" {
