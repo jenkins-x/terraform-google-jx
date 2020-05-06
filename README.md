@@ -123,7 +123,7 @@ The following two paragraphs provide the full list of configuration and output v
 | velero\_ttl | The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup)) | `string` | `"720h0m0s"` | no |
 | version\_stream\_ref | The git ref for version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"master"` | no |
 | version\_stream\_url | The URL for the version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"https://github.com/jenkins-x/jenkins-x-versions.git"` | no |
-| webhook | Jenkins X webhook handler for git provider | `string` | `"prow"` | no |
+| webhook | Jenkins X webhook handler for git provider | `string` | `"lighthouse"` | no |
 | zone | Zone in which to create the cluster | `string` | `"us-central1-a"` | no |
 
 #### Outputs

@@ -120,7 +120,7 @@ variable "lets_encrypt_production" {
 variable "webhook" {
   description = "Jenkins X webhook handler for git provider"
   type        = string
-  default     = "prow"
+  default     = "lighthouse"
 }
 
 variable "version_stream_url" {
