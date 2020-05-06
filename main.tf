@@ -23,7 +23,7 @@ provider "google-beta" {
 }
 
 provider "random" {
-  version = "~> 2.2.0"
+  version = ">= 2.2.0"
 }
 
 provider "local" {
@@ -31,18 +31,18 @@ provider "local" {
 }
 
 provider "null" {
-  version = "~> 2.1.0"
+  version = ">= 2.1.0"
 }
 
 provider "template" {
-  version = "~> 2.1.0"
+  version = ">= 2.1.0"
 }
 
 data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  version          = "~> 1.11.0"
+  version          = ">= 1.11.0"
   load_config_file = false
 
   host  = "https://${module.cluster.cluster_endpoint}"
