@@ -221,6 +221,14 @@ resource "local_file" "jx-requirements" {
     webhook            = var.webhook
   })
   filename = "${path.cwd}/jx-requirements.yml"
+  lifecycle {
+    ignore_changes = [
+      filename,
+      directory_permission,
+      file_permission,
+      id,
+    ]
+  }
 }
 
 // ----------------------------------------------------------------------------
