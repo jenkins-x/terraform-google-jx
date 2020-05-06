@@ -23,5 +23,5 @@ override.tf.json
 *_override.tf.json
 
 **/report/*
-jx-requirements.yml
+*jx-requirements.yml
 .DS_Store
