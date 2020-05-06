@@ -220,7 +220,7 @@ resource "local_file" "jx-requirements" {
     version_stream_url = var.version_stream_url
     webhook            = var.webhook
   })
-  filename = "${path.cwd}/jx-requirements.yml"
+  filename = "${path.cwd}/${var.gcp_project}-jx-requirements.yml"
 }
 
 // ----------------------------------------------------------------------------
