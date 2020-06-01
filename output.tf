@@ -3,9 +3,14 @@ output "gcp_project" {
   value       = var.gcp_project
 }
 
-output "zone" {
+output "cluster_location" {
+  description = "The location of the created Kubernetes cluster"
+  value       = var.cluster_location
+}
+
+output "cluster_zone" {
   description = "The zone of the created Kubernetes cluster"
-  value       = var.zone
+  value       = module.cluster.cluster_zone
 }
 
 output "cluster_name" {

@@ -7,7 +7,7 @@ resource "google_container_cluster" "jx_cluster" {
   provider                 = google-beta
   name                     = var.cluster_name
   description              = "jenkins-x cluster"
-  location                 = var.zone
+  location                 = var.cluster_location
   enable_kubernetes_alpha  = var.enable_kubernetes_alpha
   enable_legacy_abac       = var.enable_legacy_abac
   logging_service          = var.logging_service
@@ -41,7 +41,7 @@ resource "google_container_cluster" "jx_cluster" {
 resource "google_container_node_pool" "jx_node_pool" {
   provider           = google-beta
   name               = "autoscale-pool"
-  location           = var.zone
+  location           = var.cluster_location
   cluster            = google_container_cluster.jx_cluster.name
   initial_node_count = var.min_node_count
 
@@ -97,4 +97,17 @@ resource "kubernetes_namespace" "jenkins_x_namespace" {
     google_container_cluster.jx_cluster,
     google_container_node_pool.jx_node_pool
   ]
+}
+
+# Trying to determine the zone of any of the cluster nodes in order to return the zone ouptut used by jx-requirements.yml
+# If the cluster is zonal cluster_location can be used, if it is regional we try to select any og the locations in node_locations
+# We need to use the for loop since using the ternary operator with google_container_cluster.jx_cluster.node_locations[0] will
+# fail if node_locations is empty. Apparently all branches are evaluated by Terraform.
+locals {
+  zones =  [
+    for z in google_container_cluster.jx_cluster.node_locations:
+    z
+  ]
+
+  zone = local.zones == [] ? google_container_cluster.jx_cluster.location : local.zones[0]
 }

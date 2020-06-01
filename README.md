@@ -19,6 +19,7 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
     - [Configuring a Terraform backend](#configuring-a-terraform-backend)
 - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
+    - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
     - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
 - [Development](#development)
     - [Releasing](#releasing)
@@ -104,6 +105,7 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
@@ -124,7 +126,7 @@ The following two paragraphs provide the full list of configuration and output v
 | version\_stream\_ref | The git ref for version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"master"` | no |
 | version\_stream\_url | The URL for the version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"https://github.com/jenkins-x/jenkins-x-versions.git"` | no |
 | webhook | Jenkins X webhook handler for git provider | `string` | `"lighthouse"` | no |
-| zone | Zone in which to create the cluster | `string` | `"us-central1-a"` | no |
+| zone | Zone in which to create the cluster (deprecated, use cluster\_location instead) | `string` | `""` | no |
 
 #### Outputs
 <a id="markdown-Outputs" name="Outputs"></a>
@@ -132,13 +134,13 @@ The following two paragraphs provide the full list of configuration and output v
 | Name | Description |
 |------|-------------|
 | backup\_bucket\_url | The URL to the bucket for backup storage |
+| cluster\_location | The location of the created Kubernetes cluster |
 | cluster\_name | The name of the created Kubernetes cluster |
 | gcp\_project | The GCP project in which the resources got created |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |
 | repository\_storage\_url | The URL to the bucket for artifact storage |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
-| zone | The zone of the created Kubernetes cluster |
 
 ### Running `jx boot`
 <a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>
@@ -247,13 +249,11 @@ terraform init -upgrade
 provider "google" {
   version = "~> 2.12.0"
   project = var.gcp_project
-  zone    = var.zone
 }
 
 provider "google-beta" {
   version = "~> 2.12.0"
   project = var.gcp_project
-  zone    = var.zone
 }
 ```
 

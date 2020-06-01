@@ -6,6 +6,10 @@ output "cluster_location" {
     value = google_container_cluster.jx_cluster.location
 }
 
+output "cluster_zone" {
+    value = local.zone
+}
+
 output "cluster_endpoint" {
     value = google_container_cluster.jx_cluster.endpoint
 }
