@@ -6,11 +6,6 @@ variable "gcp_project" {
   type = string
 }
 
-variable "zone" {
-  description = "The GCloud zone in which to create the resources"
-  type = string
-}
-
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
   type = string

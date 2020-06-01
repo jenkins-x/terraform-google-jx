@@ -12,13 +12,11 @@ terraform {
 // ----------------------------------------------------------------------------
 provider "google" {
   project = var.gcp_project
-  zone    = var.zone
   version = ">= 2.12.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  zone    = var.zone
   version = ">= 2.12.0"
 }
 
@@ -67,6 +65,8 @@ resource "random_pet" "current" {
 
 locals {
   cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
+  # provide backwards compatabilty with the depreacted zone variable
+  location = "${var.zone != "" ? var.zone : var.cluster_location}"
 }
 
 // ----------------------------------------------------------------------------
@@ -130,8 +130,8 @@ module "cluster" {
   source = "./modules/cluster"
 
   gcp_project         = var.gcp_project
-  zone                = var.zone
   cluster_name        = local.cluster_name
+  cluster_location    = local.location
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
@@ -151,7 +151,6 @@ module "vault" {
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
-  zone                = var.zone
   cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
@@ -165,7 +164,6 @@ module "backup" {
   source = "./modules/backup"
 
   gcp_project         = var.gcp_project
-  zone                = var.zone
   cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
@@ -190,7 +188,7 @@ module "dns" {
 resource "local_file" "jx-requirements" {
   content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
     gcp_project                 = var.gcp_project
-    zone                        = var.zone
+    zone                        = var.cluster_location
     cluster_name                = local.cluster_name
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers

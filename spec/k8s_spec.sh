@@ -104,7 +104,7 @@ Describe "Kubernetes"
 
   Describe "Cluster"
     get_resource_label() {
-      gcloud container clusters describe $(terraform output cluster_name)  --zone $(terraform output zone) | yq r - 'resourceLabels['$1']'
+      gcloud container clusters describe $(terraform output cluster_name)  --zone $(terraform output cluster_location) | yq r - 'resourceLabels['$1']'
     }
 
     It "The cluster has resource labels"
