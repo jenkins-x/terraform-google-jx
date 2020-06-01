@@ -7,7 +7,7 @@ resource "google_container_cluster" "jx_cluster" {
   provider                 = google-beta
   name                     = var.cluster_name
   description              = "jenkins-x cluster"
-  location                 = var.zone
+  location                 = var.cluster_location
   enable_kubernetes_alpha  = var.enable_kubernetes_alpha
   enable_legacy_abac       = var.enable_legacy_abac
   logging_service          = var.logging_service
@@ -41,7 +41,7 @@ resource "google_container_cluster" "jx_cluster" {
 resource "google_container_node_pool" "jx_node_pool" {
   provider           = google-beta
   name               = "autoscale-pool"
-  location           = var.zone
+  location           = var.cluster_location
   cluster            = google_container_cluster.jx_cluster.name
   initial_node_count = var.min_node_count
 

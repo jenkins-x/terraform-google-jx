@@ -1,12 +1,10 @@
 provider "google" {
     project = "<my-gcp-project-id>"
-    zone = "<my-zone-or-region>"
     version = ">= 2.12.0"
 }
 
 provider "google-beta" {
     project = "<my-gcp-project-id>"
-    zone = "<my-zone-or-region>"
     version = ">= 2.12.0"
 }
 
@@ -14,13 +12,12 @@ module "jx" {
     source = "jenkins-x/jx/google"
     gcp_project = "<my-gcp-project-id>"
     cluster_name = "<my-cluster-name>"
-    zone = "<my-zone-or-region>"
 }
 
 resource "google_container_node_pool" "large_nodes" {
     provider           = google-beta
     name               = "large-nodes"
-    location           = "<my-zone-or-region>"
+    location           = "<my-location>"
     cluster            = module.jx.cluster_name
     initial_node_count = 1
 
