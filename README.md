@@ -105,6 +105,7 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
@@ -136,6 +137,7 @@ The following two paragraphs provide the full list of configuration and output v
 | backup\_bucket\_url | The URL to the bucket for backup storage |
 | cluster\_location | The location of the created Kubernetes cluster |
 | cluster\_name | The name of the created Kubernetes cluster |
+| cluster\_zone | The zone of the created Kubernetes cluster |
 | gcp\_project | The GCP project in which the resources got created |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |

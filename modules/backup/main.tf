@@ -7,6 +7,7 @@
 resource "google_storage_bucket" "backup_bucket" {
   provider      = google
   name          = "backup-${var.cluster_name}-${var.cluster_id}"
+  location      = var.bucket_location
 
   force_destroy = var.force_destroy
 }

@@ -24,6 +24,12 @@ variable "jenkins_x_namespace" {
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
+variable "bucket_location" {
+  description = "Bucket location for storage"
+  type        = string
+  default     = "US"
+}
+
 variable "velero_namespace" {
   description = "Kubernetes namespace for Velero"
   type        = string
