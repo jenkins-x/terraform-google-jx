@@ -24,6 +24,12 @@ variable "jenkins_x_namespace" {
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
+variable "bucket_location" {
+  description = "Bucket location for storage"
+  type        = string
+  default     = "US"
+}
+
 variable "force_destroy" {
   description = "Flag to determine whether storage buckets get forcefully destroyed"
   type        = bool

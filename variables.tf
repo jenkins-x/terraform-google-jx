@@ -27,6 +27,12 @@ variable "cluster_location" {
   default     = "us-central1-a"
 }
 
+variable "bucket_location" {
+  description = "Bucket location for storage"
+  type        = string
+  default     = "US"
+}
+
 variable "jenkins_x_namespace" {
   description = "Kubernetes namespace to install Jenkins X in"
   type        = string
