@@ -30,6 +30,12 @@ variable "cluster_id" {
 // Optional Variables
 // ----------------------------------------------------------------------------
 // storage
+variable "bucket_location" {
+  description = "Bucket location for storage"
+  type        = string
+  default     = "US"
+}
+
 variable "enable_log_storage" {
   description = "Flag to enable or disable storage of build logs in a cloud bucket"
   type        = bool

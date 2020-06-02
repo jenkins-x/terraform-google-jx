@@ -133,6 +133,7 @@ module "cluster" {
   cluster_name        = local.cluster_name
   cluster_location    = local.location
   cluster_id          = random_id.random.hex
+  bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
 
@@ -153,6 +154,7 @@ module "vault" {
   gcp_project         = var.gcp_project
   cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
+  bucket_location     = var.bucket_location
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
 }
@@ -166,6 +168,7 @@ module "backup" {
   gcp_project         = var.gcp_project
   cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
+  bucket_location     = var.bucket_location
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
 }
