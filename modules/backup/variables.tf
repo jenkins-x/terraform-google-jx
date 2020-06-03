@@ -24,6 +24,12 @@ variable "jenkins_x_namespace" {
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
+variable "enable_backup" {
+  description = "Whether or not Velero backups should be enabled"
+  type        = bool
+  default     = false
+}
+
 variable "bucket_location" {
   description = "Bucket location for storage"
   type        = string

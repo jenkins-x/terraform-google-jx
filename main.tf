@@ -165,6 +165,7 @@ module "vault" {
 module "backup" {
   source = "./modules/backup"
 
+  enable_backup       = var.enable_backup
   gcp_project         = var.gcp_project
   cluster_name        = local.cluster_name
   cluster_id          = random_id.random.hex
@@ -208,6 +209,7 @@ resource "local_file" "jx-requirements" {
     vault_name    = module.vault.vault_name
     vault_sa      = module.vault.vault_sa
     // Velero
+    enable_backup    = var.enable_backup
     velero_sa        = module.backup.velero_sa
     velero_namespace = module.backup.backup_bucket_url != "" ? var.velero_namespace : ""
     velero_schedule  = var.velero_schedule
