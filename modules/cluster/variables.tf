@@ -84,6 +84,12 @@ variable "resource_labels" {
   default     = {}
 }
 
+variable "release_channel" {
+  description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
+  type        = string
+  default     = "REGULAR"
+}
+
 variable "node_preemptible" {
   description = "Use preemptible nodes"
   type        = bool
