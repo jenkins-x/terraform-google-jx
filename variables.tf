@@ -58,9 +58,15 @@ variable "parent_domain" {
 }
 
 variable "tls_email" {
-  description = "Email used by Let's Encrypt. Required for TLS when parent_domain is specified."
+  description = "Email used by Let's Encrypt. Required for TLS when parent_domain is specified"
   type        = string
   default     = ""
+}
+
+variable "enable_backup" {
+  description = "Whether or not Velero backups should be enabled"
+  type        = bool
+  default     = false
 }
 
 variable "velero_schedule" {

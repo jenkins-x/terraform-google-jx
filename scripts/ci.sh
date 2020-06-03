@@ -30,6 +30,7 @@ echo "parent_domain           = \"${PARENT_DOMAIN}\"" >> terraform.tfvars
 echo "resource_labels         = {powered-by = \"jenkins-x\"}" >> terraform.tfvars
 echo "lets_encrypt_production = false" >> terraform.tfvars
 echo "force_destroy           = true" >> terraform.tfvars
+echo "enable_backup           = true" >> terraform.tfvars
 echo "" >> terraform.tfvars
 make plan
 make apply

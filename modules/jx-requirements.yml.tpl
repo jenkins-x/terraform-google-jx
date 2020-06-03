@@ -25,7 +25,7 @@ ingress:
 kaniko: true
 storage:
   backup:
-    enabled: %{ if backup_bucket_url != "" }true%{ else }false%{ endif }
+    enabled: ${enable_backup}
     url: ${backup_bucket_url}
   logs:
     enabled: %{ if log_storage_url != "" }true%{ else }false%{ endif }
@@ -43,11 +43,13 @@ vault:
   key: ${vault_key}
   keyring: ${vault_keyring}
   serviceAccount: ${vault_sa}
+%{ if enable_backup }  
 velero:
   namespace: ${velero_namespace}
   schedule: "${velero_schedule}"
   serviceAccount: ${velero_sa}
   ttl: "${velero_ttl}"  
+%{ endif }  
 versionStream:
   ref: ${version_stream_ref}
   url: ${version_stream_url}

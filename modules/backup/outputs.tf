@@ -1,11 +1,11 @@
 output "backup_bucket_name" {
-  value = google_storage_bucket.backup_bucket.name
+  value = length(google_storage_bucket.backup_bucket) > 0 ?  google_storage_bucket.backup_bucket[0].name : ""
 }
 
 output "backup_bucket_url" {
-  value = google_storage_bucket.backup_bucket.url
+  value = length(google_storage_bucket.backup_bucket) > 0 ?  google_storage_bucket.backup_bucket[0].url : ""
 }
 
 output "velero_sa" {
-  value = google_service_account.velero_sa.account_id
+  value = length(google_service_account.velero_sa) > 0 ?  google_service_account.velero_sa[0].account_id : ""
 }
