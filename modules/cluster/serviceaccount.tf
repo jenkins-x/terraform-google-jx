@@ -94,7 +94,7 @@ resource "kubernetes_service_account" "build_controller_sa" {
     ]
   }
   depends_on = [
-    google_container_node_pool.jx_node_pool,
+    google_container_cluster.jx_cluster,
   ]
 }
 
@@ -117,7 +117,7 @@ resource "kubernetes_service_account" "kaniko_sa" {
     ]
   }
   depends_on = [
-    google_container_node_pool.jx_node_pool,
+    google_container_cluster.jx_cluster,
   ]  
 }
 
@@ -154,6 +154,6 @@ resource "kubernetes_service_account" "tekton_sa" {
     ]
   }
   depends_on = [
-    google_container_node_pool.jx_node_pool,
+    google_container_cluster.jx_cluster,
   ]
 }
