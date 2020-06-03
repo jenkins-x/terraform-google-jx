@@ -10,14 +10,9 @@ resource "google_container_cluster" "jx_cluster" {
   location                 = var.cluster_location
   enable_kubernetes_alpha  = var.enable_kubernetes_alpha
   enable_legacy_abac       = var.enable_legacy_abac
+  initial_node_count       = var.min_node_count
   logging_service          = var.logging_service
   monitoring_service       = var.monitoring_service
-
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
-  # node pool and immediately delete it.
-  remove_default_node_pool = true
-  initial_node_count       = 1
 
   maintenance_policy {
     daily_maintenance_window {
@@ -34,20 +29,22 @@ resource "google_container_cluster" "jx_cluster" {
   }
 
   resource_labels = var.resource_labels
-}
 
-// ----------------------------------------------------------------------------
-// Create node pool independently of the cluster.
-// This is the recommended way for running a GKE cluster via Terraform
-//
-// https://www.terraform.io/docs/providers/google/r/container_node_pool.html
-// ----------------------------------------------------------------------------
-resource "google_container_node_pool" "jx_node_pool" {
-  provider           = google-beta
-  name               = "autoscale-pool"
-  location           = var.cluster_location
-  cluster            = google_container_cluster.jx_cluster.name
-  initial_node_count = var.min_node_count
+    cluster_autoscaling {
+    enabled = true
+
+    resource_limits {
+      resource_type = "cpu"
+      minimum = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
+      maximum = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
+    }
+
+    resource_limits {
+      resource_type = "memory"
+      minimum = ceil(var.min_node_count * var.machine_types_memory[var.node_machine_type])
+      maximum = ceil(var.max_node_count * var.machine_types_memory[var.node_machine_type])
+    }
+  }
 
   node_config {
     preemptible  = var.node_preemptible
@@ -69,16 +66,6 @@ resource "google_container_node_pool" "jx_node_pool" {
       node_metadata = "GKE_METADATA_SERVER"
     }
   }
-
-  autoscaling {
-    min_node_count = var.min_node_count
-    max_node_count = var.max_node_count
-  }
-
-  management {
-    auto_repair  = "true"
-    auto_upgrade = var.release_channel != "UNSPECIFIED"
-  }
 }
 
 // ----------------------------------------------------------------------------
@@ -99,7 +86,6 @@ resource "kubernetes_namespace" "jenkins_x_namespace" {
   }
 
   depends_on = [
-    google_container_cluster.jx_cluster,
-    google_container_node_pool.jx_node_pool
+    google_container_cluster.jx_cluster
   ]
 }
