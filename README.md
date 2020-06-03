@@ -119,6 +119,7 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
+| release\_channel | GKE [Release Channel](https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels) to subscribe to. | `string` | `STABLE` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified. | `string` | `""` | no |
 | velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |

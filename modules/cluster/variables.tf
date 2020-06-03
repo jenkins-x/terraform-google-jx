@@ -78,6 +78,12 @@ variable "max_node_count" {
   default     = 5
 }
 
+variable "release_channel" {
+  description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
+  type        = string
+  default     = "STABLE"
+}
+
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
   type        = map

@@ -141,6 +141,7 @@ module "cluster" {
   node_disk_size    = var.node_disk_size
   min_node_count    = var.min_node_count
   max_node_count    = var.max_node_count
+  release_channel   = var.release_channel
   resource_labels   = var.resource_labels
 }
 
