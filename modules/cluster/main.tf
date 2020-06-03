@@ -25,6 +25,10 @@ resource "google_container_cluster" "jx_cluster" {
     }
   }
 
+  release_channel {
+    channel = var.release_channel
+  }
+
   workload_identity_config {
     identity_namespace = "${var.gcp_project}.svc.id.goog"
   }
@@ -72,7 +76,7 @@ resource "google_container_node_pool" "jx_node_pool" {
 
   management {
     auto_repair  = "true"
-    auto_upgrade = "false"
+    auto_upgrade = "true"
   }
 }
 
