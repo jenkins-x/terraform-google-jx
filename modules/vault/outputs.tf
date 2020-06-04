@@ -3,25 +3,26 @@ output "vault_name" {
 }
 
 output "vault_sa" {
-  description = "Id of Google Service Account for Vault"
-  value       = google_service_account.vault_sa.account_id
+  description = "Vault service account name"
+  value = local.sa_name
 }
 
 output "vault_bucket_name" {
   description = "Bucket name for Vault data"
-  value = google_storage_bucket.vault_bucket.name
+  value = length(google_storage_bucket.vault_bucket) > 0 ? google_storage_bucket.vault_bucket[0].name : ""
 }
 
 output "vault_bucket_url" {
-    value = google_storage_bucket.vault_bucket.url
+  description = "Bucket URL for Vault data"
+  value = length(google_storage_bucket.vault_bucket) > 0 ? google_storage_bucket.vault_bucket[0].url : ""
 }
 
 output "vault_key" {
   description = "Vault KMS key to use"
-  value = google_kms_crypto_key.vault_crypto_key.name
+  value = length(google_kms_crypto_key.vault_crypto_key) > 0 ? google_kms_crypto_key.vault_crypto_key[0].name : ""
 }
 
 output "vault_keyring" {
-   description = "Name of the KMS keyring for the project"
-  value = google_kms_key_ring.vault_keyring.name
+  description = "Name of the KMS keyring for the project"
+  value = length(google_kms_key_ring.vault_keyring) > 0 ? google_kms_key_ring.vault_keyring[0].name : ""
 }
