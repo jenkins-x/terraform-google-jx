@@ -66,7 +66,8 @@ resource "random_pet" "current" {
 locals {
   cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
   # provide backwards compatabilty with the depreacted zone variable
-  location = "${var.zone != "" ? var.zone : var.cluster_location}"
+  location       = "${var.zone != "" ? var.zone : var.cluster_location}"
+  external_vault = var.vault_url != "" ? true : false
 }
 
 // ----------------------------------------------------------------------------
@@ -158,6 +159,7 @@ module "vault" {
   bucket_location     = var.bucket_location
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
+  external_vault      = local.external_vault
 }
 
 // ----------------------------------------------------------------------------
@@ -190,8 +192,8 @@ module "dns" {
 // ----------------------------------------------------------------------------
 // Let's generate jx-requirements.yml 
 // ----------------------------------------------------------------------------
-resource "local_file" "jx-requirements" {
-  content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
+locals {
+  interpolated_content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
     gcp_project                 = var.gcp_project
     zone                        = var.cluster_location
     cluster_name                = local.cluster_name
@@ -204,11 +206,13 @@ resource "local_file" "jx-requirements" {
     repository_storage_url = module.cluster.repository_storage_url
     backup_bucket_url      = module.backup.backup_bucket_url
     // Vault
-    vault_bucket  = module.vault.vault_bucket_name
-    vault_key     = module.vault.vault_key
-    vault_keyring = module.vault.vault_keyring
-    vault_name    = module.vault.vault_name
-    vault_sa      = module.vault.vault_sa
+    external_vault = local.external_vault
+    vault_bucket   = module.vault.vault_bucket_name
+    vault_key      = module.vault.vault_key
+    vault_keyring  = module.vault.vault_keyring
+    vault_name     = module.vault.vault_name
+    vault_sa       = module.vault.vault_sa
+    vault_url      = var.vault_url
     // Velero
     enable_backup    = var.enable_backup
     velero_sa        = module.backup.velero_sa
@@ -224,6 +228,14 @@ resource "local_file" "jx-requirements" {
     version_stream_url = var.version_stream_url
     webhook            = var.webhook
   })
+
+  split_content   = split("\n", local.interpolated_content)
+  compact_content = compact(local.split_content)
+  content         = join("\n", local.compact_content)
+}
+
+resource "local_file" "jx-requirements" {
+  content  = "${local.content}\n"
   filename = "${path.cwd}/jx-requirements.yml"
 }
 

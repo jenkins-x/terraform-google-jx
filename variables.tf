@@ -39,12 +39,6 @@ variable "jenkins_x_namespace" {
   default     = "jx"
 }
 
-variable "velero_namespace" {
-  description = "Kubernetes namespace for Velero"
-  type        = string
-  default     = "velero"
-}
-
 variable "force_destroy" {
   description = "Flag to determine whether storage buckets get forcefully destroyed"
   type        = bool
@@ -63,10 +57,28 @@ variable "tls_email" {
   default     = ""
 }
 
+// ----------------------------------------------------------------------------
+// Vault
+// ----------------------------------------------------------------------------
+variable "vault_url" {
+  description = "URL to an external Vault instance in case Jenkins X shall not create its own system Vault"
+  type        = string
+  default     = ""
+}
+
+// ----------------------------------------------------------------------------
+// Velero/backup
+// ----------------------------------------------------------------------------
 variable "enable_backup" {
   description = "Whether or not Velero backups should be enabled"
   type        = bool
   default     = false
+}
+
+variable "velero_namespace" {
+  description = "Kubernetes namespace for Velero"
+  type        = string
+  default     = "velero"
 }
 
 variable "velero_schedule" {

@@ -123,6 +123,7 @@ The following two paragraphs provide the full list of configuration and output v
 | release\_channel | GKE [Release Channel](https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels) to subscribe to. | `string` | `UNSPECIFIED` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified | `string` | `""` | no |
+| vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
 | velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |
 | velero\_schedule | The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml)) | `string` | `"0 * * * *"` | no |
 | velero\_ttl | The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup)) | `string` | `"720h0m0s"` | no |
