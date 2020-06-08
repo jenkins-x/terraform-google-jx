@@ -105,7 +105,7 @@ variable "node_disk_size" {
 variable "release_channel" {
   description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
   type        = string
-  default     = "STABLE"
+  default     = "UNSPECIFIED"
 }
 
 variable "resource_labels" {
