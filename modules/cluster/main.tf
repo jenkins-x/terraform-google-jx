@@ -76,7 +76,7 @@ resource "google_container_node_pool" "jx_node_pool" {
 
   management {
     auto_repair  = "true"
-    auto_upgrade = "true"
+    auto_upgrade = var.release_channel != "UNSPECIFIED"
   }
 }
 
