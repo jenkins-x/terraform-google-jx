@@ -20,6 +20,12 @@ destroy: ## Destroys Terraform infrastructure w/ auto approve
 plan: ## Outputs the Terraform plan
 	terraform plan --var-file $(TERRAFORM_VAR_FILE)	-no-color
 
+.PHONY: show-plan
+show-plan: ## Outputs the Terraform plan
+	terraform plan --var-file $(TERRAFORM_VAR_FILE)	-no-color -out=tfplan.out
+	terraform show -json tfplan.out
+	rm tfplan.out
+
 .PHONY: init 
 init: ## Init the terraform module
 	terraform init
