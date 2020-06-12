@@ -33,6 +33,7 @@ echo "force_destroy           = true" >> terraform.tfvars
 echo "enable_backup           = true" >> terraform.tfvars
 echo "" >> terraform.tfvars
 make plan
+make show-plan
 make apply
 
 echo "Logging generated jx-requirements.yml..."
