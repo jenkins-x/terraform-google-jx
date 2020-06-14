@@ -140,6 +140,7 @@ module "cluster" {
 
   node_machine_type = var.node_machine_type
   node_disk_size    = var.node_disk_size
+  node_disk_type    = var.node_disk_type
   min_node_count    = var.min_node_count
   max_node_count    = var.max_node_count
   release_channel   = var.release_channel

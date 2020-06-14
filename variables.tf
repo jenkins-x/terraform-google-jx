@@ -120,6 +120,12 @@ variable "node_disk_size" {
   default     = "100"
 }
 
+variable "node_disk_type" {
+  description = "Node disk type, either pd-standard or pd-ssd"
+  type        = string
+  default     = "pd-standard"
+}
+
 variable "release_channel" {
   description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
   type        = string

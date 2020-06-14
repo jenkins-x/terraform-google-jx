@@ -53,6 +53,7 @@ resource "google_container_node_pool" "jx_node_pool" {
     preemptible  = var.node_preemptible
     machine_type = var.node_machine_type
     disk_size_gb = var.node_disk_size
+    disk_type    = var.node_disk_type
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
