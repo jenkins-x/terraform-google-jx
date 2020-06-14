@@ -118,6 +118,7 @@ The following two paragraphs provide the full list of configuration and output v
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
+| node\_disk\_type | Node disk type. Either pd-standard (default) or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
 | release\_channel | GKE [Release Channel](https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels) to subscribe to. | `string` | `UNSPECIFIED` | no |
