@@ -37,3 +37,8 @@ output "backup_bucket_url" {
   description = "The URL to the bucket for backup storage"
   value       = module.backup.backup_bucket_url
 }
+
+output "jx_requirements" {
+  description = "The jx-requirements rendered output"
+  value       = local.content
+}

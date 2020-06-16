@@ -235,11 +235,6 @@ locals {
   content         = join("\n", local.compact_content)
 }
 
-resource "local_file" "jx-requirements" {
-  content  = "${local.content}\n"
-  filename = "${path.cwd}/jx-requirements.yml"
-}
-
 // ----------------------------------------------------------------------------
 // Let's make sure `jx boot` can connect to the cluster for local booting 
 // ----------------------------------------------------------------------------
