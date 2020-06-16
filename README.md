@@ -149,17 +149,24 @@ The following two paragraphs provide the full list of configuration and output v
 ### Running `jx boot`
 <a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>
 
-An output of applying this Terraform module is a _jx-requirements.yml_ file in the current directory.
-This file can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this module.
+A terraform output (jx_requirements) is available after applying this Terraform module.
+```bash
+terraform output jx_requirements
+```
 
-:warning: **Note**: The generated _jx-requirements.yml_ is only used for the first run of `jx boot`.
-During this first run a git repository containing the source code for Jenkins X Boot is created.
-This repository contains the _jx-requirements.yml_ used by successive runs of `jx boot`.
+This `jx_requirements` output can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this module.
 
-Change into  an empty directory and execute:
+:warning: **Note**: The generated _jx-requirements_ is only used for the first run of `jx boot`.
+During this first run of `jx boot` a git repository containing the source code for Jenkins X Boot is created.
+This (_new_) repository contains a _jx-requirements.yml_ (_which is now ahead of the jx-requirements output from terraform_) used by successive runs of `jx boot`.
+
+Execute:
 
 ```bash
-jx boot --requirements <path-to-jx-requirements.yml>
+terraform output jx_requirements > <some_empty_dir>/jx-requirements.yml
+# jenkins-x creates the environment repository directory localy before pushing to the Git server of choice
+cd <some_empty_dir>
+jx boot --requirements jx-requirements.yml
 ```
 
 You are prompted for any further required configuration.

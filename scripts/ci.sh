@@ -36,7 +36,7 @@ make plan
 make apply
 
 echo "Logging generated jx-requirements.yml..."
-cat jx-requirements.yml
+terraform output jx_requirements > jx-requirements.yml
 
 echo "Installing shellspec"
 pushd /var/tmp
