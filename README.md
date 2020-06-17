@@ -156,6 +156,8 @@ terraform output jx_requirements
 
 This `jx_requirements` output can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this module.
 
+![Jenkins X Installation/Update Flow](./images/terraform_google_jx.png)
+
 :warning: **Note**: The generated _jx-requirements_ is only used for the first run of `jx boot`.
 During this first run of `jx boot` a git repository containing the source code for Jenkins X Boot is created.
 This (_new_) repository contains a _jx-requirements.yml_ (_which is now ahead of the jx-requirements output from terraform_) used by successive runs of `jx boot`.
