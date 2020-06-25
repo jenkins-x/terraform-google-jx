@@ -1,11 +1,10 @@
 # Jenkins X GKE Module
-<a id="markdown-Jenkins%20X%20GKE%20Module" name="Jenkins%20X%20GKE%20Module"></a>
 
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
 
 This repo contains a [Terraform](https://www.terraform.io/) module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
 
-<!-- TOC depthfrom:2 anchormode:github.com -->
+<!-- TOC -->
 
 - [What is a Terraform module](#what-is-a-terraform-module)
 - [How do you use this module](#how-do-you-use-this-module)
@@ -16,7 +15,7 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
     - [Running `jx boot`](#running-jx-boot)
     - [Using a custom domain](#using-a-custom-domain)
     - [Production cluster considerations](#production-cluster-considerations)
-    - [Configuring a Terraform backend](#configuring-a-terraform-backend)
+    - [Configuring a Terraform backend>](#configuring-a-terraform-backend)
 - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
     - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
@@ -28,16 +27,13 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
 <!-- /TOC -->
 
 ## What is a Terraform module
-<a id="markdown-What%20is%20a%20Terraform%20module" name="What%20is%20a%20Terraform%20module"></a>
 
 A Terraform "module" refers to a self-contained package of Terraform configurations that are managed as a group.
 For more information around modules refer to the Terraform [documentation](https://www.terraform.io/docs/modules/index.html).
 
 ## How do you use this module
-<a id="markdown-How%20do%20you%20use%20this%20module" name="How%20do%20you%20use%20this%20module"></a>
 
 ### Prerequisites
-<a id="markdown-Prerequisites" name="Prerequisites"></a>
 
 To make use of this module, you need a Google Cloud project.
 Instructions on how to setup such a project can be found in the  [Google Cloud Installation and Setup](https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup) guide.
@@ -63,7 +59,6 @@ Last but not least, ensure you have the following binaries installed:
     - Terraform installation instruction can be found [here](https://learn.hashicorp.com/terraform/getting-started/install)
 
 ### Cluster provisioning
-<a id="markdown-Cluster%20provisioning" name="Cluster%20provisioning"></a>
 
 A default Jenkins X ready cluster can be provisioned by creating a file _main.tf_ in an empty directory with the following content:
 
@@ -73,6 +68,10 @@ module "jx" {
 
   gcp_project = "<my-gcp-project-id>"
 }
+
+output "jx_requirements" {
+  value = module.jx.jx_requirements
+}  
 ```
 
 You can then apply this Terraform configuration via:
@@ -101,7 +100,6 @@ This allows you to remove all generated resources when running `terraform destro
 The following two paragraphs provide the full list of configuration and output variables of this Terraform module.
 
 #### Inputs
-<a id="markdown-Inputs" name="Inputs"></a>
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
@@ -118,10 +116,10 @@ The following two paragraphs provide the full list of configuration and output v
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
-| node\_disk\_type | Node disk type. Either pd-standard (default) or pd-ssd | `string` | `"pd-standard"` | no |
+| node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
-| release\_channel | GKE [Release Channel](https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels) to subscribe to. | `string` | `UNSPECIFIED` | no |
+| release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified | `string` | `""` | no |
 | vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
@@ -134,7 +132,6 @@ The following two paragraphs provide the full list of configuration and output v
 | zone | Zone in which to create the cluster (deprecated, use cluster\_location instead) | `string` | `""` | no |
 
 #### Outputs
-<a id="markdown-Outputs" name="Outputs"></a>
 
 | Name | Description |
 |------|-------------|
@@ -142,16 +139,17 @@ The following two paragraphs provide the full list of configuration and output v
 | cluster\_location | The location of the created Kubernetes cluster |
 | cluster\_name | The name of the created Kubernetes cluster |
 | gcp\_project | The GCP project in which the resources got created |
+| jx\_requirements | The jx-requirements rendered output |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |
 | repository\_storage\_url | The URL to the bucket for artifact storage |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
 
 ### Running `jx boot`
-<a id="markdown-Running%20%60jx%20boot%60" name="Running%20%60jx%20boot%60"></a>
 
-A terraform output (jx_requirements) is available after applying this Terraform module.
-```bash
+A terraform output (_jx\_requirements_) is available after applying this Terraform module.
+
+```sh
 terraform output jx_requirements
 ```
 
@@ -165,7 +163,7 @@ This (_new_) repository contains a _jx-requirements.yml_ (_which is now ahead of
 
 Execute:
 
-```bash
+```sh
 terraform output jx_requirements > <some_empty_dir>/jx-requirements.yml
 # jenkins-x creates the environment repository directory localy before pushing to the Git server of choice
 cd <some_empty_dir>
@@ -176,7 +174,6 @@ You are prompted for any further required configuration.
 The number of prompts depends on how much you have [pre-configured](#inputs) via your Terraform variables.
 
 ### Using a custom domain
-<a id="markdown-Using%20a%20custom%20domain" name="Using%20a%20custom%20domain"></a>
 
 If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _parent\_domain_ and _tls\_email_.
 _parent\_domain_ is the fully qualified domain name you want to use and _tls\_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
@@ -197,7 +194,6 @@ When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.co
 If _parent_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
 
 ### Production cluster considerations
-<a id="markdown-Production%20cluster%20considerations" name="Production%20cluster%20considerations"></a>
 
 The configuration as seen in [Cluster provisioning](#cluster-provisioning) is not suited for creating and maintaining a production Jenkins X cluster.
 The following is a list of considerations for a production usecase.
@@ -210,7 +206,11 @@ The following is a list of considerations for a production usecase.
       version = "1.2.4"
       # insert your configuration
     }
-    ```
+
+   output "jx_requirements" {
+     value = module.jx.jx_requirements
+   }
+   ```
 
   Specifying the version ensures that you are using a fixed version and that version upgrades cannot occur unintented.
 
@@ -218,8 +218,7 @@ The following is a list of considerations for a production usecase.
 
 - Setup a Terraform backend to securely store and share the state of your cluster. For more information refer to [Configuring a Terraform backend](##configuring-a-terraform-backend).
 
-### Configuring a Terraform backend
-<a id="markdown-Configuring%20a%20Terraform%20backend" name="Configuring%20a%20Terraform%20backend"></a>
+### Configuring a Terraform backend>
 
 A "[backend](https://www.terraform.io/docs/backends/index.html)" in Terraform determines how state is loaded and how an operation such as _apply_ is executed.
 By default, Terraform uses the _local_ backend which keeps the state of the created resources on the local file system.
@@ -247,17 +246,14 @@ gsutil versioning get gs://<my-bucket-name>
 ```
 
 ## FAQ
-<a id="markdown-FAQ" name="FAQ"></a>
 
 ### How do I get the latest version of the terraform-google-jx module
-<a id="markdown-How%20do%20I%20get%20the%20latest%20version%20of%20the%20terraform-google-jx%20module" name="How%20do%20I%20get%20the%20latest%20version%20of%20the%20terraform-google-jx%20module"></a>
 
 ```sh
 terraform init -upgrade
 ```
 
 ### How to I specify a specific google provider version
-<a id="markdown-How%20to%20I%20specify%20a%20specific%20google%20provider%20version" name="How%20to%20I%20specify%20a%20specific%20google%20provider%20version"></a>
 
 ```yaml
 provider "google" {
@@ -272,7 +268,6 @@ provider "google-beta" {
 ```
 
 ### Why do I need Application Default Credentials
-<a id="markdown-Why%20do%20I%20need%20Application%20Default%20Credentials" name="Why%20do%20I%20need%20Application%20Default%20Credentials"></a>
 
 The recommended way to authenticate to the Google Cloud API is by using a [service account](https://cloud.google.com/docs/authentication/getting-started).
 This allows for authentication regardless of where your code runs.
@@ -281,10 +276,8 @@ You can either specify the path to this key directly using the _GOOGLE_APPLICATI
 In the latter case `gcloud` obtains user access credentials via a web flow and puts them in the well-known location for Application Default Credentials (ADC), usually _~/.config/gcloud/application_default_credentials.json_.
 
 ## Development
-<a id="markdown-Development" name="Development"></a>
 
 ### Releasing
-<a id="markdown-Releasing" name="Releasing"></a>
 
 At the moment there is no release pipeline defined in [jenkins-x.yml](./jenkins-x.yml).
 A Terraform release does not require building an artifact, only a tag needs to be created and pushed.
@@ -298,6 +291,5 @@ This can be executed on demand whenever a release is required.
 For the script to work the envrionment variable _$GH_TOKEN_ must be exported and reference a valid GitHub API token.
 
 ## How do I contribute
-<a id="markdown-How%20do%20I%20contribute" name="How%20do%20I%20contribute"></a>
 
 Contributions are very welcome! Check out the [Contribution Guidelines](./CONTRIBUTING.md) for instructions.
