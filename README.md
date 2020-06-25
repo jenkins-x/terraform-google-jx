@@ -87,7 +87,7 @@ This creates a cluster within the specified Google Cloud project with all possib
 It is not intended for a production cluster.
 Refer to [Production cluster considerations](#production-cluster-considerations) for things to consider when creating a production cluster.
 
-On completion of `terraform apply` there will be a _jx-requirements.yml_ in the working directory which can be used as input to `jx boot`.
+On completion of `terraform apply` a _jx\_requirements_ output is available which can be used as input to `jx boot`.
 Refer to [Running `jx boot`](#running-jx-boot) for more information.
 
 In the default configuration, no custom domain is used.
