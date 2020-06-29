@@ -103,6 +103,17 @@ Describe "GCloud"
     It "Service account $(terraform output cluster_name)-dn has the dns.admin role"
       When call iam dns.admin
       The output should include "serviceAccount:$(terraform output cluster_name)-dn@$(terraform output gcp_project).iam.gserviceaccount.com"
+    End  
+
+    # UI
+    It "Service account $(terraform output cluster_name)-jxui has the storage.admin role"
+      When call iam storage.admin
+      The output should include "serviceAccount:$(terraform output cluster_name)-jxui@$(terraform output gcp_project).iam.gserviceaccount.com"
+    End   
+
+    It "Service account $(terraform output cluster_name)-jxui has the roles/storage.objectAdmin role"
+      When call iam storage.objectAdmin
+      The output should include "serviceAccount:$(terraform output cluster_name)-jxui@$(terraform output gcp_project).iam.gserviceaccount.com"
     End          
   End
 
