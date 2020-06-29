@@ -64,6 +64,20 @@ resource "google_project_iam_member" "tekton_sa_project_viewer_binding" {
 }
 
 // ----------------------------------------------------------------------------
+// UI
+resource "google_service_account" "jxui_sa" {
+  provider     = google
+  account_id   = "${var.cluster_name}-jxui"
+  display_name = substr("Jenkins X UI service account for cluster ${var.cluster_name}", 0, 100)
+}
+
+resource "google_project_iam_member" "ui_sa_storage_admin_binding" {
+  provider = google
+  role     = "roles/storage.admin"
+  member   = "serviceAccount:${google_service_account.jxui_sa.email}"
+}
+
+// ----------------------------------------------------------------------------
 // Setup Kubernetes service accounts
 //
 // https://www.terraform.io/docs/providers/google/r/google_service_account_iam.html#google_service_account_iam_member
@@ -156,4 +170,34 @@ resource "kubernetes_service_account" "tekton_sa" {
   depends_on = [
     google_container_cluster.jx_cluster,
   ]
+}
+
+// ----------------------------------------------------------------------------
+// UI
+resource "kubernetes_service_account" "jxui_sa" {
+  automount_service_account_token = true
+  metadata {
+    name = "jxui-sa"
+    namespace = var.jenkins_x_namespace
+    annotations = {
+      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa.email
+    }
+  }
+  lifecycle {
+    ignore_changes = [
+      metadata[0].labels,
+      metadata[0].annotations,
+      secret
+    ]
+  }
+  depends_on = [
+    google_container_cluster.jx_cluster,
+  ]
+}
+
+resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
+  provider           = google
+  service_account_id = google_service_account.jxui_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
 }
