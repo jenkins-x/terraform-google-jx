@@ -106,6 +106,7 @@ The following two paragraphs provide the full list of configuration and output v
 | bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
+| create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `false` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
@@ -130,6 +131,7 @@ The following two paragraphs provide the full list of configuration and output v
 | version\_stream\_url | The URL for the version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"https://github.com/jenkins-x/jenkins-x-versions.git"` | no |
 | webhook | Jenkins X webhook handler for git provider | `string` | `"lighthouse"` | no |
 | zone | Zone in which to create the cluster (deprecated, use cluster\_location instead) | `string` | `""` | no |
+
 
 #### Outputs
 

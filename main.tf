@@ -145,6 +145,8 @@ module "cluster" {
   max_node_count    = var.max_node_count
   release_channel   = var.release_channel
   resource_labels   = var.resource_labels
+
+  create_ui_sa = var.create_ui_sa
 }
 
 // ----------------------------------------------------------------------------

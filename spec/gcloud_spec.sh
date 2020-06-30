@@ -143,4 +143,19 @@ Describe "GCloud"
       The output should include $(terraform output vault_bucket_url)
     End
   End  
+
+  Describe "Jenkins X UI service accounts"
+    without_ui_sa() {
+      terraform plan --var-file terraform.tfvars --var 'create_ui_sa=false' -no-color 
+    }
+
+    It "UI resources get deleted for create_ui_sa=false"
+      When call without_ui_sa
+      The output should include "module.cluster.kubernetes_service_account.jxui_sa[0] will be destroyed"
+      The output should include "module.cluster.google_service_account_iam_member.jxui_sa_workload_identity_user[0] will be destroyed"
+      The output should include "module.cluster.google_service_account.jxui_sa[0] will be destroyed"
+      The output should include "module.cluster.google_project_iam_member.ui_sa_storage_object_admin_binding[0] will be destroyed"
+      The output should include "module.cluster.google_project_iam_member.ui_sa_storage_admin_binding[0] will be destroyed"
+    End
+  End
 End

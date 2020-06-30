@@ -23,15 +23,19 @@ gcloud config set project $PROJECT
 gcloud config set compute/zone ${ZONE}
 
 echo "Creating cluster ${CLUSTER_NAME} in project ${PROJECT}..."
-echo "gcp_project             = \"${PROJECT}\"" >> terraform.tfvars
-echo "cluster_location        = \"${ZONE}\"" >> terraform.tfvars
-echo "cluster_name            = \"${CLUSTER_NAME}\"" >> terraform.tfvars
-echo "parent_domain           = \"${PARENT_DOMAIN}\"" >> terraform.tfvars
-echo "resource_labels         = {powered-by = \"jenkins-x\"}" >> terraform.tfvars
-echo "lets_encrypt_production = false" >> terraform.tfvars
-echo "force_destroy           = true" >> terraform.tfvars
-echo "enable_backup           = true" >> terraform.tfvars
-echo "" >> terraform.tfvars
+
+cat <<EOF > terraform.tfvars
+gcp_project             = "${PROJECT}" 
+cluster_location        = "${ZONE}" 
+cluster_name            = "${CLUSTER_NAME}" 
+parent_domain           = "${PARENT_DOMAIN}" 
+resource_labels         = {powered-by = "jenkins-x"}
+lets_encrypt_production = false
+force_destroy           = true 
+enable_backup           = true
+create_ui_sa            = true
+EOF
+
 make plan
 make show-plan
 make apply

@@ -57,6 +57,12 @@ variable "tls_email" {
   default     = ""
 }
 
+variable "create_ui_sa" {
+  description = "Whether the service accounts for the UI should be created"
+  type        = bool
+  default     = false
+}
+
 // ----------------------------------------------------------------------------
 // Vault
 // ----------------------------------------------------------------------------
