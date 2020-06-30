@@ -167,3 +167,10 @@ variable "logging_service" {
   type        = string  
   default     = "logging.googleapis.com/kubernetes"
 }
+
+// service accounts
+variable "create_ui_sa" {
+  description = "Whether the service accounts for the UI should be created"
+  type        = bool
+  default     = false
+}

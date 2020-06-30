@@ -66,21 +66,27 @@ resource "google_project_iam_member" "tekton_sa_project_viewer_binding" {
 // ----------------------------------------------------------------------------
 // UI
 resource "google_service_account" "jxui_sa" {
+  count = var.create_ui_sa ? 1 : 0
+
   provider     = google
   account_id   = "${var.cluster_name}-jxui"
   display_name = substr("Jenkins X UI service account for cluster ${var.cluster_name}", 0, 100)
 }
 
 resource "google_project_iam_member" "ui_sa_storage_admin_binding" {
+  count = var.create_ui_sa ? 1 : 0
+
   provider = google
   role     = "roles/storage.admin"
-  member   = "serviceAccount:${google_service_account.jxui_sa.email}"
+  member   = "serviceAccount:${google_service_account.jxui_sa[0].email}"
 }
 
 resource "google_project_iam_member" "ui_sa_storage_object_admin_binding" {
+  count = var.create_ui_sa ? 1 : 0
+
   provider = google
   role     = "roles/storage.objectAdmin"
-  member   = "serviceAccount:${google_service_account.jxui_sa.email}"
+  member   = "serviceAccount:${google_service_account.jxui_sa[0].email}"
 }
 
 // ----------------------------------------------------------------------------
@@ -181,12 +187,14 @@ resource "kubernetes_service_account" "tekton_sa" {
 // ----------------------------------------------------------------------------
 // UI
 resource "kubernetes_service_account" "jxui_sa" {
+  count = var.create_ui_sa ? 1 : 0
+
   automount_service_account_token = true
   metadata {
     name = "jxui-sa"
     namespace = var.jenkins_x_namespace
     annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa.email
+      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa[0].email
     }
   }
   lifecycle {
@@ -202,8 +210,10 @@ resource "kubernetes_service_account" "jxui_sa" {
 }
 
 resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
+  count = var.create_ui_sa ? 1 : 0
+
   provider           = google
-  service_account_id = google_service_account.jxui_sa.name
+  service_account_id = google_service_account.jxui_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
 }
