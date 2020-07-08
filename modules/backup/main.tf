@@ -79,7 +79,7 @@ resource "kubernetes_namespace" "velero_namespace" {
   }
 }
 
-resource "kubernetes_service_account" "verlero_sa" {
+resource "kubernetes_service_account" "velero_sa" {
   count         = var.enable_backup ? 1 : 0
 
   automount_service_account_token = true
