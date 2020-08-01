@@ -124,6 +124,13 @@ resource "google_project_service" "serviceusage_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "container_api" {
+  provider           = google
+  project            = var.gcp_project
+  service            = "container.googleapis.com"
+  disable_on_destroy = false
+}
+
 // ----------------------------------------------------------------------------
 // Create Kubernetes cluster
 // ----------------------------------------------------------------------------
