@@ -44,7 +44,7 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 
 # resource "google_dns_managed_zone" "externaldns_managed_zone" {
 #   count    = local.dns_enabled ? 1 : 0
- 
+
 #   name = "${replace(var.parent_domain, ".", "-")}-managed-zone"
 #   dns_name = "${var.parent_domain}."
 #   description = "JX DNS managed zone managed by terraform"
@@ -52,7 +52,7 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 
 # resource "google_dns_record_set" "externaldns_record_set" {
 #   count    = local.dns_enabled ? 1 : 0
-  
+
 #   name         = google_dns_managed_zone.externaldns_managed_zone[count.index].dns_name
 #   managed_zone = google_dns_managed_zone.externaldns_managed_zone[count.index].name
 #   type         = "NS"
@@ -76,10 +76,10 @@ resource "google_service_account_iam_member" "exdns_external_dns_workload_identi
 resource "kubernetes_service_account" "exdns-external-dns" {
   automount_service_account_token = true
   metadata {
-    name = "exdns-external-dns"
+    name      = "exdns-external-dns"
     namespace = var.jenkins_x_namespace
     annotations = {
-       "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
+      "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
     }
   }
   lifecycle {
@@ -117,7 +117,7 @@ resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_
 resource "kubernetes_service_account" "cm-cert-manager" {
   automount_service_account_token = true
   metadata {
-    name = "cm-cert-manager"
+    name      = "cm-cert-manager"
     namespace = var.cert-manager-namespace
     annotations = {
       "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
@@ -135,7 +135,7 @@ resource "kubernetes_service_account" "cm-cert-manager" {
   ]
 }
 
-resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" { 
+resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
@@ -145,7 +145,7 @@ resource "google_service_account_iam_member" "cm_cainjector_workload_identity_us
 resource "kubernetes_service_account" "cm-cainjector" {
   automount_service_account_token = true
   metadata {
-    name = "cm-cainjector"
+    name      = "cm-cainjector"
     namespace = var.cert-manager-namespace
     annotations = {
       "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email

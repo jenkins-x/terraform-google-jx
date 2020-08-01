@@ -3,12 +3,12 @@
 // ----------------------------------------------------
 variable "gcp_project" {
   description = "The name of the GCP project to create all resources"
-  type = string
+  type        = string
 }
 
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
-  type = string
+  type        = string
 }
 
 variable "parent_domain" {
@@ -18,7 +18,7 @@ variable "parent_domain" {
 
 variable "jenkins_x_namespace" {
   description = "Kubernetes namespace to install Jenkins X in"
-  type = string
+  type        = string
 }
 
 // ----------------------------------------------------------------------------
