@@ -25,3 +25,6 @@ override.tf.json
 **/report/*
 jx-requirements.yml
 .DS_Store
+
+# Editor specific files
+.idea/

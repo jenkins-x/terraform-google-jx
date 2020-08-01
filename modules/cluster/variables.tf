@@ -3,27 +3,27 @@
 // ----------------------------------------------------------------------------
 variable "gcp_project" {
   description = "The name of the GCP project"
-  type = string
+  type        = string
 }
 
 variable "cluster_location" {
   description = "The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region"
-  type = string
+  type        = string
 }
 
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
-  type = string
+  type        = string
 }
 
 variable "jenkins_x_namespace" {
   description = "Kubernetes namespace to install Jenkins X in"
-  type = string
+  type        = string
 }
 
 variable "cluster_id" {
   description = "A random generated to uniqly name cluster resources"
-  type = string
+  type        = string
 }
 
 // ----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ variable "force_destroy" {
 // cluster configuration
 variable "node_machine_type" {
   description = "Node type for the Kubernetes cluster"
-  type = string
+  type        = string
 }
 
 variable "machine_types_cpu" {
@@ -164,7 +164,7 @@ variable "monitoring_service" {
 
 variable "logging_service" {
   description = "The logging service to use. Can be logging.googleapis.com, logging.googleapis.com/kubernetes (beta) and none"
-  type        = string  
+  type        = string
   default     = "logging.googleapis.com/kubernetes"
 }
 

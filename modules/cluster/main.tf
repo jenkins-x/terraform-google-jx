@@ -4,15 +4,15 @@
 // https://www.terraform.io/docs/providers/google/r/container_cluster.html
 // ----------------------------------------------------------------------------
 resource "google_container_cluster" "jx_cluster" {
-  provider                 = google-beta
-  name                     = var.cluster_name
-  description              = "jenkins-x cluster"
-  location                 = var.cluster_location
-  enable_kubernetes_alpha  = var.enable_kubernetes_alpha
-  enable_legacy_abac       = var.enable_legacy_abac
-  initial_node_count       = var.min_node_count
-  logging_service          = var.logging_service
-  monitoring_service       = var.monitoring_service
+  provider                = google-beta
+  name                    = var.cluster_name
+  description             = "jenkins-x cluster"
+  location                = var.cluster_location
+  enable_kubernetes_alpha = var.enable_kubernetes_alpha
+  enable_legacy_abac      = var.enable_legacy_abac
+  initial_node_count      = var.min_node_count
+  logging_service         = var.logging_service
+  monitoring_service      = var.monitoring_service
 
   maintenance_policy {
     daily_maintenance_window {
@@ -30,19 +30,19 @@ resource "google_container_cluster" "jx_cluster" {
 
   resource_labels = var.resource_labels
 
-    cluster_autoscaling {
+  cluster_autoscaling {
     enabled = true
 
     resource_limits {
       resource_type = "cpu"
-      minimum = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
-      maximum = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
+      minimum       = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
+      maximum       = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
     }
 
     resource_limits {
       resource_type = "memory"
-      minimum = ceil(var.min_node_count * var.machine_types_memory[var.node_machine_type])
-      maximum = ceil(var.max_node_count * var.machine_types_memory[var.node_machine_type])
+      minimum       = ceil(var.min_node_count * var.machine_types_memory[var.node_machine_type])
+      maximum       = ceil(var.max_node_count * var.machine_types_memory[var.node_machine_type])
     }
   }
 
