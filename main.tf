@@ -4,7 +4,7 @@
 // Using pessemistic version locking for all versions 
 // ----------------------------------------------------------------------------
 terraform {
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.12.0"
 }
 
 // ----------------------------------------------------------------------------
@@ -154,6 +154,8 @@ module "cluster" {
   resource_labels   = var.resource_labels
 
   create_ui_sa = var.create_ui_sa
+  jx2          = var.jx2
+  content      = local.content
 }
 
 // ----------------------------------------------------------------------------
@@ -170,6 +172,7 @@ module "vault" {
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
   external_vault      = local.external_vault
+  jx2                 = var.jx2
 }
 
 // ----------------------------------------------------------------------------
@@ -197,6 +200,7 @@ module "dns" {
   cluster_name        = local.cluster_name
   parent_domain       = var.parent_domain
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
+  jx2                 = var.jx2
 }
 
 // ----------------------------------------------------------------------------

@@ -25,3 +25,9 @@ Pull requests are the best way to propose changes to the codebase and we use the
 ## Report bugs using Github Issues]
 
 We use GitHub issues to track public bugs. Report a bug by opening a new issue [here](https://github.com/jenkins-x/terraform-google-jx/issues).
+
+## Linting
+
+The CI build will fail on lint issues.  To check locally run `make fmt`.
+
+Helpful tip if using an IDE like intelij you can enable file watchers and auto format terraform files. 
