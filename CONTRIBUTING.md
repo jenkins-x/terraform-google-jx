@@ -25,3 +25,21 @@ Pull requests are the best way to propose changes to the codebase and we use the
 ## Report bugs using Github Issues]
 
 We use GitHub issues to track public bugs. Report a bug by opening a new issue [here](https://github.com/jenkins-x/terraform-google-jx/issues).
+
+## Linting
+
+The CI build will fail on lint issues.  To format and run locally execute `make lint`.
+
+Helpful tip if using an IDE like intelij you can enable file watchers and auto format terraform files.
+
+## Genrating terraform docs for the readme
+
+### Prerequisite
+
+- terraform-docs - for OSX `brew install terraform-docs`
+
+If you add or remove any terraform input or outputs you will need to regenerate the docs and update the README.md sections
+
+```
+make markdown-table
+```

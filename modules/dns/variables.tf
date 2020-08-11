@@ -29,3 +29,9 @@ variable "cert-manager-namespace" {
   type        = string
   default     = "cert-manager"
 }
+
+variable "jx2" {
+  description = "Is a Jenkins X 2 install"
+  type        = bool
+  default     = true
+}

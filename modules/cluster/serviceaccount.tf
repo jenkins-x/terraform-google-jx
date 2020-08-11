@@ -104,6 +104,7 @@ resource "google_service_account_iam_member" "build_controller_sa_workload_ident
 }
 
 resource "kubernetes_service_account" "build_controller_sa" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "jenkins-x-controllerbuild"
@@ -127,6 +128,7 @@ resource "kubernetes_service_account" "build_controller_sa" {
 // ----------------------------------------------------------------------------
 // Kaniko
 resource "kubernetes_service_account" "kaniko_sa" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "kaniko-sa"
@@ -164,6 +166,7 @@ resource "google_service_account_iam_member" "tekton_sa_workload_identity_user" 
 }
 
 resource "kubernetes_service_account" "tekton_sa" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "tekton-bot"
@@ -187,8 +190,7 @@ resource "kubernetes_service_account" "tekton_sa" {
 // ----------------------------------------------------------------------------
 // UI
 resource "kubernetes_service_account" "jxui_sa" {
-  count = var.create_ui_sa ? 1 : 0
-
+  count                           = var.create_ui_sa && var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "jxui-sa"

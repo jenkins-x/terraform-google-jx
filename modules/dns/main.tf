@@ -74,6 +74,7 @@ resource "google_service_account_iam_member" "exdns_external_dns_workload_identi
 }
 
 resource "kubernetes_service_account" "exdns-external-dns" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "exdns-external-dns"
@@ -115,6 +116,7 @@ resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_
 }
 
 resource "kubernetes_service_account" "cm-cert-manager" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "cm-cert-manager"
@@ -143,6 +145,7 @@ resource "google_service_account_iam_member" "cm_cainjector_workload_identity_us
 }
 
 resource "kubernetes_service_account" "cm-cainjector" {
+  count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
     name      = "cm-cainjector"
