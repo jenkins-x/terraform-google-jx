@@ -28,6 +28,7 @@ We use GitHub issues to track public bugs. Report a bug by opening a new issue [
 
 ## Linting
 
+<<<<<<< HEAD
 The CI build will fail on lint issues.  To format and run locally execute `make lint`.
 
 Helpful tip if using an IDE like intelij you can enable file watchers and auto format terraform files.
@@ -43,3 +44,8 @@ If you add or remove any terraform input or outputs you will need to regenerate 
 ```
 make markdown-table
 ```
+=======
+The CI build will fail on lint issues.  To check locally run `make fmt`.
+
+Helpful tip if using an IDE like intelij you can enable file watchers and auto format terraform files. 
+>>>>>>> 009a9f6... feat: add feature flag for when using Jenkins X 2, this defaults to using v2 while Jenkins X 3 is in development.
