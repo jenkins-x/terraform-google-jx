@@ -182,3 +182,9 @@ variable "version_stream_ref" {
   type        = string
   default     = "master"
 }
+
+variable "jx2" {
+  description = "Is a Jenkins X 2 install"
+  type        = bool
+  default     = true
+}

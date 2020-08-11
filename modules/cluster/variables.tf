@@ -174,3 +174,15 @@ variable "create_ui_sa" {
   type        = bool
   default     = false
 }
+
+variable "jx2" {
+  description = "Is a Jenkins X 2 install"
+  type        = bool
+  default     = true
+}
+
+variable "content" {
+  description = "Interpolated jx-requirements.yml"
+  type        = string
+  default     = ""
+}

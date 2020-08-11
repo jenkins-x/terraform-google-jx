@@ -41,3 +41,9 @@ variable "force_destroy" {
   type        = bool
   default     = false
 }
+
+variable "jx2" {
+  description = "Is a Jenkins X 2 install"
+  type        = bool
+  default     = true
+}
