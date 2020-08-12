@@ -2,6 +2,11 @@
 
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
 
+__NOTE:__ While the required minimum Terraform version is 0.12.0, automated CI tests are performed with 0.13 only.  The only expected
+compatibility issues to be aware of are around provider requirements.  For more information see [here](https://www.terraform.io/docs/configuration/provider-requirements.html#v0-12-compatible-provider-requirements)
+
+---
+
 This repo contains a [Terraform](https://www.terraform.io/) module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
 
 <!-- TOC -->
@@ -15,7 +20,7 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
     - [Running `jx boot`](#running-jx-boot)
     - [Using a custom domain](#using-a-custom-domain)
     - [Production cluster considerations](#production-cluster-considerations)
-    - [Configuring a Terraform backend>](#configuring-a-terraform-backend)
+    - [Configuring a Terraform backend](#configuring-a-terraform-backend)
 - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
     - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
@@ -218,9 +223,9 @@ The following is a list of considerations for a production usecase.
 
 - Keep the Terraform configuration under version control,  by creating a dedicated repository for your cluster configuration or by adding it to an already existing infrastructure repository.
 
-- Setup a Terraform backend to securely store and share the state of your cluster. For more information refer to [Configuring a Terraform backend](##configuring-a-terraform-backend).
+- Setup a Terraform backend to securely store and share the state of your cluster. For more information refer to [Configuring a Terraform backend](#configuring-a-terraform-backend).
 
-### Configuring a Terraform backend>
+### Configuring a Terraform backend
 
 A "[backend](https://www.terraform.io/docs/backends/index.html)" in Terraform determines how state is loaded and how an operation such as _apply_ is executed.
 By default, Terraform uses the _local_ backend which keeps the state of the created resources on the local file system.
