@@ -30,7 +30,7 @@ output "repository_storage_url" {
 
 output "vault_bucket_url" {
   description = "The URL to the bucket for secret storage"
-  value       = module.vault.vault_bucket_url
+  value       = length(module.vault) > 0 ? module.vault[0].vault_bucket_url : ""
 }
 
 output "backup_bucket_url" {
