@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------------
 // Enforce Terraform version
 //
-// Using pessemistic version locking for all versions 
+// Using pessimistic version locking for all versions
 // ----------------------------------------------------------------------------
 terraform {
-  required_version = "~> 0.12.0"
+  required_version = ">=0.12.0"
 }
 
 // ----------------------------------------------------------------------------
@@ -64,9 +64,9 @@ resource "random_pet" "current" {
 }
 
 locals {
-  cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
-  # provide backwards compatabilty with the depreacted zone variable
-  location       = "${var.zone != "" ? var.zone : var.cluster_location}"
+  cluster_name = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
+  # provide backwards compatibility with the deprecated zone variable
+  location       = var.zone != "" ? var.zone : var.cluster_location
   external_vault = var.vault_url != "" ? true : false
 }
 
