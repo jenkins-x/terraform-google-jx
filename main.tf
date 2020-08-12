@@ -163,6 +163,7 @@ module "cluster" {
 // See https://github.com/banzaicloud/bank-vaults
 // ----------------------------------------------------------------------------
 module "vault" {
+  count  = ! var.gsm ? 1 : 0
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
@@ -173,6 +174,19 @@ module "vault" {
   force_destroy       = var.force_destroy
   external_vault      = local.external_vault
   jx2                 = var.jx2
+}
+
+// ----------------------------------------------------------------------------
+// Setup all required resources for using Google Secrets Manager
+// See https://cloud.google.com/secret-manager
+// ----------------------------------------------------------------------------
+module "gsm" {
+  count  = var.gsm && ! var.jx2 ? 1 : 0
+  source = "./modules/gsm"
+
+  gcp_project  = var.gcp_project
+  cluster_name = local.cluster_name
+  cluster_id   = random_id.random.hex
 }
 
 // ----------------------------------------------------------------------------
@@ -221,11 +235,11 @@ locals {
     backup_bucket_url      = module.backup.backup_bucket_url
     // Vault
     external_vault = local.external_vault
-    vault_bucket   = module.vault.vault_bucket_name
-    vault_key      = module.vault.vault_key
-    vault_keyring  = module.vault.vault_keyring
-    vault_name     = module.vault.vault_name
-    vault_sa       = module.vault.vault_sa
+    vault_bucket   = length(module.vault) > 0 ? module.vault[0].vault_bucket_name : ""
+    vault_key      = length(module.vault) > 0 ? module.vault[0].vault_key : ""
+    vault_keyring  = length(module.vault) > 0 ? module.vault[0].vault_keyring : ""
+    vault_name     = length(module.vault) > 0 ? module.vault[0].vault_name : ""
+    vault_sa       = length(module.vault) > 0 ? module.vault[0].vault_sa : ""
     vault_url      = var.vault_url
     // Velero
     enable_backup    = var.enable_backup

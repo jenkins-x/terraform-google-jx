@@ -117,6 +117,7 @@ The following two paragraphs provide the full list of configuration and output v
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
+| gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
 | jx2 | Is a Jenkins X 2 install | `bool` | `true` | no |
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
