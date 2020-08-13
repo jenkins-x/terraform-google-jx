@@ -64,9 +64,9 @@ resource "random_pet" "current" {
 }
 
 locals {
-  cluster_name = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
+  cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
   # provide backwards compatibility with the deprecated zone variable
-  location       = var.zone != "" ? var.zone : var.cluster_location
+  location       = "${var.zone != "" ? var.zone : var.cluster_location}"
   external_vault = var.vault_url != "" ? true : false
 }
 
@@ -246,13 +246,4 @@ locals {
   split_content   = split("\n", local.interpolated_content)
   compact_content = compact(local.split_content)
   content         = join("\n", local.compact_content)
-}
-
-// ----------------------------------------------------------------------------
-// Let's make sure `jx boot` can connect to the cluster for local booting 
-// ----------------------------------------------------------------------------
-resource "null_resource" "kubeconfig" {
-  provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials ${local.cluster_name} --zone=${module.cluster.cluster_location} --project=${var.gcp_project}"
-  }
 }

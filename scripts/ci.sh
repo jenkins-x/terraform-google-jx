@@ -40,6 +40,8 @@ make plan
 make show-plan
 make apply
 
+gcloud container clusters get-credentials ${CLUSTER_NAME} --zone=${ZONE} --project=${PROJECT}
+
 echo "Logging generated jx-requirements.yml..."
 terraform output jx_requirements > jx-requirements.yml
 
