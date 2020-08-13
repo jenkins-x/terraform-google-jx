@@ -92,7 +92,7 @@ resource "kubernetes_namespace" "jenkins_x_namespace" {
 // ----------------------------------------------------------------------------
 // Add the Terraform generated jx-requirements.yml to a configmap so it can be
 // sync'd with the Git repository
-// 
+//
 // https://www.terraform.io/docs/providers/kubernetes/r/namespace.html
 // ----------------------------------------------------------------------------
 resource "kubernetes_config_map" "jenkins_x_requirements" {
