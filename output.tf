@@ -45,5 +45,5 @@ output "jx_requirements" {
 
 output "connect" {
   description = "The cluster connection string to use once Terraform apply finishes"
-  value       = "gcloud container clusters get-credentials ${local.cluster_name} --zone ${var.cluster_location} --project ${var.gcp_project} && jx ns ${var.jenkins_x_namespace}"
+  value       = "gcloud container clusters get-credentials ${local.cluster_name} --zone ${var.cluster_location} --project ${var.gcp_project} && jx ns ${var.jenkins_x_namespace} -q"
 }
