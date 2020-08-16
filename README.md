@@ -125,6 +125,7 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
+| node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
 | parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
 | release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
