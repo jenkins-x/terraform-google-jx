@@ -108,6 +108,12 @@ variable "node_machine_type" {
   default     = "n1-standard-2"
 }
 
+variable "node_preemptible" {
+  description = "Use preemptible nodes"
+  type        = bool
+  default     = false
+}
+
 variable "min_node_count" {
   description = "Minimum number of cluster nodes"
   type        = number
