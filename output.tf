@@ -38,6 +38,11 @@ output "backup_bucket_url" {
   value       = module.backup.backup_bucket_url
 }
 
+output "tekton_sa_email" {
+  description = "The Tekton service account email address, useful to provide further IAM bindings"
+  value       = module.cluster.tekton_sa_email
+}
+
 output "jx_requirements" {
   description = "The jx-requirements rendered output"
   value       = local.content

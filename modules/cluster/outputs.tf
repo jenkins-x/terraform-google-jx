@@ -37,3 +37,7 @@ output "repository_storage_url" {
 output "jenkins_x_namespace" {
   value = var.jenkins_x_namespace
 }
+
+output "tekton_sa_email" {
+  value = google_service_account.tekton_sa.email
+}
