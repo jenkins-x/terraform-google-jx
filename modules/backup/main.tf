@@ -21,7 +21,7 @@ resource "google_storage_bucket" "backup_bucket" {
 // https://www.terraform.io/docs/providers/google/r/google_project_iam.html#google_project_iam_member
 // ----------------------------------------------------------------------------
 resource "google_service_account" "velero_sa" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   provider     = google
   account_id   = "${var.cluster_name}-vo"
@@ -29,7 +29,7 @@ resource "google_service_account" "velero_sa" {
 }
 
 resource "google_project_iam_member" "velero_sa_storage_admin_binding" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   provider = google
   role     = "roles/storage.admin"
@@ -37,7 +37,7 @@ resource "google_project_iam_member" "velero_sa_storage_admin_binding" {
 }
 
 resource "google_project_iam_member" "velero_sa_storage_object_admin_binding" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   provider = google
   role     = "roles/storage.objectAdmin"
@@ -45,7 +45,7 @@ resource "google_project_iam_member" "velero_sa_storage_object_admin_binding" {
 }
 
 resource "google_project_iam_member" "velero_sa_storage_object_creator_binding" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   provider = google
   role     = "roles/storage.objectCreator"
@@ -53,7 +53,7 @@ resource "google_project_iam_member" "velero_sa_storage_object_creator_binding" 
 }
 
 resource "google_service_account_iam_member" "velero_sa_workload_identity_user" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   provider           = google
   service_account_id = google_service_account.velero_sa[0].name
@@ -65,7 +65,7 @@ resource "google_service_account_iam_member" "velero_sa_workload_identity_user" 
 // Setup Kubernetes Velero namespace and service account
 // ----------------------------------------------------------------------------
 resource "kubernetes_namespace" "velero_namespace" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   metadata {
     name = var.velero_namespace
@@ -80,7 +80,7 @@ resource "kubernetes_namespace" "velero_namespace" {
 }
 
 resource "kubernetes_service_account" "velero_sa" {
-  count = var.enable_backup ? 1 : 0
+  count = var.enable_backup && var.jx2 ? 1 : 0
 
   automount_service_account_token = true
   metadata {
