@@ -97,6 +97,7 @@ resource "kubernetes_service_account" "exdns-external-dns" {
 // See https://github.com/jetstack/cert-manager
 // ----------------------------------------------------------------------------
 resource "kubernetes_namespace" "cert-manager" {
+  count = var.jx2 ? 1 : 0
   metadata {
     name = var.cert-manager-namespace
   }
@@ -138,6 +139,7 @@ resource "kubernetes_service_account" "cm-cert-manager" {
 }
 
 resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" {
+  // In case of JX3, we should not create this, right?
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"

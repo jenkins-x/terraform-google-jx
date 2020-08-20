@@ -189,6 +189,7 @@ module "backup" {
   bucket_location     = var.bucket_location
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   force_destroy       = var.force_destroy
+  jx2                 = var.jx2
 }
 
 // ----------------------------------------------------------------------------
@@ -205,7 +206,7 @@ module "dns" {
 }
 
 // ----------------------------------------------------------------------------
-// Let's generate jx-requirements.yml 
+// Let's generate jx-requirements.yml
 // ----------------------------------------------------------------------------
 locals {
   interpolated_content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
