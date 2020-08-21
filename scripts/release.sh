@@ -6,7 +6,7 @@ set -e
 
 if [ -z "$GH_TOKEN" ]
 then
-    echo "A valif GitHub token must be set via the environment variable GH_TOKEN"
+    echo "A valid GitHub token must be set via the environment variable GH_TOKEN"
     exit 1
 fi
 
