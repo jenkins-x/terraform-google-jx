@@ -15,6 +15,12 @@ variable "cluster_name" {
   default     = ""
 }
 
+variable "cluster_private" {
+  description = "Cluster master and nodes available only on internal VPC network"
+  type        = bool
+  default     = false
+}
+
 variable "zone" {
   description = "Zone in which to create the cluster (deprecated, use cluster_location instead)"
   type        = string

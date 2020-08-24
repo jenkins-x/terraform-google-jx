@@ -14,9 +14,14 @@ resource "google_container_cluster" "jx_cluster" {
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
 
+  private_cluster_config {
+    enable_private_nodes = var.cluster_private
+    enable_private_endpoint = var.cluster_private
+  }
+
   maintenance_policy {
     daily_maintenance_window {
-      start_time = "03:00"
+      start_time = "09:00"
     }
   }
 

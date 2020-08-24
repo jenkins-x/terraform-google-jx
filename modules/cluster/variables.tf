@@ -29,6 +29,13 @@ variable "cluster_id" {
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
+// cluster
+variable "cluster_private" {
+  description = "Cluster master and nodes available only on internal VPC network"
+  type = bool
+  default = false
+}
+
 // storage
 variable "bucket_location" {
   description = "Bucket location for storage"

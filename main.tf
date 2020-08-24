@@ -141,6 +141,7 @@ module "cluster" {
   cluster_name        = local.cluster_name
   cluster_location    = local.location
   cluster_id          = random_id.random.hex
+  cluster_private     = var.cluster_private
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
