@@ -5,3 +5,7 @@ repos:
     - id: detect-secrets
       args: ['--baseline', '.secrets.baseline']
       exclude: .*/tests/.*
+- repo: git://github.com/pecigonzalo/pre-commit-terraform-vars
+  sha: master
+  hooks:
+    -   id: terraform-vars

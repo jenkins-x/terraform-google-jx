@@ -6,6 +6,108 @@ variable "gcp_project" {
   type        = string
 }
 
+variable "access_token" {
+  type        = string
+  description = "Kubernetes cluster access token"
+}
+// ----------------------------------------------------------------------------
+// Service accounts
+variable "build_controller_sa_email" {
+  type        = string
+  description = "The email of builder controller service account"
+}
+
+variable "kaniko_sa_email" {
+  type        = string
+  description = "The email of Kaniko service account"
+}
+
+variable "tekton_sa_email" {
+  type        = string
+  description = "The email of Kaniko service account"
+}
+
+variable "jxui_sa_email" {
+  type        = string
+  description = "The email of Kaniko service account"
+}
+
+variable "dns_sa_email" {
+  type        = string
+  description = "DNS service account email"
+}
+
+// ---------
+variable "backup_bucket_url" {
+  type        = string
+  description = "Backup bucket url"
+}
+
+variable "backup_velero_sa" {
+  type        = string
+  description = "Valero service account"
+}
+
+variable "backup_velero_sa_email" {
+  type        = string
+  description = "Valero service account email"
+}
+
+variable "vault_sa" {
+  type        = string
+  description = "Vault service account"
+}
+
+variable "vault_sa_email" {
+  type        = string
+  description = "Vault service account email"
+}
+
+variable "vault_name" {
+  type        = string
+  description = "Vault name"
+}
+
+variable "vault_keyring" {
+  type        = string
+  description = "Vault keyring"
+}
+
+variable "vault_key" {
+  type        = string
+  description = "Vault key"
+}
+
+variable "vault_bucket_name" {
+  type        = string
+  description = "Vault bucket name"
+}
+
+variable "repository_storage_url" {
+  type        = string
+  description = "Repository storage url"
+}
+
+variable "report_storage_url" {
+  type        = string
+  description = "Report storage url"
+}
+
+variable "log_storage_url" {
+  type        = string
+  description = "Log storage url"
+}
+
+variable "cluster_ca_certificate" {
+  type        = string
+  description = "Cluster CA certificate"
+}
+
+variable "cluster_endpoint" {
+  type        = string
+  description = "Cluster endpoint"
+}
+
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
@@ -13,31 +115,6 @@ variable "cluster_name" {
   description = "Name of the Kubernetes cluster to create"
   type        = string
   default     = ""
-}
-
-variable "cluster_private" {
-  description = "Cluster master and nodes available only on internal VPC network"
-  type        = map
-  default = {
-    enabled = false
-  }
-}
-
-variable "cluster_network" {
-  type        = string
-  description = "Cluster network"
-}
-
-variable "cluster_subnetwork" {
-  type        = string
-  description = "Cluster subnetwork"
-}
-
-variable "cluster_ip_allocation_policy" {
-  type = map
-  default = {
-    enabled = false
-  }
 }
 
 variable "zone" {
@@ -52,22 +129,10 @@ variable "cluster_location" {
   default     = "us-central1-a"
 }
 
-variable "bucket_location" {
-  description = "Bucket location for storage"
-  type        = string
-  default     = "US"
-}
-
 variable "jenkins_x_namespace" {
   description = "Kubernetes namespace to install Jenkins X in"
   type        = string
   default     = "jx"
-}
-
-variable "force_destroy" {
-  description = "Flag to determine whether storage buckets get forcefully destroyed"
-  type        = bool
-  default     = false
 }
 
 variable "parent_domain" {
@@ -122,57 +187,6 @@ variable "velero_ttl" {
   description = "The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup))"
   type        = string
   default     = "720h0m0s"
-}
-
-// ----------------------------------------------------------------------------
-// cluster configuration
-// ----------------------------------------------------------------------------
-variable "node_machine_type" {
-  description = "Node type for the Kubernetes cluster"
-  type        = string
-  default     = "n1-standard-2"
-}
-
-variable "node_preemptible" {
-  description = "Use preemptible nodes"
-  type        = bool
-  default     = false
-}
-
-variable "min_node_count" {
-  description = "Minimum number of cluster nodes"
-  type        = number
-  default     = 3
-}
-
-variable "max_node_count" {
-  description = "Maximum number of cluster nodes"
-  type        = number
-  default     = 5
-}
-
-variable "node_disk_size" {
-  description = "Node disk size in GB"
-  type        = string
-  default     = "100"
-}
-
-variable "node_disk_type" {
-  description = "Node disk type, either pd-standard or pd-ssd"
-  type        = string
-  default     = "pd-standard"
-}
-
-variable "release_channel" {
-  description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
-  type        = string
-  default     = "UNSPECIFIED"
-}
-
-variable "resource_labels" {
-  description = "Set of labels to be applied to the cluster"
-  type        = map
-  default     = {}
 }
 
 // ----------------------------------------------------------------------------

@@ -11,23 +11,23 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
 
 <!-- TOC -->
 
-- [What is a Terraform module](#what-is-a-terraform-module)
-- [How do you use this module](#how-do-you-use-this-module)
+- [Jenkins X GKE Module](#jenkins-x-gke-module)
+  - [What is a Terraform module](#what-is-a-terraform-module)
+  - [How do you use this module](#how-do-you-use-this-module)
     - [Prerequisites](#prerequisites)
     - [Cluster provisioning](#cluster-provisioning)
-        - [Inputs](#inputs)
-        - [Outputs](#outputs)
+      - [Inputs](#inputs)
+      - [Outputs](#outputs)
     - [Running `jx boot`](#running-jx-boot)
     - [Using a custom domain](#using-a-custom-domain)
     - [Production cluster considerations](#production-cluster-considerations)
-    - [Configuring a Terraform backend](#configuring-a-terraform-backend)
-- [FAQ](#faq)
+  - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
     - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
     - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
-- [Development](#development)
+  - [Development](#development)
     - [Releasing](#releasing)
-- [How do I contribute](#how-do-i-contribute)
+  - [How do I contribute](#how-do-i-contribute)
 
 <!-- /TOC -->
 

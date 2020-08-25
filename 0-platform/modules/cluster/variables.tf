@@ -32,15 +32,34 @@ variable "cluster_id" {
 // cluster
 variable "cluster_private" {
   description = "Cluster master and nodes available only on internal VPC network"
-  type = bool
-  default = false
+  type        = map
+  default = {
+    enabled = false
+  }
+}
+
+variable "cluster_network" {
+  type        = string
+  description = "Cluster network"
+}
+
+variable "cluster_subnetwork" {
+  type        = string
+  description = "Cluster subnetwork"
+}
+
+variable "ip_allocation_policy" {
+  type = map
+  default = {
+    enabled = false
+  }
 }
 
 // storage
 variable "bucket_location" {
   description = "Bucket location for storage"
   type        = string
-  default     = "US"
+  default     = "EU"
 }
 
 variable "enable_log_storage" {
@@ -153,16 +172,6 @@ variable "enable_legacy_abac" {
   default = true
 }
 
-variable "auto_repair" {
-  type    = bool
-  default = false
-}
-
-variable "auto_upgrade" {
-  type    = bool
-  default = false
-}
-
 variable "monitoring_service" {
   description = "The monitoring service to use. Can be monitoring.googleapis.com, monitoring.googleapis.com/kubernetes (beta) and none"
   type        = string
@@ -182,14 +191,3 @@ variable "create_ui_sa" {
   default     = false
 }
 
-variable "jx2" {
-  description = "Is a Jenkins X 2 install"
-  type        = bool
-  default     = true
-}
-
-variable "content" {
-  description = "Interpolated jx-requirements.yml"
-  type        = string
-  default     = ""
-}

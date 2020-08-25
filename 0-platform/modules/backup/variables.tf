@@ -16,11 +16,6 @@ variable "cluster_id" {
   type        = string
 }
 
-variable "jenkins_x_namespace" {
-  description = "Kubernetes namespace to install Jenkins X in"
-  type        = string
-}
-
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------

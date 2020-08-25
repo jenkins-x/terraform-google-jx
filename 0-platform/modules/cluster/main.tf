@@ -13,10 +13,37 @@ resource "google_container_cluster" "jx_cluster" {
   initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
+  network                 = var.cluster_network
+  subnetwork              = var.cluster_subnetwork
+
+  dynamic "ip_allocation_policy" {
+    for_each = var.ip_allocation_policy.enabled ? [var.ip_allocation_policy] : []
+    iterator = it
+    content {
+      cluster_secondary_range_name  = lookup(it, "cluster_secondary_range_name", null)
+      services_secondary_range_name = lookup(it, "services_secondary_range_name", null)
+      cluster_ipv4_cidr_block       = lookup(it, "cluster_ipv4_cidr_block", null)
+      services_ipv4_cidr_block      = lookup(it, "services_ipv4_cidr_block", null)
+    }
+  }
+
+  dynamic "master_authorized_networks_config" {
+    for_each = var.cluster_private.enabled ? [{}] : []
+    content {
+      dynamic "cidr_blocks" {
+        for_each = contains(keys(var.cluster_private), "master_authorized_cidr") ? [var.cluster_private.master_authorized_cidr] : []
+        iterator = it
+        content {
+          cidr_block = it.value
+        }
+      }
+    }
+  }
 
   private_cluster_config {
-    enable_private_nodes = var.cluster_private
-    enable_private_endpoint = var.cluster_private
+    enable_private_nodes    = var.cluster_private.enabled
+    enable_private_endpoint = var.cluster_private.enabled
+    master_ipv4_cidr_block  = lookup(var.cluster_private, "master_ipv4_cidr_block", null)
   }
 
   maintenance_policy {
@@ -71,52 +98,4 @@ resource "google_container_cluster" "jx_cluster" {
       node_metadata = "GKE_METADATA_SERVER"
     }
   }
-}
-
-// ----------------------------------------------------------------------------
-// Add main Jenkins X Kubernetes namespace
-// 
-// https://www.terraform.io/docs/providers/kubernetes/r/namespace.html
-// ----------------------------------------------------------------------------
-resource "kubernetes_namespace" "jenkins_x_namespace" {
-  count = var.jx2 ? 1 : 0
-  metadata {
-    name = var.jenkins_x_namespace
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster
-  ]
-}
-
-// ----------------------------------------------------------------------------
-// Add the Terraform generated jx-requirements.yml to a configmap so it can be
-// sync'd with the Git repository
-// 
-// https://www.terraform.io/docs/providers/kubernetes/r/namespace.html
-// ----------------------------------------------------------------------------
-resource "kubernetes_config_map" "jenkins_x_requirements" {
-  count = var.jx2 ? 0 : 1
-  metadata {
-    name      = "terraform-jx-requirements"
-    namespace = "default"
-  }
-  data = {
-    "jx-requirements.yml" = var.content
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata,
-      data
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster
-  ]
 }

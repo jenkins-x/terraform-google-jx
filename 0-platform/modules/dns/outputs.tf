@@ -12,3 +12,7 @@
 #   description = "ExternalDNS name"
 #   value       = google_dns_managed_zone.externaldns_managed_zone.*.dns_name
 # }
+
+output "dns_sa_email" {
+  value = google_service_account.dns_sa.email
+}

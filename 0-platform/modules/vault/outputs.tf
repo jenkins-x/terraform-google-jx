@@ -7,6 +7,11 @@ output "vault_sa" {
   value       = local.sa_name
 }
 
+output "vault_sa_email" {
+  description = "Vault service account email"
+  value       = local.vault_sa_email
+}
+
 output "vault_bucket_name" {
   description = "Bucket name for Vault data"
   value       = length(google_storage_bucket.vault_bucket) > 0 ? google_storage_bucket.vault_bucket[0].name : ""

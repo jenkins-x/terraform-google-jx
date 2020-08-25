@@ -73,41 +73,10 @@ resource "google_service_account_iam_member" "exdns_external_dns_workload_identi
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/exdns-external-dns]"
 }
 
-resource "kubernetes_service_account" "exdns-external-dns" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "exdns-external-dns"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-}
-
 // ----------------------------------------------------------------------------
 // Create Kubernetes namespace and service accounts for cert-manager
 // See https://github.com/jetstack/cert-manager
 // ----------------------------------------------------------------------------
-resource "kubernetes_namespace" "cert-manager" {
-  metadata {
-    name = var.cert-manager-namespace
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-    ]
-  }
-}
-
 resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.dns_sa.name
@@ -115,53 +84,9 @@ resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.cert-manager-namespace}/cm-cert-manager]"
 }
 
-resource "kubernetes_service_account" "cm-cert-manager" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "cm-cert-manager"
-    namespace = var.cert-manager-namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    kubernetes_namespace.cert-manager
-  ]
-}
-
 resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.cert-manager-namespace}/cm-cainjector]"
-}
-
-resource "kubernetes_service_account" "cm-cainjector" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "cm-cainjector"
-    namespace = var.cert-manager-namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.dns_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    kubernetes_namespace.cert-manager
-  ]
 }

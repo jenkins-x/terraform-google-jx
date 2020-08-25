@@ -103,52 +103,8 @@ resource "google_service_account_iam_member" "build_controller_sa_workload_ident
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jenkins-x-controllerbuild]"
 }
 
-resource "kubernetes_service_account" "build_controller_sa" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "jenkins-x-controllerbuild"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.build_controller_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
-
 // ----------------------------------------------------------------------------
 // Kaniko
-resource "kubernetes_service_account" "kaniko_sa" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "kaniko-sa"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.kaniko_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
-
 resource "google_service_account_iam_member" "kaniko_sa_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.kaniko_sa.name
@@ -165,51 +121,9 @@ resource "google_service_account_iam_member" "tekton_sa_workload_identity_user" 
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/tekton-bot]"
 }
 
-resource "kubernetes_service_account" "tekton_sa" {
-  count                           = var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "tekton-bot"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.tekton_sa.email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
 
 // ----------------------------------------------------------------------------
 // UI
-resource "kubernetes_service_account" "jxui_sa" {
-  count                           = var.create_ui_sa && var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "jxui-sa"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa[0].email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
 
 resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   count = var.create_ui_sa ? 1 : 0
