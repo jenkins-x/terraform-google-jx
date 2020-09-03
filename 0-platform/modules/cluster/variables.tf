@@ -135,7 +135,6 @@ variable "max_node_count" {
 variable "release_channel" {
   description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
   type        = string
-  default     = "UNSPECIFIED"
 }
 
 variable "resource_labels" {

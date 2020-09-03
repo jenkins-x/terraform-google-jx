@@ -66,11 +66,11 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 // Create Kubernetes service accounts for ExternalDNS
 // See https://github.com/kubernetes-sigs/external-dns
 // ----------------------------------------------------------------------------
-resource "google_service_account_iam_member" "exdns_external_dns_workload_identity_user" {
+resource "google_service_account_iam_member" "external_dns_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/exdns-external-dns]"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/external-dns]"
 }
 
 // ----------------------------------------------------------------------------

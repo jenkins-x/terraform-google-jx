@@ -20,10 +20,10 @@ resource "google_container_cluster" "jx_cluster" {
     for_each = var.ip_allocation_policy.enabled ? [var.ip_allocation_policy] : []
     iterator = it
     content {
-      cluster_secondary_range_name  = lookup(it, "cluster_secondary_range_name", null)
-      services_secondary_range_name = lookup(it, "services_secondary_range_name", null)
-      cluster_ipv4_cidr_block       = lookup(it, "cluster_ipv4_cidr_block", null)
-      services_ipv4_cidr_block      = lookup(it, "services_ipv4_cidr_block", null)
+      cluster_secondary_range_name  = lookup(it.value, "cluster_secondary_range_name", null)
+      services_secondary_range_name = lookup(it.value, "services_secondary_range_name", null)
+      cluster_ipv4_cidr_block       = lookup(it.value, "cluster_ipv4_cidr_block", null)
+      services_ipv4_cidr_block      = lookup(it.value, "services_ipv4_cidr_block", null)
     }
   }
 
@@ -96,6 +96,16 @@ resource "google_container_cluster" "jx_cluster" {
 
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
+    }
+  }
+
+  network_policy {
+    enabled = true
+  }
+
+  addons_config {
+    network_policy_config  {
+      disabled = false
     }
   }
 }

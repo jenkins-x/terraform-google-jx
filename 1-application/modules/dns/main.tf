@@ -2,11 +2,11 @@
 // Create Kubernetes service accounts for ExternalDNS
 // See https://github.com/kubernetes-sigs/external-dns
 // ----------------------------------------------------------------------------
-resource "kubernetes_service_account" "exdns-external-dns" {
+resource "kubernetes_service_account" "external-dns" {
   count                           = var.jx2 ? 1 : 0
   automount_service_account_token = true
   metadata {
-    name      = "exdns-external-dns"
+    name      = "external-dns"
     namespace = var.jenkins_x_namespace
     annotations = {
       "iam.gke.io/gcp-service-account" = var.dns_sa_email

@@ -25,8 +25,8 @@ Describe "Kubernetes"
     End
 
     # DNS
-    It "Service account exdns-external-dns has workload identity annotation"
-      When call service_account_get_annotation exdns-external-dns jx
+    It "Service account external-dns has workload identity annotation"
+      When call service_account_get_annotation external-dns jx
       The output should eq "$(terraform output cluster_name)-dn@$(terraform output gcp_project).iam.gserviceaccount.com"
     End
 
@@ -103,8 +103,8 @@ Describe "Kubernetes"
       The output should include "$(terraform output cluster_name)-dn@$(terraform output gcp_project).iam.gserviceaccount.com"
     End  
 
-    It "Pod with exdns-external-dns service account uses workload identity"
-      When call workload_identity_test exdns-external-dns jx
+    It "Pod with external-dns service account uses workload identity"
+      When call workload_identity_test external-dns jx
       The output should include "$(terraform output cluster_name)-dn@$(terraform output gcp_project).iam.gserviceaccount.com"
     End    
 
