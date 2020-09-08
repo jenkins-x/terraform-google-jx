@@ -219,3 +219,30 @@ resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
 }
+
+// ----------------------------------------------------------------------------
+// Boot
+resource "google_service_account" "boot_sa" {
+  count = var.jx2 ? 0 : 1
+
+  provider     = google
+  account_id   = "${var.cluster_name}-boot"
+  display_name = substr("jx boot service account for cluster ${var.cluster_name}", 0, 100)
+}
+
+resource "google_project_iam_member" "boot_sa_storage_object_admin_binding" {
+  count = var.jx2 ? 0 : 1
+
+  provider = google
+  role     = "roles/secretmanager.admin"
+  member   = "serviceAccount:${google_service_account.boot_sa[count.index].email}"
+}
+
+resource "google_service_account_iam_member" "boot_sa_workload_identity_user" {
+  count = var.jx2 ? 0 : 1
+
+  provider           = google
+  service_account_id = google_service_account.boot_sa[count.index].name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[jx-git-operator/jx-boot-job]"
+}

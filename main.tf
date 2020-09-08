@@ -43,11 +43,24 @@ provider "kubernetes" {
   version          = ">= 1.11.0"
   load_config_file = false
 
-  host  = "https://${module.cluster.cluster_endpoint}"
-  token = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(
-    module.cluster.cluster_ca_certificate,
-  )
+  host                   = "https://${module.cluster.cluster_endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
+}
+
+provider "helm" {
+  version = "~>1.3.0"
+  debug   = true
+
+  kubernetes {
+    host                   = "https://${module.cluster.cluster_endpoint}"
+    token                  = data.google_client_config.default.access_token
+    client_certificate     = base64decode(module.cluster.cluster_client_certificate)
+    client_key             = base64decode(module.cluster.client_client_key)
+    cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
+
+    load_config_file = false
+  }
 }
 
 resource "random_id" "random" {
@@ -157,6 +170,10 @@ module "cluster" {
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
   content      = local.content
+
+  jx_git_url      = var.jx_git_url
+  jx_bot_username = var.jx_bot_username
+  jx_bot_token    = var.jx_bot_token
 }
 
 // ----------------------------------------------------------------------------
