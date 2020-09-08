@@ -115,3 +115,46 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
     google_container_cluster.jx_cluster
   ]
 }
+
+resource "helm_release" "jx-git-operator" {
+  count = var.jx2 ? 0 : 1
+
+  provider         = helm
+  name             = "jx-git-operator"
+  chart            = "jx-git-operator"
+  namespace        = "jx-git-operator"
+  repository       = "https://storage.googleapis.com/jenkinsxio/charts"
+  create_namespace = true
+
+  set {
+    name  = "bootServiceAccount.enabled"
+    value = true
+  }
+  set {
+    name  = "bootServiceAccount.annotations.iam\\.gke\\.io/gcp-service-account"
+    value = "${var.cluster_name}-boot@${var.gcp_project}.iam.gserviceaccount.com"
+  }
+  set {
+    name  = "env.NO_RESOURCE_APPLY"
+    value = true
+  }
+  set {
+    name  = "url"
+    value = var.jx_git_url
+  }
+  set {
+    name  = "username"
+    value = var.jx_bot_username
+  }
+  set {
+    name  = "password"
+    value = var.jx_bot_token
+  }
+
+  lifecycle {
+    ignore_changes = all
+  }
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
+}
