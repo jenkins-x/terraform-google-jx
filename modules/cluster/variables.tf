@@ -112,7 +112,6 @@ variable "release_channel" {
   default     = "UNSPECIFIED"
 }
 
-
 variable "min_master_version" {
   description = "The minimum Kubernetes version number for the master node n"
   type        = string
@@ -124,7 +123,6 @@ variable "node_version" {
   type        = string
   default     = ""
 }
-
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
