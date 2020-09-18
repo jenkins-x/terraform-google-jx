@@ -13,6 +13,8 @@ resource "google_container_cluster" "jx_cluster" {
   initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
+  min_master_version      = var.min_master_version
+  node_version            = var.node_version
 
   maintenance_policy {
     daily_maintenance_window {
