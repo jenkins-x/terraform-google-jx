@@ -51,6 +51,7 @@ resource "google_container_cluster" "jx_cluster" {
     machine_type = var.node_machine_type
     disk_size_gb = var.node_disk_size
     disk_type    = var.node_disk_type
+    service_account = "${var.cluster_name}-boot@${var.gcp_project}.iam.gserviceaccount.com"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
