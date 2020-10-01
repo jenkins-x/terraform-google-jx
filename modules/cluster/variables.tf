@@ -143,7 +143,7 @@ variable "enable_kubernetes_alpha" {
 
 variable "enable_legacy_abac" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "auto_repair" {
