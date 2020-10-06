@@ -178,7 +178,7 @@ variable "create_ui_sa" {
 variable "jx2" {
   description = "Is a Jenkins X 2 install"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "content" {

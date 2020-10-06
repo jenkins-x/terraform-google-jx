@@ -13,10 +13,44 @@ resource "google_container_cluster" "jx_cluster" {
   initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
-
+  network = "test-network1"
+  subnetwork = "subnet-first"
   maintenance_policy {
     daily_maintenance_window {
       start_time = "03:00"
+    }
+  }
+
+  private_cluster_config {
+    enable_private_endpoint = false
+    enable_private_nodes = true
+    master_ipv4_cidr_block = "172.16.0.0/28"
+    master_global_access_config {
+      enabled = true
+    }
+  }
+
+  master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block = "0.0.0.0/0"
+    }
+  }
+
+  ip_allocation_policy {
+  }
+
+  master_auth {
+    username = ""
+    password = ""
+
+    client_certificate_config {
+      issue_client_certificate = false
+    }
+  }
+
+  addons_config {
+    istio_config {
+      disabled = false
     }
   }
 

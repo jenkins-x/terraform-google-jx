@@ -192,7 +192,7 @@ variable "version_stream_ref" {
 variable "jx2" {
   description = "Is a Jenkins X 2 install"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "gsm" {
