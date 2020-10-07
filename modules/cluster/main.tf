@@ -13,8 +13,8 @@ resource "google_container_cluster" "jx_cluster" {
   initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
-  network = "test-network1"
-  subnetwork = "subnet-first"
+  network = google_compute_network.vpc_network.id
+  subnetwork = google_compute_subnetwork.vpc_subnet.id
   maintenance_policy {
     daily_maintenance_window {
       start_time = "03:00"
@@ -24,7 +24,7 @@ resource "google_container_cluster" "jx_cluster" {
   private_cluster_config {
     enable_private_endpoint = false
     enable_private_nodes = true
-    master_ipv4_cidr_block = "172.16.0.0/28"
+    master_ipv4_cidr_block = "172.16.1.0/28"
     master_global_access_config {
       enabled = true
     }
