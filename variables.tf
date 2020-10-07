@@ -122,7 +122,7 @@ variable "min_node_count" {
 variable "max_node_count" {
   description = "Maximum number of cluster nodes"
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "node_disk_size" {
