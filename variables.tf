@@ -104,7 +104,7 @@ variable "velero_ttl" {
 variable "node_machine_type" {
   description = "Node type for the Kubernetes cluster"
   type        = string
-  default     = "n1-standard-2"
+  default     = "n1-standard-1"
 }
 
 variable "node_preemptible" {
@@ -128,7 +128,7 @@ variable "max_node_count" {
 variable "node_disk_size" {
   description = "Node disk size in GB"
   type        = string
-  default     = "100"
+  default     = "10"
 }
 
 variable "node_disk_type" {
