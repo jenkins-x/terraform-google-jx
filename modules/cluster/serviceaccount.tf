@@ -101,6 +101,9 @@ resource "google_service_account_iam_member" "build_controller_sa_workload_ident
   service_account_id = google_service_account.build_controller_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jenkins-x-controllerbuild]"
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }
 
 resource "kubernetes_service_account" "build_controller_sa" {
@@ -154,6 +157,9 @@ resource "google_service_account_iam_member" "kaniko_sa_workload_identity_user" 
   service_account_id = google_service_account.kaniko_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/kaniko-sa]"
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }
 
 // ----------------------------------------------------------------------------
@@ -163,6 +169,9 @@ resource "google_service_account_iam_member" "tekton_sa_workload_identity_user" 
   service_account_id = google_service_account.tekton_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/tekton-bot]"
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }
 
 resource "kubernetes_service_account" "tekton_sa" {
@@ -218,6 +227,9 @@ resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   service_account_id = google_service_account.jxui_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }
 
 // ----------------------------------------------------------------------------
@@ -239,4 +251,7 @@ resource "google_service_account_iam_member" "boot_sa_workload_identity_user" {
   service_account_id = google_service_account.boot_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[jx-git-operator/jx-boot-job]"
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
 }

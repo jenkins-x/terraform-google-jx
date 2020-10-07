@@ -114,9 +114,6 @@ resource "google_service_account_iam_member" "cm_cert_manager_workload_identity_
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.cert-manager-namespace}/cm-cert-manager]"
-   depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
 }
 
 resource "kubernetes_service_account" "cm-cert-manager" {
@@ -147,9 +144,6 @@ resource "google_service_account_iam_member" "cm_cainjector_workload_identity_us
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.cert-manager-namespace}/cm-cainjector]"
-   depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
 }
 
 resource "kubernetes_service_account" "cm-cainjector" {
