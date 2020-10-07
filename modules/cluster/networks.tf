@@ -29,6 +29,12 @@ resource "google_compute_firewall" "firewall" {
   target_tags = ["ssh"]
 }
 
+# external IP for clusterIP
+resource "google_compute_address" "nat" {
+  name    = format("%s-nat-ip", var.cluster_name)
+  project = var.gcp_project
+  region  = var.cluster_location
+}
 
 # cloud router (to be used by cloud nat)
 resource "google_compute_router" "nat_router" {
