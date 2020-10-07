@@ -234,6 +234,9 @@ module "dns" {
   parent_domain       = var.parent_domain
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   jx2                 = var.jx2
+  depends_on = [
+    module.cluster
+  ]
 }
 
 // ----------------------------------------------------------------------------
