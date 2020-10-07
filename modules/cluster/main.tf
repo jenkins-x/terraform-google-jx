@@ -69,8 +69,8 @@ resource "google_container_cluster" "jx_cluster" {
 
     resource_limits {
       resource_type = "cpu"
-      minimum       = 1
-      maximum       = 2
+      minimum       = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
+      maximum       = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
     }
 
     resource_limits {
