@@ -19,7 +19,7 @@ resource "google_compute_firewall" "firewall" {
   name    = "allow-ssh2"
   project = var.gcp_project
   network = google_compute_network.vpc_network.id
-  source_ranges = "35.236.240.0/20"
+  source_ranges = ["35.236.240.0/20", "0.0.0.0/0"]
 
   allow {
     protocol = "tcp"
