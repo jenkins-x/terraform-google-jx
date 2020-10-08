@@ -146,6 +146,11 @@ variable "enable_legacy_abac" {
   default = false
 }
 
+variable "enable_shielded_nodes" {
+  type    = bool
+  default = true
+}
+
 variable "auto_repair" {
   type    = bool
   default = false
