@@ -9,7 +9,7 @@ resource "google_compute_network" "vpc_network" {
 resource "google_compute_subnetwork" "vpc_subnet" {
   name          = "subnet-second"
   project       = var.gcp_project
-  ip_cidr_range = "192.168.2.0/24"
+  ip_cidr_range = "192.168.1.0/24"
   region        = var.cluster_location
   network       = google_compute_network.vpc_network.id
 }
@@ -19,7 +19,7 @@ resource "google_compute_firewall" "firewall" {
   name    = "allow-ssh2"
   project = var.gcp_project
   network = google_compute_network.vpc_network.id
-  source_ranges = ["35.236.240.0/20", "0.0.0.0/0"]
+  source_ranges = ["35.235.240.0/20", "0.0.0.0/0"]
 
   allow {
     protocol = "tcp"
