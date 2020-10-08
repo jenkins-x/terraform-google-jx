@@ -48,18 +48,20 @@ resource "google_container_cluster" "jx_cluster" {
     }
   }
 
-  addons_config {
-    istio_config {
-      disabled = false
-    }
-  }
-
   release_channel {
     channel = var.release_channel
   }
 
   workload_identity_config {
     identity_namespace = "${var.gcp_project}.svc.id.goog"
+  }
+
+  addons_config {
+    network_policy_config {
+      network_policy {
+        disabled = false
+      }
+    }
   }
 
   resource_labels = var.resource_labels

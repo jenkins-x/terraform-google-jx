@@ -23,7 +23,7 @@ resource "google_compute_firewall" "firewall" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "443"]
+    ports    = ["22", "443", "15017"]
   }
 
   target_tags = ["ssh"]
