@@ -31,7 +31,7 @@ pipelineConfig:
             command: tfsec
             image: liamg/tfsec:v0.27.0
             args:
-            - /workspace  
+            - /workspace/source  
             - --soft-fail
           - name: terraform-apply-and-test
             command: ./scripts/ci.sh           
