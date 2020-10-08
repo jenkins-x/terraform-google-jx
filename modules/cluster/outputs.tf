@@ -34,3 +34,6 @@ output "repository_storage_url" {
   value = length(google_storage_bucket.repository_bucket) > 0 ? google_storage_bucket.repository_bucket[0].url : ""
 }
 
+output "jenkins_x_namespace" {
+  value = var.jenkins_x_namespace
+}
