@@ -56,12 +56,6 @@ resource "google_container_cluster" "jx_cluster" {
     identity_namespace = "${var.gcp_project}.svc.id.goog"
   }
 
-  addons_config {
-    network_policy_config {
-      disabled = false
-    }
-  }
-
   resource_labels = var.resource_labels
 
   cluster_autoscaling {
