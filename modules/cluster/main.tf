@@ -15,6 +15,12 @@ resource "google_container_cluster" "jx_cluster" {
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
 
+  // should disable master auth
+  master_auth {
+    username = ""
+    password = ""
+  }
+
   maintenance_policy {
     daily_maintenance_window {
       start_time = "03:00"
@@ -67,11 +73,6 @@ resource "google_container_cluster" "jx_cluster" {
       node_metadata = "GKE_METADATA_SERVER"
     }
 
-    // should disable master auth
-    master_auth {
-      username = ""
-      password = ""
-    }
   }
 }
 
