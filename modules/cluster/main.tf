@@ -58,9 +58,7 @@ resource "google_container_cluster" "jx_cluster" {
 
   addons_config {
     network_policy_config {
-      network_policy {
-        disabled = false
-      }
+      disabled = false
     }
   }
 
