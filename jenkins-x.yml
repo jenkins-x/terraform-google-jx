@@ -29,7 +29,7 @@ pipelineConfig:
             - lint
           - name: terraform-sec
             command: tfsec
-            image: liamg/tfsec:v0.27.0
+            image: liamg/tfsec:v0.28.1
             args:
             - /workspace/source  
             - --soft-fail
