@@ -39,6 +39,16 @@ resource "google_container_cluster" "jx_cluster" {
   ip_allocation_policy {
   }
 
+  network_policy {
+    enabled = true
+  }
+
+  addons_config {
+    network_policy_config {
+      disabled = true
+    }
+  }
+
   master_auth {
     username = ""
     password = ""
