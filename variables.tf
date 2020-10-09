@@ -11,6 +11,16 @@ variable "cluster_location" {
   type        = string
 }
 
+variable "network" {
+  description = "The VPC network"
+  type = string
+}
+
+variable "subnet" {
+  description = "The subnet of VPC"
+  type = string
+}
+
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
