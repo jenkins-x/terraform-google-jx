@@ -69,30 +69,30 @@ variable "node_machine_type" {
 variable "machine_types_cpu" {
   type = map
   default = {
-    "n1-standard-1"  = 1
-    "n1-standard-2"  = 2
-    "n1-standard-4"  = 4
-    "n1-standard-8"  = 8
-    "n1-standard-16" = 16
-    "n1-standard-32" = 32
-    "n1-standard-64" = 64
-    "n1-standard-96" = 96
-    "e2-medium"      = 2
+    "n1-standard-1"    = 1
+    "n1-standard-2"    = 2
+    "n1-standard-4"    = 4
+    "n1-standard-8"    = 8
+    "n1-standard-16"   = 16
+    "n1-standard-32"   = 32
+    "n1-standard-64"   = 64
+    "n1-standard-96"   = 96
+    "e2-custom-2-4096" = 2
   }
 }
 
 variable "machine_types_memory" {
   type = map
   default = {
-    "n1-standard-1"  = 3.75
-    "n1-standard-2"  = 7.50
-    "n1-standard-4"  = 15
-    "n1-standard-8"  = 30
-    "n1-standard-16" = 60
-    "n1-standard-32" = 120
-    "n1-standard-64" = 240
-    "n1-standard-96" = 360
-    "e2-medium"      = 4
+    "n1-standard-1"    = 3.75
+    "n1-standard-2"    = 7.50
+    "n1-standard-4"    = 15
+    "n1-standard-8"    = 30
+    "n1-standard-16"   = 60
+    "n1-standard-32"   = 120
+    "n1-standard-64"   = 240
+    "n1-standard-96"   = 360
+    "e2-custom-2-4096" = 4
   }
 }
 
