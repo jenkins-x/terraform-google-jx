@@ -33,10 +33,8 @@ resource "google_compute_firewall" "firewall" {
   target_tags = ["worker-node"]
 }
 
-
-
 # external IP for clusterIP
-resource "google_compute_address" "nat" {
+resource "google_compute_address" "nat_ip" {
   name    = "${var.cluster_name}-nat"
   project = var.gcp_project
   region  = var.cluster_location
@@ -50,13 +48,13 @@ resource "google_compute_router" "nat_router" {
   network = google_compute_network.vpc_network.id
 }
 
-
 # cloud nat
 resource "google_compute_router_nat" "nat" {
-  name                               = "${var.cluster_name}-nat-config"
+  name                               = "${var.cluster_name}-nat"
   router                             = google_compute_router.nat_router.name
   region                             = google_compute_router.nat_router.region
-  nat_ip_allocate_option             = "AUTO_ONLY"
+  nat_ip_allocate_option             = "MANUAL_ONLY"
+  nat_ips                            = google_compute_address.nat_ip.self_link
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
   log_config {
