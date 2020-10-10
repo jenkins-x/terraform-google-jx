@@ -87,6 +87,7 @@ variable "machine_types_cpu" {
     "n1-standard-32" = 32
     "n1-standard-64" = 64
     "n1-standard-96" = 96
+    "e2-medium"      = 2
   }
 }
 
@@ -101,6 +102,7 @@ variable "machine_types_memory" {
     "n1-standard-32" = 120
     "n1-standard-64" = 240
     "n1-standard-96" = 360
+    "e2-medium"      = 4
   }
 }
 
