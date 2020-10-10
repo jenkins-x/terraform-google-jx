@@ -138,7 +138,7 @@ resource "kubernetes_namespace" "jenkins_x_namespace" {
     ]
   }
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary_nodes
   ]
 }
 
@@ -165,7 +165,7 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
     ]
   }
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary_nodes
   ]
 }
 
@@ -205,6 +205,6 @@ resource "helm_release" "jx-git-operator" {
   }
 
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary_nodes
   ]
 }
