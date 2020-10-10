@@ -77,10 +77,12 @@ resource "random_pet" "current" {
 }
 
 locals {
-  cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
+  cluster_name   = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
   # provide backwards compatibility with the deprecated zone variable
   location       = "${var.zone != "" ? var.zone : var.cluster_location}"
   external_vault = var.vault_url != "" ? true : false
+  network        = var.network != "" ? var.network : random_pet.current.id
+  subnet         = var.subnet != "" ? var.subnet : random_pet.current.id
 }
 
 // ----------------------------------------------------------------------------
@@ -157,24 +159,24 @@ module "cluster" {
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
-  network = var.network
-  subnet = var.subnet
-  node_machine_type = var.node_machine_type
-  node_disk_size    = var.node_disk_size
-  node_disk_type    = var.node_disk_type
-  node_preemptible  = var.node_preemptible
-  min_node_count    = var.min_node_count
-  max_node_count    = var.max_node_count
-  release_channel   = var.release_channel
-  resource_labels   = var.resource_labels
+  network             = local.network
+  subnet              = local.subnet
+  node_machine_type   = var.node_machine_type
+  node_disk_size      = var.node_disk_size
+  node_disk_type      = var.node_disk_type
+  node_preemptible    = var.node_preemptible
+  min_node_count      = var.min_node_count
+  max_node_count      = var.max_node_count
+  release_channel     = var.release_channel
+  resource_labels     = var.resource_labels
 
-  create_ui_sa = var.create_ui_sa
-  jx2          = var.jx2
-  content      = local.content
+  create_ui_sa        = var.create_ui_sa
+  jx2                 = var.jx2
+  content             = local.content
 
-  jx_git_url      = var.jx_git_url
-  jx_bot_username = var.jx_bot_username
-  jx_bot_token    = var.jx_bot_token
+  jx_git_url          = var.jx_git_url
+  jx_bot_username     = var.jx_bot_username
+  jx_bot_token        = var.jx_bot_token
 }
 
 // ----------------------------------------------------------------------------

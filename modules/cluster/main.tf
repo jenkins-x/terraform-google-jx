@@ -13,8 +13,9 @@ resource "google_container_cluster" "jx_cluster" {
   initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
-  network = var.network
-  subnetwork = var.subnet
+  network                 = var.network
+  subnetwork              = var.subnet
+  
   maintenance_policy {
     daily_maintenance_window {
       start_time = "03:00"
