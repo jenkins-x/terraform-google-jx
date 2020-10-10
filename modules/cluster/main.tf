@@ -68,30 +68,15 @@ resource "google_container_cluster" "jx_cluster" {
 
   resource_labels = var.resource_labels
 
-  cluster_autoscaling {
-    enabled = true
-
-    resource_limits {
-      resource_type = "cpu"
-      minimum       = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
-      maximum       = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
-    }
-
-    resource_limits {
-      resource_type = "memory"
-      minimum       = ceil(var.min_node_count * var.machine_types_memory[var.node_machine_type])
-      maximum       = ceil(var.max_node_count * var.machine_types_memory[var.node_machine_type])
-    }
-  }
-
   remove_default_node_pool = true
   initial_node_count       = 1
 }
 
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${var.machine_types_cpu[var.node_machine_type]}-cpu-${var.machine_types_memory[var.node_machine_type]}-mem"
-  location   = var.cluster_location
-  cluster    = google_container_cluster.jx_cluster.name
+  name               = "${var.cluster_name}-${var.machine_types_cpu[var.node_machine_type]}-cpu-${var.machine_types_memory[var.node_machine_type]}-mem"
+  location           = var.cluster_location
+  cluster            = google_container_cluster.jx_cluster.name
+  initial_node_count = 1
 
   node_config {
     preemptible  = var.node_preemptible
@@ -118,20 +103,21 @@ resource "google_container_node_pool" "primary_nodes" {
     }
 
     tags = ["worker-node"]
+  }
 
-    autoscaling {
-      min_node_count = var.min_node_count
-      max_node_count = var.max_node_count
-    }
+  autoscaling {
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
+  }
 
-    management {
-      auto_repair  = "true"
-      auto_upgrade = "true"
-    }
+  management {
+    auto_repair  = "true"
+    auto_upgrade = "true"
+  }
 
-    upgrade_settings {
-      max_unavailable = 1
-    }
+  upgrade_settings {
+    max_unavailable = 1
+    max_surge       = 1
   }
 }
 
