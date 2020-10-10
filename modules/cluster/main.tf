@@ -10,11 +10,10 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.cluster_location
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  initial_node_count      = var.min_node_count
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
-  network                 = var.network
-  subnetwork              = var.subnet
+  network                 = google_compute_network.vpc_network.id
+  subnetwork              = google_compute_subnetwork.vpc_subnet.id
   
   maintenance_policy {
     daily_maintenance_window {
@@ -85,6 +84,15 @@ resource "google_container_cluster" "jx_cluster" {
     }
   }
 
+  remove_default_node_pool = true
+  initial_node_count       = 1
+}
+
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "${var.machine_types_cpu[var.node_machine_type]}-cpu-${var.machine_types_memory[var.node_machine_type]}-mem"
+  location   = var.cluster_location
+  cluster    = google_container_cluster.jx_cluster.name
+
   node_config {
     preemptible  = var.node_preemptible
     machine_type = var.node_machine_type
@@ -105,7 +113,25 @@ resource "google_container_cluster" "jx_cluster" {
       node_metadata = "GKE_METADATA_SERVER"
     }
 
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+
     tags = ["worker-node"]
+
+    autoscaling {
+      min_node_count = var.min_node_count
+      max_node_count = var.max_node_count
+    }
+
+    management {
+      auto_repair  = "true"
+      auto_upgrade = "true"
+    }
+
+    upgrade_settings {
+      max_unavailable = 1
+    }
   }
 }
 
@@ -192,9 +218,6 @@ resource "helm_release" "jx-git-operator" {
     value = var.jx_bot_token
   }
 
-  lifecycle {
-    ignore_changes = all
-  }
   depends_on = [
     google_container_cluster.jx_cluster
   ]

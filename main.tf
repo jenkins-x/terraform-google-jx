@@ -81,8 +81,6 @@ locals {
   # provide backwards compatibility with the deprecated zone variable
   location       = "${var.zone != "" ? var.zone : var.cluster_location}"
   external_vault = var.vault_url != "" ? true : false
-  network        = var.network != "" ? var.network : random_pet.current.id
-  subnet         = var.subnet != "" ? var.subnet : random_pet.current.id
 }
 
 // ----------------------------------------------------------------------------
@@ -159,8 +157,6 @@ module "cluster" {
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
-  network             = local.network
-  subnet              = local.subnet
   node_machine_type   = var.node_machine_type
   node_disk_size      = var.node_disk_size
   node_disk_type      = var.node_disk_type
