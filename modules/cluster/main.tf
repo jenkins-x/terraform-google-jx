@@ -103,6 +103,8 @@ resource "google_container_cluster" "jx_cluster" {
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
     }
+
+    tags = ["worker-node"]
   }
 }
 
