@@ -217,7 +217,7 @@ resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   provider           = google
   service_account_id = google_service_account.jxui_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jx-pipelines-visualizer]"
 }
 
 // ----------------------------------------------------------------------------
