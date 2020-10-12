@@ -170,9 +170,9 @@ variable "logging_service" {
 
 // service accounts
 variable "create_ui_sa" {
-  description = "Whether the service accounts for the UI should be created"
+  description = "Whether the cloud service account for the UI should be created"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "jx2" {

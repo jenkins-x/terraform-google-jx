@@ -189,28 +189,6 @@ resource "kubernetes_service_account" "tekton_sa" {
 
 // ----------------------------------------------------------------------------
 // UI
-resource "kubernetes_service_account" "jxui_sa" {
-  count                           = var.create_ui_sa && var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "jxui-sa"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa[0].email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
-
 resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   count = var.create_ui_sa ? 1 : 0
 
