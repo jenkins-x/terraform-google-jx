@@ -77,9 +77,9 @@ resource "random_pet" "current" {
 }
 
 locals {
-  cluster_name = "${var.cluster_name != "" ? var.cluster_name : random_pet.current.id}"
+  cluster_name = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
   # provide backwards compatibility with the deprecated zone variable
-  location       = "${var.zone != "" ? var.zone : var.cluster_location}"
+  location       = var.zone != "" ? var.zone : var.cluster_location
   external_vault = var.vault_url != "" ? true : false
 }
 
