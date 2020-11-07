@@ -51,6 +51,11 @@ variable "parent_domain" {
   default     = ""
 }
 
+variable "subdomain" {
+  description = "Optional sub domain for the installation"
+  type        = string
+}
+
 variable "tls_email" {
   description = "Email used by Let's Encrypt. Required for TLS when parent_domain is specified"
   type        = string

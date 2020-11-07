@@ -31,36 +31,52 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 // ----------------------------------------------------------------------------
 // DNS configuration
 // ----------------------------------------------------------------------------
-# For now we assume that the user creates and manages the managed zones himself and
-# set it is setup correctly.
-#
-# If we create the managed zone here a 'terraform destroy' will fail if there are
-# record sets in the zone. 
-# See also https://github.com/terraform-providers/terraform-provider-google/issues/1572
-#
-# Also creating the managed zone here means that the user cannot directly execute `jx boot`
-# after `terraform apply` since he would need to update his DNS settings and ensure the DNS
-# changes have propagated.
 
-# resource "google_dns_managed_zone" "externaldns_managed_zone" {
-#   count    = local.dns_enabled ? 1 : 0
+// if we have a bar.io add recordsets to the same zone
+resource "google_dns_managed_zone" "externaldns_managed_zone" {
+  count = var.parent_domain != "" && var.subdomain == "" ? 1 : 0
 
-#   name = "${replace(var.parent_domain, ".", "-")}-managed-zone"
-#   dns_name = "${var.parent_domain}."
-#   description = "JX DNS managed zone managed by terraform"
-# }
+  name        = replace(var.parent_domain, ".", "-")
+  dns_name    = "${var.parent_domain}."
+  description = "JX DNS managed zone managed by terraform"
 
-# resource "google_dns_record_set" "externaldns_record_set" {
-#   count    = local.dns_enabled ? 1 : 0
+  force_destroy = true
+}
 
-#   name         = google_dns_managed_zone.externaldns_managed_zone[count.index].dns_name
-#   managed_zone = google_dns_managed_zone.externaldns_managed_zone[count.index].name
-#   type         = "NS"
-#   ttl          = 60
-#   project      = var.gcp_project
-#   rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone[count.index].name_servers)
-#   depends_on   = [google_dns_managed_zone.externaldns_managed_zone]
-# }
+resource "google_dns_record_set" "externaldns_record_set" {
+  count = var.parent_domain != "" && var.subdomain == "" ? 1 : 0
+
+  name         = google_dns_managed_zone.externaldns_managed_zone[count.index].dns_name
+  managed_zone = google_dns_managed_zone.externaldns_managed_zone[count.index].name
+  type         = "NS"
+  ttl          = 60
+  project      = var.gcp_project
+  rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone[count.index].name_servers)
+  depends_on   = [google_dns_managed_zone.externaldns_managed_zone]
+}
+
+// if we have a foo.bar.io add recordsets to the parent zone
+resource "google_dns_managed_zone" "externaldns_managed_zone_with_sub" {
+  count = var.parent_domain != "" && var.subdomain != "" ? 1 : 0
+
+  name        = "${replace(var.subdomain, ".", "-")}-${replace(var.parent_domain, ".", "-")}-sub"
+  dns_name    = "${var.subdomain}.${var.parent_domain}."
+  description = "JX DNS managed zone managed by terraform"
+
+  force_destroy = true
+}
+
+resource "google_dns_record_set" "externaldns_record_set_with_sub" {
+  count = var.parent_domain != "" && var.subdomain != "" ? 1 : 0
+
+  name         = google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].dns_name
+  managed_zone = replace(var.parent_domain, ".", "-")
+  type         = "NS"
+  ttl          = 60
+  project      = var.gcp_project
+  rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].name_servers)
+  depends_on   = [google_dns_managed_zone.externaldns_managed_zone]
+}
 
 // ----------------------------------------------------------------------------
 // Create Kubernetes service accounts for ExternalDNS
@@ -84,6 +100,18 @@ resource "google_service_account_iam_member" "exdns_external_dns_workload_identi
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/external-dns]"
+}
+
+// ----------------------------------------------------------------------------
+// Create Kubernetes service accounts for ExternalDNS
+// See https://github.com/kubernetes-sigs/external-dns
+// ----------------------------------------------------------------------------
+resource "google_service_account_iam_member" "certmanager_workload_identity_userv3" {
+  count              = var.jx2 ? 0 : 1
+  provider           = google
+  service_account_id = google_service_account.dns_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[cert-manager/cert-manager]"
 }
 
 resource "kubernetes_service_account" "exdns-external-dns" {
@@ -152,7 +180,7 @@ resource "kubernetes_service_account" "cm-cert-manager" {
 }
 
 resource "google_service_account_iam_member" "cm_cainjector_workload_identity_user" {
-  // In case of JX3, we should not create this, right?
+  count              = var.jx2 ? 1 : 0
   provider           = google
   service_account_id = google_service_account.dns_sa.name
   role               = "roles/iam.workloadIdentityUser"

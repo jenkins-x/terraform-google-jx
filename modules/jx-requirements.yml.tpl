@@ -16,8 +16,11 @@ environments:
 - key: staging
 - key: production
 ingress:
+%{ if subdomain != "" }
+  domain: "${subdomain}.${parent_domain}"
+%{ else }
   domain: "${parent_domain}"
-  externalDNS: ${domain_enabled}
+%{ endif }
   tls:
     email: "${tls_email}"
     enabled: ${domain_enabled}
@@ -26,7 +29,7 @@ kaniko: true
 storage:
   backup:
     enabled: ${enable_backup}
-%{ if enable_backup }   
+%{ if enable_backup }
     url: ${backup_bucket_url}
 %{ endif }
   logs:
