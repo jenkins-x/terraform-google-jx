@@ -52,3 +52,13 @@ output "connect" {
   description = "The cluster connection string to use once Terraform apply finishes"
   value       = "gcloud container clusters get-credentials ${local.cluster_name} --zone ${var.cluster_location} --project ${var.gcp_project}"
 }
+
+output "externaldns_ns" {
+  description = "ExternalDNS nameservers"
+  value       = module.dns.externaldns_ns
+}
+
+output "externaldns_dns_name" {
+  description = "ExternalDNS name"
+  value       = module.dns.externaldns_dns_name
+}

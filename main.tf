@@ -12,12 +12,12 @@ terraform {
 // ----------------------------------------------------------------------------
 provider "google" {
   project = var.gcp_project
-  version = ">= 2.12.0"
+  version = ">= 3.46.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  version = ">= 2.12.0"
+  version = ">= 3.46.0"
 }
 
 provider "random" {
@@ -234,6 +234,7 @@ module "dns" {
   parent_domain       = var.parent_domain
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   jx2                 = var.jx2
+  subdomain           = var.subdomain
 }
 
 // ----------------------------------------------------------------------------
@@ -269,6 +270,7 @@ locals {
     // DNS
     domain_enabled = var.parent_domain != "" ? true : false
     parent_domain  = var.parent_domain
+    subdomain      = var.subdomain
     tls_email      = var.tls_email
 
     version_stream_ref = var.version_stream_ref

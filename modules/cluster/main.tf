@@ -121,10 +121,6 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
   data = {
     "jx-requirements.yml" = var.content
   }
-
-  lifecycle {
-    ignore_changes = all
-  }
   depends_on = [
     google_container_cluster.jx_cluster
   ]
