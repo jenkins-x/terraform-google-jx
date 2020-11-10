@@ -54,6 +54,7 @@ variable "parent_domain" {
 variable "subdomain" {
   description = "Optional sub domain for the installation"
   type        = string
+  default     = ""
 }
 
 variable "tls_email" {
