@@ -11,6 +11,12 @@ variable "cluster_location" {
   type        = string
 }
 
+variable "cluster_network" {
+  description = "The name of the network (VPC) to which the cluster is connected"
+  type        = string
+  default     = "default"
+}
+
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
   type        = string

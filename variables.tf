@@ -27,6 +27,12 @@ variable "cluster_location" {
   default     = "us-central1-a"
 }
 
+variable "cluster_network" {
+  description = "The name of the network (VPC) to which the cluster is connected"
+  type        = string
+  default     = "default"
+}
+
 variable "bucket_location" {
   description = "Bucket location for storage"
   type        = string
