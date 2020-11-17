@@ -158,15 +158,14 @@ module "cluster" {
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
-
-  node_machine_type = var.node_machine_type
-  node_disk_size    = var.node_disk_size
-  node_disk_type    = var.node_disk_type
-  node_preemptible  = var.node_preemptible
-  min_node_count    = var.min_node_count
-  max_node_count    = var.max_node_count
-  release_channel   = var.release_channel
-  resource_labels   = var.resource_labels
+  node_machine_type   = var.node_machine_type
+  node_disk_size      = var.node_disk_size
+  node_disk_type      = var.node_disk_type
+  node_preemptible    = var.node_preemptible
+  min_node_count      = var.min_node_count
+  max_node_count      = var.max_node_count
+  release_channel     = var.release_channel
+  resource_labels     = var.resource_labels
 
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
@@ -236,6 +235,9 @@ module "dns" {
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   jx2                 = var.jx2
   subdomain           = var.subdomain
+  depends_on = [
+    module.cluster
+  ]
 }
 
 // ----------------------------------------------------------------------------
