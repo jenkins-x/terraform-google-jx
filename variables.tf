@@ -26,6 +26,12 @@ variable "zone" {
   default     = ""
 }
 
+variable "cluster_network" {
+  description = "The name of the network (VPC) to which the cluster is connected"
+  type        = string
+  default     = "default"
+}
+
 variable "bucket_location" {
   description = "Bucket location for storage"
   type        = string
@@ -50,6 +56,12 @@ variable "parent_domain" {
   default     = ""
 }
 
+variable "subdomain" {
+  description = "Optional sub domain for the installation"
+  type        = string
+  default     = ""
+}
+
 variable "tls_email" {
   description = "Email used by Let's Encrypt. Required for TLS when parent_domain is specified"
   type        = string
@@ -59,7 +71,7 @@ variable "tls_email" {
 variable "create_ui_sa" {
   description = "Whether the service accounts for the UI should be created"
   type        = bool
-  default     = false
+  default     = true
 }
 
 // ----------------------------------------------------------------------------

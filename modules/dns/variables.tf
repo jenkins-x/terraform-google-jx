@@ -16,6 +16,11 @@ variable "parent_domain" {
   type        = string
 }
 
+variable "subdomain" {
+  description = "Optional sub domain for the installation"
+  type        = string
+}
+
 variable "jenkins_x_namespace" {
   description = "Kubernetes namespace to install Jenkins X in"
   type        = string

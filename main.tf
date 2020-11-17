@@ -12,12 +12,12 @@ terraform {
 // ----------------------------------------------------------------------------
 provider "google" {
   project = var.gcp_project
-  version = ">= 2.12.0"
+  version = ">= 3.46.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  version = ">= 2.12.0"
+  version = ">= 3.46.0"
 }
 
 provider "random" {
@@ -77,9 +77,9 @@ resource "random_pet" "current" {
 }
 
 locals {
-  cluster_name   = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
+  cluster_name = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
   # provide backwards compatibility with the deprecated zone variable
-  location       = "${var.zone != "" ? var.zone : var.cluster_location}"
+  location       = var.zone != "" ? var.zone : var.cluster_location
   external_vault = var.vault_url != "" ? true : false
 }
 
@@ -166,13 +166,13 @@ module "cluster" {
   release_channel     = var.release_channel
   resource_labels     = var.resource_labels
 
-  create_ui_sa        = var.create_ui_sa
-  jx2                 = var.jx2
-  content             = local.content
+  create_ui_sa = var.create_ui_sa
+  jx2          = var.jx2
+  content      = local.content
 
-  jx_git_url          = var.jx_git_url
-  jx_bot_username     = var.jx_bot_username
-  jx_bot_token        = var.jx_bot_token
+  jx_git_url      = var.jx_git_url
+  jx_bot_username = var.jx_bot_username
+  jx_bot_token    = var.jx_bot_token
 }
 
 // ----------------------------------------------------------------------------
@@ -233,6 +233,7 @@ module "dns" {
   parent_domain       = var.parent_domain
   jenkins_x_namespace = module.cluster.jenkins_x_namespace
   jx2                 = var.jx2
+  subdomain           = var.subdomain
   depends_on = [
     module.cluster
   ]
@@ -271,6 +272,7 @@ locals {
     // DNS
     domain_enabled = var.parent_domain != "" ? true : false
     parent_domain  = var.parent_domain
+    subdomain      = var.subdomain
     tls_email      = var.tls_email
 
     version_stream_ref = var.version_stream_ref

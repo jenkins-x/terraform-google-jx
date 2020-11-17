@@ -11,6 +11,12 @@ variable "cluster_location" {
   type        = string
 }
 
+variable "cluster_network" {
+  description = "The name of the network (VPC) to which the cluster is connected"
+  type        = string
+  default     = "default"
+}
+
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
   type        = string
@@ -145,6 +151,11 @@ variable "enable_kubernetes_alpha" {
 
 variable "enable_legacy_abac" {
   type    = bool
+  default = false
+}
+
+variable "enable_shielded_nodes" {
+  type    = bool
   default = true
 }
 
@@ -172,9 +183,9 @@ variable "logging_service" {
 
 // service accounts
 variable "create_ui_sa" {
-  description = "Whether the service accounts for the UI should be created"
+  description = "Whether the cloud service account for the UI should be created"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "jx2" {

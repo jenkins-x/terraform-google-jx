@@ -198,35 +198,13 @@ resource "kubernetes_service_account" "tekton_sa" {
 
 // ----------------------------------------------------------------------------
 // UI
-resource "kubernetes_service_account" "jxui_sa" {
-  count                           = var.create_ui_sa && var.jx2 ? 1 : 0
-  automount_service_account_token = true
-  metadata {
-    name      = "jxui-sa"
-    namespace = var.jenkins_x_namespace
-    annotations = {
-      "iam.gke.io/gcp-service-account" = google_service_account.jxui_sa[0].email
-    }
-  }
-  lifecycle {
-    ignore_changes = [
-      metadata[0].labels,
-      metadata[0].annotations,
-      secret
-    ]
-  }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
-}
-
 resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
   count = var.create_ui_sa ? 1 : 0
 
   provider           = google
   service_account_id = google_service_account.jxui_sa[0].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jxui-sa]"
+  member             = "serviceAccount:${var.gcp_project}.svc.id.goog[${var.jenkins_x_namespace}/jx-pipelines-visualizer]"
   depends_on = [
     google_container_cluster.jx_cluster
   ]
@@ -235,20 +213,26 @@ resource "google_service_account_iam_member" "jxui_sa_workload_identity_user" {
 // ----------------------------------------------------------------------------
 // Boot
 resource "google_service_account" "boot_sa" {
+  count = var.jx2 ? 0 : 1
+
   provider     = google
   account_id   = "${var.cluster_name}-boot"
   display_name = substr("jx boot service account for cluster ${var.cluster_name}", 0, 100)
 }
 
 resource "google_project_iam_member" "boot_sa_storage_object_admin_binding" {
+  count = var.jx2 ? 0 : 1
+
   provider = google
   role     = "roles/secretmanager.admin"
-  member   = "serviceAccount:${google_service_account.boot_sa.email}"
+  member   = "serviceAccount:${google_service_account.boot_sa[count.index].email}"
 }
 
 resource "google_service_account_iam_member" "boot_sa_workload_identity_user" {
+  count = var.jx2 ? 0 : 1
+
   provider           = google
-  service_account_id = google_service_account.boot_sa.name
+  service_account_id = google_service_account.boot_sa[count.index].name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[jx-git-operator/jx-boot-job]"
   depends_on = [

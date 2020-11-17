@@ -10,11 +10,18 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.cluster_location
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  logging_service         = var.logging_service
-  monitoring_service      = var.monitoring_service
   network                 = google_compute_network.vpc_network.id
   subnetwork              = google_compute_subnetwork.vpc_subnet.id
   
+  enable_shielded_nodes   = var.enable_shielded_nodes
+  initial_node_count      = var.min_node_count
+
+  // should disable master auth
+  master_auth {
+    username = ""
+    password = ""
+  }
+
   maintenance_policy {
     daily_maintenance_window {
       start_time = "03:00"
@@ -121,6 +128,15 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
+module "jx-health" {
+  count  = var.jx2 ? 0 : 1
+  source = "github.com/jenkins-x/terraform-jx-health?ref=main"
+
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
+}
+
 // ----------------------------------------------------------------------------
 // Add main Jenkins X Kubernetes namespace
 // 
@@ -157,12 +173,48 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
   data = {
     "jx-requirements.yml" = var.content
   }
+  depends_on = [
+    google_container_cluster.jx_cluster
+  ]
+}
+
+resource "helm_release" "jx-git-operator" {
+  count = var.jx2 ? 0 : 1
+
+  provider         = helm
+  name             = "jx-git-operator"
+  chart            = "jx-git-operator"
+  namespace        = "jx-git-operator"
+  repository       = "https://storage.googleapis.com/jenkinsxio/charts"
+  create_namespace = true
+
+  set {
+    name  = "bootServiceAccount.enabled"
+    value = true
+  }
+  set {
+    name  = "bootServiceAccount.annotations.iam\\.gke\\.io/gcp-service-account"
+    value = "${var.cluster_name}-boot@${var.gcp_project}.iam.gserviceaccount.com"
+  }
+  set {
+    name  = "env.NO_RESOURCE_APPLY"
+    value = true
+  }
+  set {
+    name  = "url"
+    value = var.jx_git_url
+  }
+  set {
+    name  = "username"
+    value = var.jx_bot_username
+  }
+  set {
+    name  = "password"
+    value = var.jx_bot_token
+  }
 
   lifecycle {
-    ignore_changes = [
-      metadata,
-      data
-    ]
+    ignore_changes = all
   }
   depends_on = [
     google_container_node_pool.primary_nodes

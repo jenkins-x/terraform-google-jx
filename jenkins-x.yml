@@ -27,5 +27,11 @@ pipelineConfig:
             command: make
             args:
             - lint
+          - name: terraform-sec
+            command: tfsec
+            image: liamg/tfsec:v0.28.1
+            args:
+            - /workspace/source  
+            - --soft-fail
           - name: terraform-apply-and-test
             command: ./scripts/ci.sh           
