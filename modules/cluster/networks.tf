@@ -13,7 +13,7 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   project       = var.gcp_project
   ip_cidr_range = "192.168.1.0/24"
   region        = var.cluster_location
-  network       = google_compute_network.vpc_network.id
+  network       = google_compute_network.vpc_network[1].id
 }
 
 # firewall
@@ -21,7 +21,7 @@ resource "google_compute_firewall" "firewall" {
   count         = var.cluster_network == null ? 1 : 0
   name          = "${var.cluster_name}-ingress"
   project       = var.gcp_project
-  network       = google_compute_network.vpc_network.id
+  network       = google_compute_network.vpc_network[1].id
   source_ranges = ["0.0.0.0/0"]
 
   allow {
@@ -50,15 +50,15 @@ resource "google_compute_router" "nat_router" {
   name    = "${var.cluster_name}-nat-router"
   project = var.gcp_project
   region  = var.cluster_location
-  network = google_compute_network.vpc_network.id
+  network = google_compute_network.vpc_network[1].id
 }
 
 # cloud nat
 resource "google_compute_router_nat" "nat" {
   count                              = var.cluster_network == null ? 1 : 0
   name                               = "${var.cluster_name}-nat"
-  router                             = google_compute_router.nat_router.name
-  region                             = google_compute_router.nat_router.region
+  router                             = google_compute_router.nat_router[1].name
+  region                             = google_compute_router.nat_router[1].region
   nat_ip_allocate_option             = "MANUAL_ONLY"
   nat_ips                            = google_compute_address.nat_ip.*.self_link
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
