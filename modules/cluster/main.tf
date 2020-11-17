@@ -10,8 +10,8 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.cluster_location
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  network                 = var.cluster_network == null ? google_compute_network.vpc_network.id : var.cluster_network
-  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet.id: null
+  network                 = var.cluster_network == null ? google_compute_network.vpc_network[1].id : var.cluster_network
+  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet[1].id: null
   enable_shielded_nodes   = var.enable_shielded_nodes
   initial_node_count      = var.min_node_count
 
@@ -131,7 +131,7 @@ module "jx-health" {
   source = "github.com/jenkins-x/terraform-jx-health?ref=main"
 
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary_nodes
   ]
 }
 
