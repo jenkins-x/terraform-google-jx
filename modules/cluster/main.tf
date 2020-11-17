@@ -75,7 +75,6 @@ resource "google_container_cluster" "jx_cluster" {
   resource_labels = var.resource_labels
 
   remove_default_node_pool = true
-  initial_node_count       = 1
 }
 
 resource "google_container_node_pool" "primary_nodes" {
