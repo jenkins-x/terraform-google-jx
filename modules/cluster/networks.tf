@@ -1,5 +1,6 @@
 # VPC Network
 resource "google_compute_network" "vpc_network" {
+  count                   = var.cluster_network == null ? 1 : 0
   name                    = "${var.cluster_name}-network"
   project                 = var.gcp_project
   auto_create_subnetworks = false
@@ -7,23 +8,25 @@ resource "google_compute_network" "vpc_network" {
 
 # subnet for vpc
 resource "google_compute_subnetwork" "vpc_subnet" {
-  name                    = "${var.cluster_name}-subnet"
-  project                 = var.gcp_project
-  ip_cidr_range           = "192.168.1.0/24"
-  region                  = var.cluster_location
-  network                 = google_compute_network.vpc_network.id
+  count         = var.cluster_network == null ? 1 : 0
+  name          = "${var.cluster_name}-subnet"
+  project       = var.gcp_project
+  ip_cidr_range = "192.168.1.0/24"
+  region        = var.cluster_location
+  network       = google_compute_network.vpc_network.id
 }
 
 # firewall
 resource "google_compute_firewall" "firewall" {
-  name                    = "${var.cluster_name}-ingress"
-  project                 = var.gcp_project
-  network                 = google_compute_network.vpc_network.id
-  source_ranges           = ["0.0.0.0/0"]
+  count         = var.cluster_network == null ? 1 : 0
+  name          = "${var.cluster_name}-ingress"
+  project       = var.gcp_project
+  network       = google_compute_network.vpc_network.id
+  source_ranges = ["0.0.0.0/0"]
 
   allow {
-    protocol  = "tcp"
-    ports     = ["22", "80", "443", "15017", "10250", "8443"]
+    protocol = "tcp"
+    ports    = ["22", "80", "443", "15017", "10250", "8443"]
     # 22 because it was in the google example: default
     # 443: because of nodes
     # 15017 and 10250 because of istio and knative
@@ -35,6 +38,7 @@ resource "google_compute_firewall" "firewall" {
 
 # external IP for clusterIP
 resource "google_compute_address" "nat_ip" {
+  count   = var.cluster_network == null ? 1 : 0
   name    = "${var.cluster_name}-nat"
   project = var.gcp_project
   region  = var.cluster_location
@@ -42,6 +46,7 @@ resource "google_compute_address" "nat_ip" {
 
 # cloud router (to be used by cloud nat)
 resource "google_compute_router" "nat_router" {
+  count   = var.cluster_network == null ? 1 : 0
   name    = "${var.cluster_name}-nat-router"
   project = var.gcp_project
   region  = var.cluster_location
@@ -50,6 +55,7 @@ resource "google_compute_router" "nat_router" {
 
 # cloud nat
 resource "google_compute_router_nat" "nat" {
+  count                              = var.cluster_network == null ? 1 : 0
   name                               = "${var.cluster_name}-nat"
   router                             = google_compute_router.nat_router.name
   region                             = google_compute_router.nat_router.region

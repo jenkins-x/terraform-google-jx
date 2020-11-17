@@ -10,9 +10,8 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.cluster_location
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  network                 = google_compute_network.vpc_network.id
-  subnetwork              = google_compute_subnetwork.vpc_subnet.id
-  
+  network                 = var.cluster_network == null ? google_compute_network.vpc_network.id : var.cluster_network
+  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet.id: null
   enable_shielded_nodes   = var.enable_shielded_nodes
   initial_node_count      = var.min_node_count
 
