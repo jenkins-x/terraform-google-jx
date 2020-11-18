@@ -6,11 +6,6 @@ variable "gcp_project" {
   type        = string
 }
 
-variable "cluster_location" {
-  description = "The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region"
-  type        = string
-}
-
 // ----------------------------------------------------------------------------
 // Optional Variables
 // ----------------------------------------------------------------------------
@@ -24,6 +19,12 @@ variable "zone" {
   description = "Zone in which to create the cluster (deprecated, use cluster_location instead)"
   type        = string
   default     = ""
+}
+
+variable "cluster_location" {
+  description = "The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region"
+  type        = string
+  default     = "us-central1-a"
 }
 
 variable "cluster_network" {
@@ -116,7 +117,7 @@ variable "velero_ttl" {
 variable "node_machine_type" {
   description = "Node type for the Kubernetes cluster"
   type        = string
-  default     = "n1-standard-1"
+  default     = "n1-standard-2"
 }
 
 variable "node_preemptible" {
@@ -128,19 +129,19 @@ variable "node_preemptible" {
 variable "min_node_count" {
   description = "Minimum number of cluster nodes"
   type        = number
-  default     = 1
+  default     = 3
 }
 
 variable "max_node_count" {
   description = "Maximum number of cluster nodes"
   type        = number
-  default     = 1
+  default     = 5
 }
 
 variable "node_disk_size" {
   description = "Node disk size in GB"
   type        = string
-  default     = "10"
+  default     = "100"
 }
 
 variable "node_disk_type" {
@@ -203,7 +204,7 @@ variable "version_stream_ref" {
 variable "jx2" {
   description = "Is a Jenkins X 2 install"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "gsm" {
