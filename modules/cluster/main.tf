@@ -10,16 +10,10 @@ resource "google_container_cluster" "jx_cluster" {
   location                = var.cluster_location
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
-  network                 = var.cluster_network == null ? google_compute_network.vpc_network.id : var.cluster_network
-  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet.id: null
+  network                 = var.cluster_network == null ? google_compute_network.vpc_network[0].id : var.cluster_network
+  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet[0].id : null
   enable_shielded_nodes   = var.enable_shielded_nodes
   initial_node_count      = var.min_node_count
-
-  // should disable master auth
-  master_auth {
-    username = ""
-    password = ""
-  }
 
   maintenance_policy {
     daily_maintenance_window {
@@ -75,7 +69,6 @@ resource "google_container_cluster" "jx_cluster" {
   resource_labels = var.resource_labels
 
   remove_default_node_pool = true
-  initial_node_count       = 1
 }
 
 resource "google_container_node_pool" "primary_nodes" {
@@ -132,7 +125,7 @@ module "jx-health" {
   source = "github.com/jenkins-x/terraform-jx-health?ref=main"
 
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary_nodes
   ]
 }
 
@@ -214,45 +207,6 @@ resource "helm_release" "jx-git-operator" {
 
   lifecycle {
     ignore_changes = all
-  }
-  depends_on = [
-    google_container_node_pool.primary_nodes
-  ]
-}
-
-resource "helm_release" "jx-git-operator" {
-  count = var.jx2 ? 0 : 1
-
-  provider         = helm
-  name             = "jx-git-operator"
-  chart            = "jx-git-operator"
-  namespace        = "jx-git-operator"
-  repository       = "https://storage.googleapis.com/jenkinsxio/charts"
-  create_namespace = true
-
-  set {
-    name  = "bootServiceAccount.enabled"
-    value = true
-  }
-  set {
-    name  = "bootServiceAccount.annotations.iam\\.gke\\.io/gcp-service-account"
-    value = "${var.cluster_name}-boot@${var.gcp_project}.iam.gserviceaccount.com"
-  }
-  set {
-    name  = "env.NO_RESOURCE_APPLY"
-    value = true
-  }
-  set {
-    name  = "url"
-    value = var.jx_git_url
-  }
-  set {
-    name  = "username"
-    value = var.jx_bot_username
-  }
-  set {
-    name  = "password"
-    value = var.jx_bot_token
   }
 
   depends_on = [
