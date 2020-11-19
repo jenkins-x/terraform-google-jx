@@ -16,6 +16,18 @@ variable "parent_domain" {
   type        = string
 }
 
+variable "parent_domain_gcp_project" {
+  description = "The GCP project the parent domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project."
+  type        = string
+  default     = ""
+}
+
+variable "apex_domain_integration_enabled" {
+  description = "If parent / apex domain is managed in the same "
+  type        = bool
+  default     = true
+}
+
 variable "subdomain" {
   description = "Optional sub domain for the installation"
   type        = string

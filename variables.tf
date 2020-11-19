@@ -52,7 +52,13 @@ variable "force_destroy" {
 }
 
 variable "parent_domain" {
-  description = "The parent domain to be allocated to the cluster"
+  description = "The parent / apex domain to be used for the cluster"
+  type        = string
+  default     = ""
+}
+
+variable "parent_domain_gcp_project" {
+  description = "The GCP project the parent domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project."
   type        = string
   default     = ""
 }
@@ -61,6 +67,12 @@ variable "subdomain" {
   description = "Optional sub domain for the installation"
   type        = string
   default     = ""
+}
+
+variable "apex_domain_integration_enabled" {
+  description = "If parent / apex domain is managed in the same "
+  type        = bool
+  default     = true
 }
 
 variable "tls_email" {
