@@ -32,50 +32,27 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 // DNS configuration
 // ----------------------------------------------------------------------------
 
-// if we have a bar.io add recordsets to the same zone
-resource "google_dns_managed_zone" "externaldns_managed_zone" {
-  count = var.parent_domain != "" && var.subdomain == "" ? 1 : 0
-
-  name        = replace(var.parent_domain, ".", "-")
-  dns_name    = "${var.parent_domain}."
-  description = "JX DNS managed zone managed by terraform"
-
-  force_destroy = true
-}
-
-resource "google_dns_record_set" "externaldns_record_set" {
-  count = var.parent_domain != "" && var.subdomain == "" ? 1 : 0
-
-  name         = google_dns_managed_zone.externaldns_managed_zone[count.index].dns_name
-  managed_zone = google_dns_managed_zone.externaldns_managed_zone[count.index].name
-  type         = "NS"
-  ttl          = 60
-  project      = var.gcp_project
-  rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone[count.index].name_servers)
-  depends_on   = [google_dns_managed_zone.externaldns_managed_zone]
-}
-
-// if we have a foo.bar.io add recordsets to the parent zone
+// if we have a subdomain managed the zone here and add recordsets to the parent zone
 resource "google_dns_managed_zone" "externaldns_managed_zone_with_sub" {
   count = var.parent_domain != "" && var.subdomain != "" ? 1 : 0
 
   name        = "${replace(var.subdomain, ".", "-")}-${replace(var.parent_domain, ".", "-")}-sub"
   dns_name    = "${var.subdomain}.${var.parent_domain}."
-  description = "JX DNS managed zone managed by terraform"
+  description = "JX DNS subdomain zone managed by terraform"
 
   force_destroy = true
 }
 
 resource "google_dns_record_set" "externaldns_record_set_with_sub" {
-  count = var.parent_domain != "" && var.subdomain != "" ? 1 : 0
+  count = var.parent_domain != "" && var.subdomain != "" && var.apex_domain_integration_enabled ? 1 : 0
 
   name         = google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].dns_name
   managed_zone = replace(var.parent_domain, ".", "-")
   type         = "NS"
   ttl          = 60
-  project      = var.gcp_project
+  project      = var.parent_domain_gcp_project
   rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].name_servers)
-  depends_on   = [google_dns_managed_zone.externaldns_managed_zone]
+  depends_on   = [google_dns_managed_zone.externaldns_managed_zone_with_sub]
 }
 
 // ----------------------------------------------------------------------------
