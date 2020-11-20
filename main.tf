@@ -229,12 +229,15 @@ module "backup" {
 module "dns" {
   source = "./modules/dns"
 
-  gcp_project         = var.gcp_project
-  cluster_name        = local.cluster_name
-  parent_domain       = var.parent_domain
-  jenkins_x_namespace = module.cluster.jenkins_x_namespace
-  jx2                 = var.jx2
-  subdomain           = var.subdomain
+  gcp_project                     = var.gcp_project
+  cluster_name                    = local.cluster_name
+  parent_domain                   = var.parent_domain
+  jenkins_x_namespace             = module.cluster.jenkins_x_namespace
+  jx2                             = var.jx2
+  subdomain                       = var.subdomain
+  parent_domain_gcp_project       = var.parent_domain_gcp_project != "" ? var.parent_domain_gcp_project : var.gcp_project
+  apex_domain_integration_enabled = var.apex_domain_integration_enabled
+
   depends_on = [
     module.cluster
   ]

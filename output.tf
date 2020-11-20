@@ -43,6 +43,12 @@ output "tekton_sa_email" {
   value       = module.cluster.tekton_sa_email
 }
 
+output "tekton_sa_name" {
+  description = "The Tekton service account name, useful to provide further IAM bindings"
+  value       = module.cluster.tekton_sa_name
+}
+
+
 output "jx_requirements" {
   description = "The jx-requirements rendered output"
   value       = local.content

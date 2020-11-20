@@ -108,11 +108,12 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| apex\_domain\_integration\_enabled | If parent / apex domain is managed in the same | `bool` | `true` | no |
 | bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
 | cluster\_network | The name of the network (VPC) to which the cluster is connected | `string` | `"default"` | no |
-| create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `false` | no |
+| create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `true` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
@@ -121,6 +122,9 @@ The following two paragraphs provide the full list of configuration and output v
 | gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
 | jx2 | Is a Jenkins X 2 install | `bool` | `true` | no |
+| jx\_bot\_token | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
+| jx\_bot\_username | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
+| jx\_git\_url | URL for the Jenins X cluster git repository | `string` | `""` | no |
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
@@ -128,9 +132,11 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
-| parent\_domain | The parent domain to be allocated to the cluster | `string` | `""` | no |
+| parent\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
+| parent\_domain\_gcp\_project | The GCP project the parent domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
 | release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
+| subdomain | Optional sub domain for the installation | `string` | `""` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified | `string` | `""` | no |
 | vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
 | velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |
@@ -149,12 +155,17 @@ The following two paragraphs provide the full list of configuration and output v
 | cluster\_location | The location of the created Kubernetes cluster |
 | cluster\_name | The name of the created Kubernetes cluster |
 | connect | The cluster connection string to use once Terraform apply finishes |
+| externaldns\_dns\_name | ExternalDNS name |
+| externaldns\_ns | ExternalDNS nameservers |
 | gcp\_project | The GCP project in which the resources got created |
 | jx\_requirements | The jx-requirements rendered output |
 | log\_storage\_url | The URL to the bucket for log storage |
 | report\_storage\_url | The URL to the bucket for report storage |
 | repository\_storage\_url | The URL to the bucket for artifact storage |
+| tekton\_sa\_email | The Tekton service account email address, useful to provide further IAM bindings |
+| tekton\_sa\_name | The Tekton service account name, useful to provide further IAM bindings |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
+
 ### Running `jx boot`
 
 A terraform output (_jx\_requirements_) is available after applying this Terraform module.

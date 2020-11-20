@@ -72,9 +72,94 @@ variable "node_machine_type" {
   type        = string
 }
 
+// https://cloud.google.com/compute/docs/machine-types
 variable "machine_types_cpu" {
   type = map
   default = {
+    "e2-standard-2"  = 2
+    "e2-standard-4"  = 4
+    "e2-standard-8"  = 8
+    "e2-standard-16" = 16
+    "e2-standard-32" = 32
+
+    "e2-highmem-2"  = 2
+    "e2-highmem-4"  = 4
+    "e2-highmem-8"  = 8
+    "e2-highmem-16" = 16
+
+    "e2-highcpu-2"  = 2
+    "e2-highcpu-4"  = 4
+    "e2-highcpu-8"  = 8
+    "e2-highcpu-16" = 16
+    "e2-highcpu-32" = 32
+
+    "n2-standard-2"  = 2
+    "n2-standard-4"  = 4
+    "n2-standard-8"  = 8
+    "n2-standard-16" = 16
+    "n2-standard-32" = 32
+    "n2-standard-48" = 48
+    "n2-standard-64" = 64
+    "n2-standard-80" = 80
+
+    "n2-highmem-2"  = 2
+    "n2-highmem-4"  = 4
+    "n2-highmem-8"  = 8
+    "n2-highmem-16" = 16
+    "n2-highmem-32" = 32
+    "n2-highmem-48" = 48
+    "n2-highmem-64" = 64
+    "n2-highmem-80" = 80
+
+    "n2-highcpu-2"  = 2
+    "n2-highcpu-4"  = 4
+    "n2-highcpu-8"  = 8
+    "n2-highcpu-16" = 16
+    "n2-highcpu-32" = 32
+    "n2-highcpu-48" = 48
+    "n2-highcpu-64" = 64
+    "n2-highcpu-80" = 80
+
+    "n2d-standard-2"   = 2
+    "n2d-standard-4"   = 4
+    "n2d-standard-8"   = 8
+    "n2d-standard-16"  = 16
+    "n2d-standard-32"  = 32
+    "n2d-standard-48"  = 48
+    "n2d-standard-64"  = 64
+    "n2d-standard-80"  = 80
+    "n2d-standard-96"  = 96
+    "n2d-standard-128" = 128
+    "n2d-standard-224" = 224
+
+    "n2d-highmem-2"  = 2
+    "n2d-highmem-4"  = 4
+    "n2d-highmem-8"  = 8
+    "n2d-highmem-16" = 16
+    "n2d-highmem-32" = 32
+    "n2d-highmem-48" = 48
+    "n2d-highmem-64" = 64
+    "n2d-highmem-80" = 80
+    "n2d-highmem-96" = 96
+
+    "n2d-highcpu-2"   = 2
+    "n2d-highcpu-4"   = 4
+    "n2d-highcpu-8"   = 8
+    "n2d-highcpu-16"  = 16
+    "n2d-highcpu-32"  = 32
+    "n2d-highcpu-48"  = 48
+    "n2d-highcpu-64"  = 64
+    "n2d-highcpu-80"  = 80
+    "n2d-highcpu-96"  = 96
+    "n2d-highcpu-128" = 128
+    "n2d-highcpu-224" = 224
+
+    "c2-standard-4"  = 4
+    "c2-standard-8"  = 8
+    "c2-standard-16" = 16
+    "c2-standard-30" = 30
+    "c2-standard-60" = 60
+
     "n1-standard-1"  = 1
     "n1-standard-2"  = 2
     "n1-standard-4"  = 4
@@ -83,12 +168,112 @@ variable "machine_types_cpu" {
     "n1-standard-32" = 32
     "n1-standard-64" = 64
     "n1-standard-96" = 96
+
+    "n1-highmem-2"  = 2
+    "n1-highmem-4"  = 4
+    "n1-highmem-8"  = 8
+    "n1-highmem-16" = 16
+    "n1-highmem-32" = 32
+    "n1-highmem-64" = 64
+    "n1-highmem-96" = 96
+
+    "n1-highcpu-2"  = 2
+    "n1-highcpu-4"  = 4
+    "n1-highcpu-8"  = 8
+    "n1-highcpu-16" = 16
+    "n1-highcpu-32" = 32
+    "n1-highcpu-64" = 64
+    "n1-highcpu-96" = 96
   }
 }
 
 variable "machine_types_memory" {
   type = map
   default = {
+    "e2-standard-2"  = 8
+    "e2-standard-4"  = 16
+    "e2-standard-8"  = 32
+    "e2-standard-16" = 64
+    "e2-standard-32" = 128
+
+    "e2-highmem-2"  = 16
+    "e2-highmem-4"  = 32
+    "e2-highmem-8"  = 64
+    "e2-highmem-16" = 128
+
+    "e2-highcpu-2"  = 2
+    "e2-highcpu-4"  = 4
+    "e2-highcpu-8"  = 8
+    "e2-highcpu-16" = 16
+    "e2-highcpu-32" = 32
+
+    "n2-standard-2"  = 8
+    "n2-standard-4"  = 16
+    "n2-standard-8"  = 32
+    "n2-standard-16" = 64
+    "n2-standard-32" = 128
+    "n2-standard-48" = 192
+    "n2-standard-64" = 256
+    "n2-standard-80" = 320
+
+    "n2-highmem-2"  = 16
+    "n2-highmem-4"  = 32
+    "n2-highmem-8"  = 64
+    "n2-highmem-16" = 128
+    "n2-highmem-32" = 256
+    "n2-highmem-48" = 384
+    "n2-highmem-64" = 512
+    "n2-highmem-80" = 640
+
+    "n2-highcpu-2"  = 2
+    "n2-highcpu-4"  = 4
+    "n2-highcpu-8"  = 8
+    "n2-highcpu-16" = 16
+    "n2-highcpu-32" = 32
+    "n2-highcpu-48" = 48
+    "n2-highcpu-64" = 64
+    "n2-highcpu-80" = 80
+
+    "n2d-standard-2"   = 2
+    "n2d-standard-4"   = 4
+    "n2d-standard-8"   = 8
+    "n2d-standard-16"  = 16
+    "n2d-standard-32"  = 32
+    "n2d-standard-48"  = 48
+    "n2d-standard-64"  = 64
+    "n2d-standard-80"  = 80
+    "n2d-standard-96"  = 96
+    "n2d-standard-128" = 128
+    "n2d-standard-224" = 224
+
+    "n2d-highmem-2"  = 16
+    "n2d-highmem-4"  = 32
+    "n2d-highmem-8"  = 64
+    "n2d-highmem-16" = 128
+    "n2d-highmem-32" = 256
+    "n2d-highmem-48" = 384
+    "n2d-highmem-64" = 512
+    "n2d-highmem-80" = 640
+    "n2d-highmem-96" = 768
+
+    "n2d-highcpu-2"   = 2
+    "n2d-highcpu-4"   = 4
+    "n2d-highcpu-8"   = 8
+    "n2d-highcpu-16"  = 16
+    "n2d-highcpu-32"  = 32
+    "n2d-highcpu-48"  = 48
+    "n2d-highcpu-64"  = 64
+    "n2d-highcpu-80"  = 80
+    "n2d-highcpu-96"  = 96
+    "n2d-highcpu-128" = 128
+    "n2d-highcpu-224" = 224
+
+    "c2-standard-4"  = 16
+    "c2-standard-8"  = 32
+    "c2-standard-16" = 64
+    "c2-standard-30" = 120
+    "c2-standard-60" = 240
+
     "n1-standard-1"  = 3.75
     "n1-standard-2"  = 7.50
     "n1-standard-4"  = 15
@@ -97,6 +282,22 @@ variable "machine_types_memory" {
     "n1-standard-32" = 120
     "n1-standard-64" = 240
     "n1-standard-96" = 360
+
+    "n1-highmem-2"  = 13
+    "n1-highmem-4"  = 26
+    "n1-highmem-8"  = 52
+    "n1-highmem-16" = 104
+    "n1-highmem-32" = 208
+    "n1-highmem-64" = 416
+    "n1-highmem-96" = 624
+
+    "n1-highcpu-2"  = 1.8
+    "n1-highcpu-4"  = 3.6
+    "n1-highcpu-8"  = 7.2
+    "n1-highcpu-16" = 14.4
+    "n1-highcpu-32" = 28.8
+    "n1-highcpu-64" = 57.6
+    "n1-highcpu-96" = 86.4
   }
 }
 
