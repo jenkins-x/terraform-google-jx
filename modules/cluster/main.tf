@@ -11,15 +11,10 @@ resource "google_container_cluster" "jx_cluster" {
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
   network                 = var.cluster_network == null ? google_compute_network.vpc_network[1].id : var.cluster_network
-  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet[1].id: null
+  subnetwork              = var.cluster_network == null ? google_compute_subnetwork.vpc_subnet[1].id : null
   enable_shielded_nodes   = var.enable_shielded_nodes
   initial_node_count      = var.min_node_count
 
-  // should disable master auth
-  master_auth {
-    username = ""
-    password = ""
-  }
 
   maintenance_policy {
     daily_maintenance_window {
@@ -29,8 +24,8 @@ resource "google_container_cluster" "jx_cluster" {
 
   private_cluster_config {
     enable_private_endpoint = false
-    enable_private_nodes = true
-    master_ipv4_cidr_block = "172.16.0.0/28"
+    enable_private_nodes    = true
+    master_ipv4_cidr_block  = "172.16.0.0/28"
     master_global_access_config {
       enabled = true
     }
@@ -54,6 +49,8 @@ resource "google_container_cluster" "jx_cluster" {
       disabled = false
     }
   }
+
+  // should disable master auth
 
   master_auth {
     username = ""
