@@ -108,6 +108,8 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| apex\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
+| apex\_domain\_gcp\_project | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
 | apex\_domain\_integration\_enabled | If parent / apex domain is managed in the same | `bool` | `true` | no |
 | bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
@@ -132,12 +134,12 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
-| parent\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
-| parent\_domain\_gcp\_project | The GCP project the parent domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
+| parent\_domain | \*\*Deprecated\*\* Please use apex\_domain variable instead.r | `string` | `""` | no |
+| parent\_domain\_gcp\_project | \*\*Deprecated\*\* Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
 | release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | subdomain | Optional sub domain for the installation | `string` | `""` | no |
-| tls\_email | Email used by Let's Encrypt. Required for TLS when parent\_domain is specified | `string` | `""` | no |
+| tls\_email | Email used by Let's Encrypt. Required for TLS when apex\_domain is specified | `string` | `""` | no |
 | vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
 | velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |
 | velero\_schedule | The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml)) | `string` | `"0 * * * *"` | no |
@@ -196,8 +198,8 @@ The number of prompts depends on how much you have [pre-configured](#inputs) via
 
 ### Using a custom domain
 
-If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _parent\_domain_ and _tls\_email_.
-_parent\_domain_ is the fully qualified domain name you want to use and _tls\_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
+If you want to use a custom domain with your Jenkins X installation, you need to provide values for the [variables](#inputs) _apex\_domain_ and _tls\_email_.
+_apex\_domain_ is the fully qualified domain name you want to use and _tls\_email_ is the email address you want to use for issuing Let's Encrypt TLS certificates.
 
 Before you apply the Terraform configuration, you also need to create a [Cloud DNS managed zone](https://cloud.google.com/dns/zones), with the DNS name in the managed zone matching your custom domain name, for example in the case of _example.jenkins-x.rocks_ as domain:
 
@@ -212,7 +214,7 @@ You can use [DNS checker](https://dnschecker.org/) to check whether your domain 
 
 When a custom domain is provided, Jenkins X uses [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) together with [cert-manager](https://github.com/jetstack/cert-manager) to create A record entries in your managed zone for the various exposed applications.
 
-If _parent_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
+If _apex_domain_ id not set, your cluster will use [nip.io](https://nip.io/) in order to create publicly resolvable URLs of the form ht<span>tp://\<app-name\>-\<environment-name\>.\<cluster-ip\>.nip.io.
 
 ### Production cluster considerations
 
