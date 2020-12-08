@@ -226,17 +226,18 @@ module "backup" {
 
 // ----------------------------------------------------------------------------
 // Setup ExternalDNS
+// TODO: remove parent_domain & parent_domain_gcp_project when their deprecations are complete
 // ----------------------------------------------------------------------------
 module "dns" {
   source = "./modules/dns"
 
   gcp_project                     = var.gcp_project
   cluster_name                    = local.cluster_name
-  parent_domain                   = var.parent_domain
+  apex_domain                     = var.apex_domain != "" ? var.apex_domain : var.parent_domain
   jenkins_x_namespace             = module.cluster.jenkins_x_namespace
   jx2                             = var.jx2
   subdomain                       = var.subdomain
-  parent_domain_gcp_project       = var.parent_domain_gcp_project != "" ? var.parent_domain_gcp_project : var.gcp_project
+  apex_domain_gcp_project         = var.apex_domain_gcp_project != "" ? var.apex_domain_gcp_project : (var.parent_domain_gcp_project != "" ? var.parent_domain_gcp_project : var.gcp_project)
   apex_domain_integration_enabled = var.apex_domain_integration_enabled
 
   depends_on = [
@@ -275,8 +276,10 @@ locals {
     velero_schedule  = var.velero_schedule
     velero_ttl       = var.velero_ttl
     // DNS
-    domain_enabled = var.parent_domain != "" ? true : false
-    parent_domain  = var.parent_domain
+    // TODO: remove parent_domain when its deprecations is complete: domain_enabled = var.apex_domain != "" ? true : false
+    domain_enabled = var.apex_domain != "" ? true : (var.parent_domain != "" ? true : false)
+    // TODO: replace with the following when parent_domain deprecations is complete: apex_domain  = var.apex_domain
+    apex_domain    = var.apex_domain != "" ? var.apex_domain : var.parent_domain
     subdomain      = var.subdomain
     tls_email      = var.tls_email
 

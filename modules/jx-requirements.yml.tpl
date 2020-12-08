@@ -17,9 +17,9 @@ environments:
 - key: production
 ingress:
 %{ if subdomain != "" }
-  domain: "${subdomain}.${parent_domain}"
+  domain: "${subdomain}.${apex_domain}"
 %{ else }
-  domain: "${parent_domain}"
+  domain: "${apex_domain}"
 %{ endif }
   tls:
     email: "${tls_email}"

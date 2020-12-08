@@ -7,7 +7,7 @@ PROJECT=terraform-test-261120
 ZONE=europe-west1-b
 CLUSTER_NAME=tf-${BRANCH_NAME}-${BUILD_NUMBER}
 CLUSTER_NAME=$( echo ${CLUSTER_NAME} | tr  '[:upper:]' '[:lower:]')
-PARENT_DOMAIN="${CLUSTER_NAME}.jenkins-x-test.test"
+APEX_DOMAIN="${CLUSTER_NAME}.jenkins-x-test.test"
 
 function cleanup()
 {
@@ -28,7 +28,7 @@ cat <<EOF > terraform.tfvars
 gcp_project             = "${PROJECT}" 
 cluster_location        = "${ZONE}" 
 cluster_name            = "${CLUSTER_NAME}" 
-parent_domain           = "${PARENT_DOMAIN}" 
+apex_domain             = "${APEX_DOMAIN}" 
 resource_labels         = {powered-by = "jenkins-x"}
 lets_encrypt_production = false
 force_destroy           = true 

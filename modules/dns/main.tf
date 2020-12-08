@@ -32,25 +32,25 @@ resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
 // DNS configuration
 // ----------------------------------------------------------------------------
 
-// if we have a subdomain managed the zone here and add recordsets to the parent zone
+// if we have a subdomain managed the zone here and add recordsets to the apex zone
 resource "google_dns_managed_zone" "externaldns_managed_zone_with_sub" {
-  count = var.parent_domain != "" && var.subdomain != "" ? 1 : 0
+  count = var.apex_domain != "" && var.subdomain != "" ? 1 : 0
 
-  name        = "${replace(var.subdomain, ".", "-")}-${replace(var.parent_domain, ".", "-")}-sub"
-  dns_name    = "${var.subdomain}.${var.parent_domain}."
+  name        = "${replace(var.subdomain, ".", "-")}-${replace(var.apex_domain, ".", "-")}-sub"
+  dns_name    = "${var.subdomain}.${var.apex_domain}."
   description = "JX DNS subdomain zone managed by terraform"
 
   force_destroy = true
 }
 
 resource "google_dns_record_set" "externaldns_record_set_with_sub" {
-  count = var.parent_domain != "" && var.subdomain != "" && var.apex_domain_integration_enabled ? 1 : 0
+  count = var.apex_domain != "" && var.subdomain != "" && var.apex_domain_integration_enabled ? 1 : 0
 
   name         = google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].dns_name
-  managed_zone = replace(var.parent_domain, ".", "-")
+  managed_zone = replace(var.apex_domain, ".", "-")
   type         = "NS"
   ttl          = 60
-  project      = var.parent_domain_gcp_project
+  project      = var.apex_domain_gcp_project
   rrdatas      = flatten(google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].name_servers)
   depends_on   = [google_dns_managed_zone.externaldns_managed_zone_with_sub]
 }

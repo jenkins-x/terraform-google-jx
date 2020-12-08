@@ -4,7 +4,7 @@ pipelineConfig:
     pullRequest:
       pipeline:
         agent:
-          image: gcr.io/jenkinsxio/builder-terraform:0.0.0-SNAPSHOT-PR-1389-1
+          image: gcr.io/jenkinsxio/builder-terraform:2.1.153-772
         stages:
         - name: ci
           environment:

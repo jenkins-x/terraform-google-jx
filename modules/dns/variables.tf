@@ -11,13 +11,13 @@ variable "cluster_name" {
   type        = string
 }
 
-variable "parent_domain" {
-  description = "The parent domain to be allocated to the cluster"
+variable "apex_domain" {
+  description = "The apex domain to be allocated to the cluster"
   type        = string
 }
 
-variable "parent_domain_gcp_project" {
-  description = "The GCP project the parent domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project."
+variable "apex_domain_gcp_project" {
+  description = "The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project."
   type        = string
   default     = ""
 }
