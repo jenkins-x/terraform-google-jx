@@ -18,8 +18,10 @@ environments:
 ingress:
 %{ if subdomain != "" }
   domain: "${subdomain}.${apex_domain}"
+  externalDNS: ${domain_enabled}
 %{ else }
   domain: "${apex_domain}"
+  externalDNS: ${domain_enabled}
 %{ endif }
   tls:
     email: "${tls_email}"
