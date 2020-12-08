@@ -279,9 +279,9 @@ locals {
     // TODO: remove parent_domain when its deprecations is complete: domain_enabled = var.apex_domain != "" ? true : false
     domain_enabled = var.apex_domain != "" ? true : (var.parent_domain != "" ? true : false)
     // TODO: replace with the following when parent_domain deprecations is complete: apex_domain  = var.apex_domain
-    apex_domain    = var.apex_domain != "" ? var.apex_domain : var.parent_domain
-    subdomain      = var.subdomain
-    tls_email      = var.tls_email
+    apex_domain = var.apex_domain != "" ? var.apex_domain : var.parent_domain
+    subdomain   = var.subdomain
+    tls_email   = var.tls_email
 
     version_stream_ref = var.version_stream_ref
     version_stream_url = var.version_stream_url
