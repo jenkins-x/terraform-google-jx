@@ -9,6 +9,7 @@ resource "google_container_cluster" "jx_cluster" {
   description             = "jenkins-x cluster"
   location                = var.cluster_location
   network                 = var.cluster_network
+  subnetwork              = var.cluster_subnetwork
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
   enable_legacy_abac      = var.enable_legacy_abac
   enable_shielded_nodes   = var.enable_shielded_nodes
@@ -73,7 +74,31 @@ resource "google_container_cluster" "jx_cluster" {
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
     }
+  }
 
+  dynamic "private_cluster_config" {
+    for_each = var.private_cluster ? [1] : []
+    content {
+      enable_private_nodes    = true
+      enable_private_endpoint = true
+      master_ipv4_cidr_block  = var.master_range
+      master_global_access_config {
+        enabled = false
+      }
+    }
+  }
+
+  dynamic "ip_allocation_policy" {
+    for_each = var.private_cluster ? [1] : []
+    content {
+      cluster_secondary_range_name  = var.svc_range_name
+      services_secondary_range_name = var.pod_range_name
+    }
+  }
+
+  dynamic "master_authorized_networks_config" {
+    for_each = var.private_cluster ? [1] : []
+    content {}
   }
 }
 

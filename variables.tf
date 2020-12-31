@@ -30,7 +30,7 @@ variable "cluster_location" {
 variable "cluster_network" {
   description = "The name of the network (VPC) to which the cluster is connected"
   type        = string
-  default     = "default"
+  default     = null
 }
 
 variable "bucket_location" {
@@ -182,7 +182,7 @@ variable "release_channel" {
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -254,3 +254,10 @@ variable "jx_bot_token" {
   type        = string
   default     = ""
 }
+
+variable "private_cluster" {
+  description = "Create private cluster including networking"
+  type        = bool
+  default     = false
+}
+

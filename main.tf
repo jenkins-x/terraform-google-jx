@@ -32,6 +32,10 @@ provider "null" {
   version = ">= 2.1.0"
 }
 
+provider "external" {
+  version = ">= 2.0.0"
+}
+
 provider "template" {
   version = ">= 2.1.0"
 }
@@ -40,16 +44,16 @@ data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  version          = ">= 1.11.0"
-  load_config_file = false
+  version = ">= 1.13.0"
 
   host                   = "https://${module.cluster.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
+  bastion_host           = try("http://localhost:${data.external.bastion[0].result.port}", null)
 }
 
 provider "helm" {
-  version = "~>1.3.0"
+  version = "~>2.0.1"
   debug   = true
 
   kubernetes {
@@ -59,7 +63,18 @@ provider "helm" {
     client_key             = base64decode(module.cluster.client_client_key)
     cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
 
-    load_config_file = false
+    bastion_host = try("http://localhost:${data.external.bastion[0].result.port}", null)
+  }
+}
+
+data "external" "bastion" {
+  count   = var.private_cluster ? 1 : 0
+  program = ["python3", "${path.module}/scripts/create_bastion_proxy.py"]
+  query = {
+    project  = var.gcp_project
+    zone     = module.network[0].bastion_zone
+    instance = module.network[0].bastion_name
+    link     = module.network[0].bastion_link
   }
 }
 
@@ -145,6 +160,19 @@ resource "google_project_service" "container_api" {
 }
 
 // ----------------------------------------------------------------------------
+// Create network
+// ----------------------------------------------------------------------------
+
+module "network" {
+  source           = "./modules/network"
+  count            = var.private_cluster ? 1 : 0
+  cluster_name     = var.cluster_name
+  network          = var.cluster_network
+  gcp_project      = var.gcp_project
+  cluster_location = var.cluster_location
+}
+
+// ----------------------------------------------------------------------------
 // Create Kubernetes cluster
 // ----------------------------------------------------------------------------
 module "cluster" {
@@ -153,11 +181,17 @@ module "cluster" {
   gcp_project         = var.gcp_project
   cluster_name        = local.cluster_name
   cluster_location    = local.location
-  cluster_network     = var.cluster_network
+  cluster_network     = try(module.network[0].network, var.cluster_network)
+  cluster_subnetwork  = try(module.network[0].subnetwork, null)
   cluster_id          = random_id.random.hex
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
+
+  private_cluster = var.private_cluster
+  svc_range_name  = try(module.network[0].svc_range_name, null)
+  pod_range_name  = try(module.network[0].pod_range_name, null)
+  master_range    = try(module.network[0].master_range, null)
 
   node_machine_type = var.node_machine_type
   node_disk_size    = var.node_disk_size
@@ -182,7 +216,7 @@ module "cluster" {
 // See https://github.com/banzaicloud/bank-vaults
 // ----------------------------------------------------------------------------
 module "vault" {
-  count  = ! var.gsm ? 1 : 0
+  count  = !var.gsm ? 1 : 0
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
@@ -200,7 +234,7 @@ module "vault" {
 // See https://cloud.google.com/secret-manager
 // ----------------------------------------------------------------------------
 module "gsm" {
-  count  = var.gsm && ! var.jx2 ? 1 : 0
+  count  = var.gsm && !var.jx2 ? 1 : 0
   source = "./modules/gsm"
 
   gcp_project  = var.gcp_project

@@ -14,7 +14,11 @@ variable "cluster_location" {
 variable "cluster_network" {
   description = "The name of the network (VPC) to which the cluster is connected"
   type        = string
-  default     = "default"
+}
+
+variable "cluster_subnetwork" {
+  description = "The name of the subnetwork to which the cluster is connected"
+  type        = string
 }
 
 variable "cluster_name" {
@@ -74,7 +78,7 @@ variable "node_machine_type" {
 
 // https://cloud.google.com/compute/docs/machine-types
 variable "machine_types_cpu" {
-  type = map
+  type = map(any)
   default = {
     "e2-standard-2"  = 2
     "e2-standard-4"  = 4
@@ -188,7 +192,7 @@ variable "machine_types_cpu" {
 }
 
 variable "machine_types_memory" {
-  type = map
+  type = map(any)
   default = {
     "e2-standard-2"  = 8
     "e2-standard-4"  = 16
@@ -321,7 +325,7 @@ variable "release_channel" {
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -380,6 +384,12 @@ variable "logging_service" {
   default     = "logging.googleapis.com/kubernetes"
 }
 
+variable "private_cluster" {
+  description = "Create private cluster including networking"
+  type        = bool
+  default     = false
+}
+
 // service accounts
 variable "create_ui_sa" {
   description = "Whether the cloud service account for the UI should be created"
@@ -415,4 +425,22 @@ variable "jx_bot_token" {
   description = "Bot token used to interact with the Jenkins X cluster git repository"
   type        = string
   default     = ""
+}
+
+variable "master_range" {
+  description = "CIDR used for allocating IP adress for master nodes"
+  type        = string
+  default     = null
+}
+
+variable "svc_range_name" {
+  description = "name of secondary network range used fur kubernetes services"
+  type        = string
+  default     = null
+}
+
+variable "pod_range_name" {
+  description = "name of secondary network range used fur kubernetes pods"
+  type        = string
+  default     = null
 }

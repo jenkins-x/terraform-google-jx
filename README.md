@@ -136,6 +136,7 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
 | parent\_domain | \*\*Deprecated\*\* Please use apex\_domain variable instead.r | `string` | `""` | no |
 | parent\_domain\_gcp\_project | \*\*Deprecated\*\* Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
+| private\_cluster | Create private cluster including networking | `bool` | `false` | no |
 | release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
 | subdomain | Optional sub domain for the installation | `string` | `""` | no |
