@@ -127,6 +127,7 @@ The following two paragraphs provide the full list of configuration and output v
 | jx\_bot\_token | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
 | jx\_bot\_username | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
 | jx\_git\_url | URL for the Jenins X cluster git repository | `string` | `""` | no |
+| kuberhealthy | Enables Kuberhealthy helm installation | `bool` | `true` | no |
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |

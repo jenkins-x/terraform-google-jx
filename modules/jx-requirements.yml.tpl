@@ -28,6 +28,7 @@ ingress:
     enabled: ${domain_enabled}
     production: ${lets_encrypt_production}
 kaniko: true
+kuberhealthy: ${kuberhealthy}
 storage:
   backup:
     enabled: ${enable_backup}
