@@ -78,7 +78,7 @@ resource "google_container_cluster" "jx_cluster" {
 }
 
 module "jx-health" {
-  count  = var.jx2 ? 0 : 1
+  count  = var.jx2 && var.kuberhealthy ? 0 : 1
   source = "github.com/jenkins-x/terraform-jx-health?ref=main"
 
   depends_on = [

@@ -254,3 +254,9 @@ variable "jx_bot_token" {
   type        = string
   default     = ""
 }
+
+variable "kuberhealthy" {
+  description = "Enables Kuberhealthy helm installation"
+  type        = bool
+  default     = true
+}

@@ -175,6 +175,8 @@ module "cluster" {
   jx_git_url      = var.jx_git_url
   jx_bot_username = var.jx_bot_username
   jx_bot_token    = var.jx_bot_token
+
+  kuberhealthy = var.kuberhealthy
 }
 
 // ----------------------------------------------------------------------------
@@ -282,6 +284,8 @@ locals {
     apex_domain = var.apex_domain != "" ? var.apex_domain : var.parent_domain
     subdomain   = var.subdomain
     tls_email   = var.tls_email
+    // Kuberhealthy
+    kuberhealthy = var.kuberhealthy
 
     version_stream_ref = var.version_stream_ref
     version_stream_url = var.version_stream_url
