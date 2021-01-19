@@ -40,7 +40,6 @@ resource "google_dns_managed_zone" "externaldns_managed_zone_with_sub" {
   dns_name    = "${var.subdomain}.${var.apex_domain}."
   description = "JX DNS subdomain zone managed by terraform"
 
-  force_destroy = true
 }
 
 resource "google_dns_record_set" "externaldns_record_set_with_sub" {
