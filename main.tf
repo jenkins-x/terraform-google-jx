@@ -4,7 +4,18 @@
 // Using pessimistic version locking for all versions
 // ----------------------------------------------------------------------------
 terraform {
-  required_version = ">= 0.12.0, < 0.15"
+  required_version = ">= 0.13.0, < 0.15"
+
+  required_providers {
+    google      = ">= 3.46.0"
+    google-beta = ">= 3.46.0"
+    random      = ">= 2.2.0"
+    local       = ">= 1.2.0"
+    null        = ">= 2.1.0"
+    template    = ">= 2.1.0"
+    kubernetes  = "~> 1.11.0"
+    helm        = "~>1.3.0"
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -12,35 +23,16 @@ terraform {
 // ----------------------------------------------------------------------------
 provider "google" {
   project = var.gcp_project
-  version = ">= 3.46.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  version = ">= 3.46.0"
-}
-
-provider "random" {
-  version = ">= 2.2.0"
-}
-
-provider "local" {
-  version = ">= 1.2.0"
-}
-
-provider "null" {
-  version = ">= 2.1.0"
-}
-
-provider "template" {
-  version = ">= 2.1.0"
 }
 
 data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  version          = ">= 1.11.0"
   load_config_file = false
 
   host                   = "https://${module.cluster.cluster_endpoint}"
@@ -49,8 +41,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "~>1.3.0"
-  debug   = true
+  debug = true
 
   kubernetes {
     host                   = "https://${module.cluster.cluster_endpoint}"
@@ -184,7 +175,7 @@ module "cluster" {
 // See https://github.com/banzaicloud/bank-vaults
 // ----------------------------------------------------------------------------
 module "vault" {
-  count  = ! var.gsm ? 1 : 0
+  count  = !var.gsm ? 1 : 0
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
@@ -202,7 +193,7 @@ module "vault" {
 // See https://cloud.google.com/secret-manager
 // ----------------------------------------------------------------------------
 module "gsm" {
-  count  = var.gsm && ! var.jx2 ? 1 : 0
+  count  = var.gsm && !var.jx2 ? 1 : 0
   source = "./modules/gsm"
 
   gcp_project  = var.gcp_project
