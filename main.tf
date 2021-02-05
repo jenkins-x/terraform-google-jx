@@ -170,7 +170,6 @@ module "cluster" {
 
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
-  content      = local.content
 
   jx_git_url      = var.jx_git_url
   jx_bot_username = var.jx_bot_username
@@ -248,6 +247,17 @@ module "dns" {
 }
 
 // ----------------------------------------------------------------------------
+// Setup Boot Cluster Charts
+//
+// ----------------------------------------------------------------------------
+
+module "jx-boot" {
+  source        = "./modules/jx-boot"
+  depends_on    = [module.cluster]
+  install_vault = ! var.gsm ? true : false
+}
+
+// ----------------------------------------------------------------------------
 // Let's generate jx-requirements.yml
 // ----------------------------------------------------------------------------
 locals {
@@ -264,13 +274,14 @@ locals {
     repository_storage_url = module.cluster.repository_storage_url
     backup_bucket_url      = module.backup.backup_bucket_url
     // Vault
-    external_vault = local.external_vault
-    vault_bucket   = length(module.vault) > 0 ? module.vault[0].vault_bucket_name : ""
-    vault_key      = length(module.vault) > 0 ? module.vault[0].vault_key : ""
-    vault_keyring  = length(module.vault) > 0 ? module.vault[0].vault_keyring : ""
-    vault_name     = length(module.vault) > 0 ? module.vault[0].vault_name : ""
-    vault_sa       = length(module.vault) > 0 ? module.vault[0].vault_sa : ""
-    vault_url      = var.vault_url
+    external_vault  = local.external_vault
+    vault_bucket    = length(module.vault) > 0 ? module.vault[0].vault_bucket_name : ""
+    vault_key       = length(module.vault) > 0 ? module.vault[0].vault_key : ""
+    vault_keyring   = length(module.vault) > 0 ? module.vault[0].vault_keyring : ""
+    vault_name      = length(module.vault) > 0 ? module.vault[0].vault_name : ""
+    vault_sa        = length(module.vault) > 0 ? module.vault[0].vault_sa : ""
+    vault_url       = var.vault_url
+    vault_installed = module.jx-boot.vault_installed
     // Velero
     enable_backup    = var.enable_backup
     velero_sa        = module.backup.velero_sa
