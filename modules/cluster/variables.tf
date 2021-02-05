@@ -393,12 +393,6 @@ variable "jx2" {
   default     = true
 }
 
-variable "content" {
-  description = "Interpolated jx-requirements.yml"
-  type        = string
-  default     = ""
-}
-
 variable "jx_git_url" {
   description = "URL for the Jenins X cluster git repository"
   type        = string

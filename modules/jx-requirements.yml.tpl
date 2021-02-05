@@ -45,6 +45,7 @@ storage:
     enabled: %{ if repository_storage_url != "" }true%{ else }false%{ endif }
     url: ${repository_storage_url}
 secretStorage: vault
+terraformVault: ${vault_installed}
 vault:
 %{ if external_vault }
   url: ${vault_url}
@@ -60,7 +61,7 @@ velero:
   namespace: ${velero_namespace}
   schedule: "${velero_schedule}"
   serviceAccount: ${velero_sa}
-  ttl: "${velero_ttl}"  
+  ttl: "${velero_ttl}"
 %{ endif }
 versionStream:
   ref: ${version_stream_ref}
