@@ -416,3 +416,9 @@ variable "kuberhealthy" {
   type        = bool
   default     = true
 }
+
+variable "content" {
+  description = "Interpolated jx-requirements.yml"
+  type        = string
+  default     = ""
+}
