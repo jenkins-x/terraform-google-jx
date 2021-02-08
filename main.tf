@@ -170,6 +170,7 @@ module "cluster" {
 
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
+  content      = local.content
 
   jx_git_url      = var.jx_git_url
   jx_bot_username = var.jx_bot_username
@@ -281,7 +282,7 @@ locals {
     vault_name      = length(module.vault) > 0 ? module.vault[0].vault_name : ""
     vault_sa        = length(module.vault) > 0 ? module.vault[0].vault_sa : ""
     vault_url       = var.vault_url
-    vault_installed = module.jx-boot.vault_installed
+    vault_installed = ! var.gsm ? true : false
     // Velero
     enable_backup    = var.enable_backup
     velero_sa        = module.backup.velero_sa
