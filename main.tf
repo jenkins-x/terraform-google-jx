@@ -49,7 +49,7 @@ provider "kubernetes" {
   host                   = "https://${module.cluster.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
-  proxy_url = try("http://localhost:${data.external.bastion[0].result.port}", null)
+  proxy_url              = try("http://localhost:${data.external.bastion[0].result.port}", null)
 }
 
 provider "helm" {

@@ -68,3 +68,18 @@ output "externaldns_dns_name" {
   description = "ExternalDNS name"
   value       = module.dns.externaldns_dns_name
 }
+
+output "cluster_ca_certificate" {
+  description = "Public cert of cluster CA"
+  value       = module.cluster.cluster_ca_certificate
+}
+
+output "cluster_endpoint" {
+  description = "Cluster endpoint"
+  value       = module.cluster.cluster_endpoint
+}
+
+output "bastion_port" {
+  description = "Bastion port (optional)"
+  value       = try(data.external.bastion[0].result.port, null)
+}
