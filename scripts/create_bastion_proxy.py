@@ -9,6 +9,7 @@ import platform
 import time
 import socket
 import shlex
+import struct
 
 if (hasattr(os, "devnull")):
    REDIRECT_TO = os.devnull
@@ -17,9 +18,12 @@ else:
 
 def free_port():
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack('ii', 1, 0))
     tcp.bind(('', 0))
     addr, port = tcp.getsockname()
+    time.sleep(1)
     tcp.close()
+    time.sleep(3)
     return port
 
 def close_std():
@@ -37,7 +41,7 @@ def start_proxy(data, port):
     if (os.fork() == 0):
         os.chdir("/")
         os.umask(0)
-        args = shlex.split('gcloud compute ssh  %(instance)s --tunnel-through-iap --project %(project)s --zone %(zone)s  --  -fN  -L %(port)s:localhost:8888' % {
+        args = shlex.split('gcloud compute ssh  %(instance)s --tunnel-through-iap --project %(project)s --zone %(zone)s  -- -4fN  -L %(port)s:localhost:8888' % {
             'instance': data['instance'],
             'project': data['project'],
             'zone': data['zone'],
