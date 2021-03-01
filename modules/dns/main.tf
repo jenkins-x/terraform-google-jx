@@ -47,7 +47,7 @@ resource "google_dns_record_set" "externaldns_record_set_with_sub" {
   count = var.parent_domain != "" && var.subdomain != "" && var.apex_domain_integration_enabled ? 1 : 0
 
   name         = google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].dns_name
-  managed_zone = google_dns_managed_zone.externaldns_managed_zone_with_sub.name
+  managed_zone = google_dns_managed_zone.externaldns_managed_zone_with_sub[count.index].name
   type         = "NS"
   ttl          = 60
   project      = var.parent_domain_gcp_project
