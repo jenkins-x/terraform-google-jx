@@ -262,7 +262,8 @@ module "jx-boot" {
 // Let's generate jx-requirements.yml
 // ----------------------------------------------------------------------------
 locals {
-  interpolated_content = templatefile("${path.module}/modules/jx-requirements.yml.tpl", {
+  requirements_suffix = var.jx2 ? "" : "-v3"
+  interpolated_content = templatefile("${path.module}/modules/jx-requirements${requirements_suffix}.yml.tpl", {
     gcp_project                 = var.gcp_project
     zone                        = var.cluster_location
     cluster_name                = local.cluster_name
