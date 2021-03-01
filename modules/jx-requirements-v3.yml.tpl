@@ -1,19 +1,8 @@
-autoUpdate:
-  enabled: false
-  schedule: ""
 cluster:
   clusterName: "${cluster_name}"
-  devEnvApprovers: %{ if length(dev_env_approvers) == 0 }[]%{ endif }
-%{ for name in dev_env_approvers }  - ${name}
-%{ endfor }
-  environmentGitOwner: "${git_owner_requirement_repos}"
   project: "${gcp_project}"
   provider: gke
   zone: "${zone}"
-environments:
-- key: dev
-- key: staging
-- key: production
 ingress:
 %{ if subdomain != "" }
   domain: "${subdomain}.${apex_domain}"
@@ -26,7 +15,6 @@ ingress:
     email: "${tls_email}"
     enabled: ${domain_enabled}
     production: ${lets_encrypt_production}
-kaniko: true
 kuberhealthy: ${kuberhealthy}
 storage:
 %{ if enable_backup }
@@ -48,7 +36,6 @@ storage:
     enabled: true
     url: "${repository_storage_url}"
 %{ endif }
-secretStorage: vault
 terraformVault: ${vault_installed}
 vault:
 %{ if external_vault }
