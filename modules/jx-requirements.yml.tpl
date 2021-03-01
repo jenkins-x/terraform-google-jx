@@ -10,7 +10,9 @@ cluster:
   project: "${gcp_project}"
   provider: gke
   zone: "${zone}"
+%{ if jx2 }
 gitops: true
+%{ endif }
 environments:
 - key: dev
 - key: staging
@@ -30,6 +32,7 @@ ingress:
 kaniko: true
 kuberhealthy: ${kuberhealthy}
 storage:
+%{ if jx2 }
   backup:
     enabled: ${enable_backup}
 %{ if enable_backup }
@@ -44,18 +47,34 @@ storage:
   repository:
     enabled: %{ if repository_storage_url != "" }true%{ else }false%{ endif }
     url: ${repository_storage_url}
+%{ else }
+  - name: backup
+    enabled: ${enable_backup}
+%{ if enable_backup }
+    url: ${backup_bucket_url}
+%{ endif }
+  - name: logs
+    enabled: %{ if log_storage_url != "" }true%{ else }false%{ endif }
+    url: ${log_storage_url}
+  - name: report:
+    enabled: %{ if report_storage_url != "" }true%{ else }false%{ endif }
+    url: ${report_storage_url}
+  - name: repository
+    enabled: %{ if repository_storage_url != "" }true%{ else }false%{ endif }
+    url: ${repository_storage_url}
+%{ endif }
 secretStorage: vault
 terraformVault: ${vault_installed}
 vault:
 %{ if external_vault }
-  url: ${vault_url}
+  url: "${vault_url}"
 %{ else }
-  name: ${vault_name}
-  bucket: ${vault_bucket}
-  key: ${vault_key}
-  keyring: ${vault_keyring}
+  name: "${vault_name}"
+  bucket: "${vault_bucket}"
+  key: "${vault_key}"
+  keyring: "${vault_keyring}"
 %{ endif }
-  serviceAccount: ${vault_sa}
+  serviceAccount: "${vault_sa}"
 %{ if enable_backup }
 velero:
   namespace: ${velero_namespace}
@@ -63,7 +82,9 @@ velero:
   serviceAccount: ${velero_sa}
   ttl: "${velero_ttl}"
 %{ endif }
+%{ if jx2 }
 versionStream:
   ref: ${version_stream_ref}
   url: ${version_stream_url}
+%{ endif }
 webhook: "${webhook}"
