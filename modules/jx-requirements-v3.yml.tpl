@@ -32,6 +32,7 @@ storage:
     enabled: true
     url: "${report_storage_url}"
 %{ endif }
+%{ if repository_storage_url != "" }
   - name: repository
     enabled: true
     url: "${repository_storage_url}"
