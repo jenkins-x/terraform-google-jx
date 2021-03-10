@@ -55,10 +55,11 @@ resource "google_container_cluster" "jx_cluster" {
   }
 
   node_config {
-    preemptible  = var.node_preemptible
-    machine_type = var.node_machine_type
-    disk_size_gb = var.node_disk_size
-    disk_type    = var.node_disk_type
+    preemptible     = var.node_preemptible
+    machine_type    = var.node_machine_type
+    disk_size_gb    = var.node_disk_size
+    disk_type       = var.node_disk_type
+    service_account = var.node_gcp_service_account
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",

@@ -182,7 +182,7 @@ variable "release_channel" {
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -259,4 +259,10 @@ variable "kuberhealthy" {
   description = "Enables Kuberhealthy helm installation"
   type        = bool
   default     = true
+}
+
+variable "node_gcp_service_account" {
+  description = "GCP Service account for nodes"
+  type        = string
+  default     = ""
 }

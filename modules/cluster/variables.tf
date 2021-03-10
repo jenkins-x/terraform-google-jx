@@ -422,3 +422,9 @@ variable "content" {
   type        = string
   default     = ""
 }
+
+variable "node_gcp_service_account" {
+  description = "GCP Service account for nodes"
+  type        = string
+  default     = ""
+}

@@ -159,14 +159,15 @@ module "cluster" {
   jenkins_x_namespace = var.jenkins_x_namespace
   force_destroy       = var.force_destroy
 
-  node_machine_type = var.node_machine_type
-  node_disk_size    = var.node_disk_size
-  node_disk_type    = var.node_disk_type
-  node_preemptible  = var.node_preemptible
-  min_node_count    = var.min_node_count
-  max_node_count    = var.max_node_count
-  release_channel   = var.release_channel
-  resource_labels   = var.resource_labels
+  node_machine_type        = var.node_machine_type
+  node_disk_size           = var.node_disk_size
+  node_disk_type           = var.node_disk_type
+  node_preemptible         = var.node_preemptible
+  min_node_count           = var.min_node_count
+  max_node_count           = var.max_node_count
+  release_channel          = var.release_channel
+  resource_labels          = var.resource_labels
+  node_gcp_service_account = var.node_gcp_service_account
 
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
@@ -184,7 +185,7 @@ module "cluster" {
 // See https://github.com/banzaicloud/bank-vaults
 // ----------------------------------------------------------------------------
 module "vault" {
-  count  = ! var.gsm ? 1 : 0
+  count  = !var.gsm ? 1 : 0
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
@@ -202,7 +203,7 @@ module "vault" {
 // See https://cloud.google.com/secret-manager
 // ----------------------------------------------------------------------------
 module "gsm" {
-  count  = var.gsm && ! var.jx2 ? 1 : 0
+  count  = var.gsm && !var.jx2 ? 1 : 0
   source = "./modules/gsm"
 
   gcp_project  = var.gcp_project
@@ -255,7 +256,7 @@ module "dns" {
 module "jx-boot" {
   source        = "./modules/jx-boot"
   depends_on    = [module.cluster]
-  install_vault = ! var.gsm ? true : false
+  install_vault = !var.gsm ? true : false
 }
 
 // ----------------------------------------------------------------------------
@@ -283,7 +284,7 @@ locals {
     vault_name      = length(module.vault) > 0 ? module.vault[0].vault_name : ""
     vault_sa        = length(module.vault) > 0 ? module.vault[0].vault_sa : ""
     vault_url       = var.vault_url
-    vault_installed = ! var.gsm ? true : false
+    vault_installed = !var.gsm ? true : false
     // Velero
     enable_backup    = var.enable_backup
     velero_sa        = module.backup.velero_sa
