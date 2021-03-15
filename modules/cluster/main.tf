@@ -128,7 +128,7 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
 }
 
 resource "helm_release" "jx-git-operator" {
-  count = var.jx2 ? 0 : 1
+  count = var.jx2 && var.jx_git_url != "" ? 0 : 1
 
   provider         = helm
   name             = "jx-git-operator"
