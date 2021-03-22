@@ -5,6 +5,33 @@
 // ----------------------------------------------------------------------------
 terraform {
   required_version = ">= 0.12.0, < 0.15"
+
+  required_providers {
+    google = {
+      version = ">= 3.46.0"
+    }
+    google-beta = {
+      version = ">= 3.46.0"
+    }
+    random = {
+      version = ">= 2.2.0"
+    }
+    local = {
+      version = ">= 1.2.0"
+    }
+    null =  {
+      version = ">= 2.1.0"
+    }
+    template = {
+      version = ">= 2.1.0"
+    }
+    kubernetes = {
+      version = "~>1.11.0"
+    }
+    helm = {
+      version = "~>1.3.0"
+    }
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -12,35 +39,16 @@ terraform {
 // ----------------------------------------------------------------------------
 provider "google" {
   project = var.gcp_project
-  version = ">= 3.46.0"
 }
 
 provider "google-beta" {
   project = var.gcp_project
-  version = ">= 3.46.0"
-}
-
-provider "random" {
-  version = ">= 2.2.0"
-}
-
-provider "local" {
-  version = ">= 1.2.0"
-}
-
-provider "null" {
-  version = ">= 2.1.0"
-}
-
-provider "template" {
-  version = ">= 2.1.0"
 }
 
 data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  version          = "~>1.11.0"
   load_config_file = false
 
   host                   = "https://${module.cluster.cluster_endpoint}"
@@ -49,7 +57,6 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "~>1.3.0"
   debug   = true
 
   kubernetes {
