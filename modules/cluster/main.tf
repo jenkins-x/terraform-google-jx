@@ -3,6 +3,17 @@
 //
 // https://www.terraform.io/docs/providers/google/r/container_cluster.html
 // ----------------------------------------------------------------------------
+locals {
+  cluster_oauth_scopes = [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/compute",
+    "https://www.googleapis.com/auth/devstorage.full_control",
+    "https://www.googleapis.com/auth/service.management",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring",
+  ]
+}
 resource "google_container_cluster" "jx_cluster" {
   provider                = google-beta
   name                    = var.cluster_name
@@ -41,6 +52,10 @@ resource "google_container_cluster" "jx_cluster" {
   cluster_autoscaling {
     enabled = true
 
+    auto_provisioning_defaults {
+      oauth_scopes = local.cluster_oauth_scopes
+    }
+
     resource_limits {
       resource_type = "cpu"
       minimum       = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
@@ -60,15 +75,7 @@ resource "google_container_cluster" "jx_cluster" {
     disk_size_gb = var.node_disk_size
     disk_type    = var.node_disk_type
 
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
-      "https://www.googleapis.com/auth/compute",
-      "https://www.googleapis.com/auth/devstorage.full_control",
-      "https://www.googleapis.com/auth/service.management",
-      "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-    ]
+    oauth_scopes = local.cluster_oauth_scopes
 
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
