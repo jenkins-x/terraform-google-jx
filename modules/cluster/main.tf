@@ -19,6 +19,7 @@ resource "google_container_cluster" "jx_cluster" {
   name                    = var.cluster_name
   description             = "jenkins-x cluster"
   location                = var.cluster_location
+  node_locations          = var.cluster_node_locations
   network                 = var.cluster_network
   subnetwork              = var.cluster_subnetwork
   enable_kubernetes_alpha = var.enable_kubernetes_alpha
