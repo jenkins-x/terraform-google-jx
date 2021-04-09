@@ -11,7 +11,7 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/pullrequest.yaml@tf
+          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/pullrequest.yaml@5d822bdd78d093c62ecce619b1552f2f34fd1a5a
           resources:
             requests:
               cpu: 400m
