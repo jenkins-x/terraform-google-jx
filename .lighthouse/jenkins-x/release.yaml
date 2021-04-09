@@ -12,7 +12,6 @@ spec:
         metadata: {}
         stepTemplate:
           image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@tf
-          name: ""
           resources:
             requests:
               cpu: 400m
