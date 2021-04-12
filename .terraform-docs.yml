@@ -1,0 +1,19 @@
+formatter: markdown table
+
+sections:
+  hide-all: true
+  show:
+    - inputs
+    - outputs
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+
+settings:
+  indent: 4
+  anchor: false

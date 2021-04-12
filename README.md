@@ -106,6 +106,7 @@ If you want to remove a cluster with the `terraform destroy` command and the clu
 
 The following two paragraphs provide the full list of configuration and output variables of this Terraform module.
 
+<!-- BEGIN_TF_DOCS -->
 #### Inputs
 
 | Name | Description | Type | Default | Required |
@@ -113,6 +114,9 @@ The following two paragraphs provide the full list of configuration and output v
 | apex\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
 | apex\_domain\_gcp\_project | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
 | apex\_domain\_integration\_enabled | Flag that when set attempts to create delegation records in apex domain to point to domain created by this module | `bool` | `true` | no |
+| autoscaler\_location\_policy | location policy for primary node pool | `string` | `"ANY"` | no |
+| autoscaler\_max\_node\_count | primary node pool max nodes | `number` | `5` | no |
+| autoscaler\_min\_node\_count | primary node pool min nodes | `number` | `3` | no |
 | bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
@@ -122,12 +126,15 @@ The following two paragraphs provide the full list of configuration and output v
 | delete\_protect | Flag used to set the `deletion_protection` attribute to prevent cluster deletion | `bool` | `true` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
+| enable\_primary\_node\_pool | create a node pool for primary nodes if disabled you must create your own pool | `bool` | `true` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native | `bool` | `false` | no |
 | enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only. Requires VPC-native | `bool` | `false` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
 | gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
+| initial\_cluster\_node\_count | Initial number of cluster nodes | `number` | `3` | no |
+| initial\_primary\_node\_pool\_node\_count | Initial primary node pool nodes | `number` | `3` | no |
 | ip\_range\_pods | The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
 | ip\_range\_services | The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
@@ -140,21 +147,14 @@ The following two paragraphs provide the full list of configuration and output v
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
 | master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet | `string` | `"10.0.0.0/28"` | no |
-| enable\_primary\_node\_pool | enables or disables the primary node pool. It is recomended to deploy with this as true and disable it later if needed | `bool` | `true` | no |
-| autoscaler\_max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
-| autoscaler\_min\_node\_count| Minimum number of cluster nodes | `number` | `3` | no |
-| initial\_primary\_node\_pool\_node\_count | initial node count for the primary pool | `number` | `3` | no |
-| initial\_cluster\_node\_count | initial node count for the cluster | `number` | `3` | no |
-| max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | max\_pods\_per\_node | Max gke nodes = 2^($CIDR\_RANGE\_PER\_NODE-$POD\_NETWORK\_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)) | `number` | `64` | no |
-| min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
 | node\_spot | Use spot nodes | `bool` | `false` | no |
-| parent\_domain | \*\*Deprecated\*\* Please use apex\_domain variable instead.r | `string` | `""` | no |
-| parent\_domain\_gcp\_project | \*\*Deprecated\*\* Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
+| parent\_domain | **Deprecated** Please use apex\_domain variable instead.r | `string` | `""` | no |
+| parent\_domain\_gcp\_project | **Deprecated** Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
 | release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"REGULAR"` | no |
 | resource\_labels | Set of labels to be applied to the cluster | `map(any)` | `{}` | no |
 | subdomain | Optional sub domain for the installation | `string` | `""` | no |
@@ -186,6 +186,7 @@ The following two paragraphs provide the full list of configuration and output v
 | tekton\_sa\_email | The Tekton service account email address, useful to provide further IAM bindings |
 | tekton\_sa\_name | The Tekton service account name, useful to provide further IAM bindings |
 | vault\_bucket\_url | The URL to the bucket for secret storage |
+<!-- END_TF_DOCS -->
 
 ### Running `jx boot`
 
