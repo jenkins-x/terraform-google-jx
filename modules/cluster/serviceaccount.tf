@@ -57,6 +57,12 @@ resource "google_project_iam_member" "tekton_sa_storage_admin_binding" {
   member   = "serviceAccount:${google_service_account.tekton_sa.email}"
 }
 
+resource "google_project_iam_member" "tekton_sa_secretmanager_admin_binding" {
+  provider = google
+  role     = "roles/secretmanager.admin"
+  member   = "serviceAccount:${google_service_account.tekton_sa.email}"
+}
+
 resource "google_project_iam_member" "tekton_sa_project_viewer_binding" {
   provider = google
   role     = "roles/viewer"
