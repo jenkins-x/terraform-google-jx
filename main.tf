@@ -154,6 +154,7 @@ module "cluster" {
   cluster_name        = local.cluster_name
   cluster_location    = local.location
   cluster_network     = var.cluster_network
+  cluster_subnetwork  = var.cluster_subnetwork
   cluster_id          = random_id.random.hex
   bucket_location     = var.bucket_location
   jenkins_x_namespace = var.jenkins_x_namespace
