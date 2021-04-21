@@ -17,6 +17,12 @@ variable "cluster_network" {
   default     = "default"
 }
 
+variable "cluster_subnetwork" {
+  description = "The name of the subnetwork to which the cluster is connected. Leave blank when using the 'default' vpc to generate a subnet for your cluster"
+  type        = string
+  default     = ""
+}
+
 variable "cluster_name" {
   description = "Name of the Kubernetes cluster"
   type        = string
