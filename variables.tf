@@ -88,7 +88,7 @@ variable "subdomain" {
 }
 
 variable "apex_domain_integration_enabled" {
-  description = "If parent / apex domain is managed in the same "
+  description = "Flag that when set attempts to create delegation records in apex domain to point to domain created by this module"
   type        = bool
   default     = true
 }
