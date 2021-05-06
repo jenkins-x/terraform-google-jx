@@ -150,15 +150,21 @@ resource "google_project_service" "container_api" {
 module "cluster" {
   source = "./modules/cluster"
 
-  gcp_project         = var.gcp_project
-  cluster_name        = local.cluster_name
-  cluster_location    = local.location
-  cluster_network     = var.cluster_network
-  cluster_subnetwork  = var.cluster_subnetwork
-  cluster_id          = random_id.random.hex
-  bucket_location     = var.bucket_location
-  jenkins_x_namespace = var.jenkins_x_namespace
-  force_destroy       = var.force_destroy
+  gcp_project                = var.gcp_project
+  cluster_name               = local.cluster_name
+  cluster_location           = local.location
+  cluster_network            = var.cluster_network
+  cluster_subnetwork         = var.cluster_subnetwork
+  cluster_id                 = random_id.random.hex
+  enable_private_nodes       = var.enable_private_nodes
+  master_ipv4_cidr_block     = var.master_ipv4_cidr_block
+  master_authorized_networks = var.master_authorized_networks
+  ip_range_pods              = var.ip_range_pods
+  ip_range_services          = var.ip_range_services
+  max_pods_per_node          = var.max_pods_per_node
+  bucket_location            = var.bucket_location
+  jenkins_x_namespace        = var.jenkins_x_namespace
+  force_destroy              = var.force_destroy
 
   node_machine_type = var.node_machine_type
   node_disk_size    = var.node_disk_size
@@ -173,9 +179,9 @@ module "cluster" {
   jx2          = var.jx2
   content      = local.content
 
-  jx_git_url      = var.jx_git_url
-  jx_bot_username = var.jx_bot_username
-  jx_bot_token    = var.jx_bot_token
+  jx_git_url              = var.jx_git_url
+  jx_bot_username         = var.jx_bot_username
+  jx_bot_token            = var.jx_bot_token
   jx_git_operator_version = var.jx_git_operator_version
 
   kuberhealthy = var.kuberhealthy
