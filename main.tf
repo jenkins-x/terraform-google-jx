@@ -176,6 +176,7 @@ module "cluster" {
   jx_git_url      = var.jx_git_url
   jx_bot_username = var.jx_bot_username
   jx_bot_token    = var.jx_bot_token
+  jx_git_operator_version = var.jx_git_operator_version
 
   kuberhealthy = var.kuberhealthy
 }

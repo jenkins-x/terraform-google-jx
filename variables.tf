@@ -261,6 +261,12 @@ variable "jx_bot_token" {
   default     = ""
 }
 
+variable "jx_git_operator_version" {
+  description = "The jx-git-operator helm chart version"
+  type        = string
+  default     = "0.0.192"
+}
+
 variable "kuberhealthy" {
   description = "Enables Kuberhealthy helm installation"
   type        = bool
