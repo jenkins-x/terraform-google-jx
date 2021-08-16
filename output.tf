@@ -68,3 +68,23 @@ output "externaldns_dns_name" {
   description = "ExternalDNS name"
   value       = module.dns.externaldns_dns_name
 }
+
+output "cluster_endpoint" {
+  description = "Cluter endpoint"
+  value       = module.cluster.cluster_endpoint
+}
+
+output "cluster_client_certificate" {
+  description = "Cluter client certificate"
+  value       = module.cluster.cluster_client_certificate
+}
+
+output "cluster_client_key" {
+  description = "Cluter client key"
+  value       = module.cluster.client_client_key
+}
+
+output "cluster_ca_certificate" {
+  description = "Cluter CA certificate"
+  value       = module.cluster.cluster_ca_certificate
+}
