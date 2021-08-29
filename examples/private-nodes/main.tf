@@ -11,6 +11,36 @@ resource "google_compute_subnetwork" "subnetwork" {
   private_ip_google_access = "true"
 }
 
+resource "google_compute_router" "nat" {
+  name    = "nat-${google_compute_network.network.name}-${google_compute_subnetwork.subnetwork.region}"
+  region  = google_compute_subnetwork.subnetwork.region
+  network = google_compute_network.network.name
+  bgp {
+    asn = 64584
+  }
+}
+
+resource "google_compute_address" "nat" {
+  count  = 5
+  name   = "nat-${google_compute_network.network.name}-${google_compute_subnetwork.subnetwork.region}-${count.index}"
+  region = google_compute_subnetwork.subnetwork.region
+}
+
+resource "google_compute_router_nat" "simple" {
+  name                               = "${google_compute_network.network.name}-${google_compute_subnetwork.subnetwork.region}"
+  router                             = google_compute_router.nat.name
+  region                             = google_compute_subnetwork.subnetwork.region
+  nat_ip_allocate_option             = "MANUAL_ONLY"
+  nat_ips                            = google_compute_address.nat.*.self_link
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+
+  log_config {
+    enable = true
+    filter = "ERRORS_ONLY"
+  }
+
+}
+
 # regional, private node, public master gke cluster
 module "jx" {
   source                 = "jenkins-x/jx/google"
