@@ -22,6 +22,10 @@ output "cluster_ca_certificate" {
   value = length(google_container_cluster.jx_cluster.master_auth) > 0 ? google_container_cluster.jx_cluster.master_auth[0].cluster_ca_certificate : ""
 }
 
+output "cluster_node_tag" {
+  value = google_container_cluster.jx_cluster.node_config
+}
+
 output "log_storage_url" {
   value = length(google_storage_bucket.log_bucket) > 0 ? google_storage_bucket.log_bucket[0].url : ""
 }

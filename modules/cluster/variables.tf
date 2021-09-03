@@ -190,6 +190,8 @@ variable "machine_types_cpu" {
     "n1-highcpu-32" = 32
     "n1-highcpu-64" = 64
     "n1-highcpu-96" = 96
+
+    "e2-custom-4-8192" = 4
   }
 }
 
@@ -304,6 +306,8 @@ variable "machine_types_memory" {
     "n1-highcpu-32" = 28.8
     "n1-highcpu-64" = 57.6
     "n1-highcpu-96" = 86.4
+
+    "e2-custom-4-8192" = 8
   }
 }
 
@@ -434,3 +438,22 @@ variable "content" {
   type        = string
   default     = ""
 }
+
+variable "cluster_range_name" {
+  description = "The ip range name for cluster nodes"
+  type        = string
+  default     = ""
+}
+
+variable "services_range_name" {
+  description = "The ip range name for services nodes"
+  type        = string
+  default     = ""
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet"
+  default     = "172.16.0.0/28"
+}
+

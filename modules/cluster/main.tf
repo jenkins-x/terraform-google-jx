@@ -28,6 +28,17 @@ resource "google_container_cluster" "jx_cluster" {
   logging_service         = var.logging_service
   monitoring_service      = var.monitoring_service
 
+  private_cluster_config {
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+    enable_private_endpoint = false
+    enable_private_nodes    = true
+  }
+
+  ip_allocation_policy {
+    cluster_secondary_range_name  = var.cluster_range_name
+    services_secondary_range_name = var.services_range_name
+  }
+
   // should disable master auth
   master_auth {
     username = ""
@@ -82,6 +93,7 @@ resource "google_container_cluster" "jx_cluster" {
       node_metadata = "GKE_METADATA_SERVER"
     }
 
+    tags = [var.cluster_name]
   }
 }
 

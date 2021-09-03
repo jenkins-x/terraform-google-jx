@@ -39,6 +39,18 @@ variable "cluster_subnetwork" {
   default     = ""
 }
 
+variable "cluster_range_name" {
+  description = "The ip range name for cluster nodes"
+  type        = string
+  default     = ""
+}
+
+variable "services_range_name" {
+  description = "The ip range name for services nodes"
+  type        = string
+  default     = ""
+}
+
 variable "bucket_location" {
   description = "Bucket location for storage"
   type        = string
@@ -144,6 +156,7 @@ variable "velero_ttl" {
 // ----------------------------------------------------------------------------
 // cluster configuration
 // ----------------------------------------------------------------------------
+
 variable "node_machine_type" {
   description = "Node type for the Kubernetes cluster"
   type        = string
