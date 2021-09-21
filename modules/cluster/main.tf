@@ -15,18 +15,18 @@ locals {
   ]
 }
 resource "google_container_cluster" "jx_cluster" {
-  provider                = google-beta
-  name                    = var.cluster_name
-  description             = "jenkins-x cluster"
-  location                = var.cluster_location
-  network                 = var.cluster_network
-  subnetwork              = var.cluster_subnetwork
-  enable_kubernetes_alpha = var.enable_kubernetes_alpha
-  enable_legacy_abac      = var.enable_legacy_abac
-  enable_shielded_nodes   = var.enable_shielded_nodes
-  initial_node_count      = var.min_node_count
-  logging_service         = var.logging_service
-  monitoring_service      = var.monitoring_service
+  name                     = var.cluster_name
+  description              = "jenkins-x cluster"
+  location                 = var.cluster_location
+  network                  = var.cluster_network
+  subnetwork               = var.cluster_subnetwork
+  enable_kubernetes_alpha  = var.enable_kubernetes_alpha
+  enable_legacy_abac       = var.enable_legacy_abac
+  enable_shielded_nodes    = var.enable_shielded_nodes
+  remove_default_node_pool = true
+  initial_node_count       = var.min_node_count
+  logging_service          = var.logging_service
+  monitoring_service       = var.monitoring_service
 
   // should disable master auth
   master_auth {
@@ -50,24 +50,17 @@ resource "google_container_cluster" "jx_cluster" {
 
   resource_labels = var.resource_labels
 
-  cluster_autoscaling {
-    enabled = true
+}
 
-    auto_provisioning_defaults {
-      oauth_scopes = local.cluster_oauth_scopes
-    }
+resource "google_container_node_pool" "primary" {
+  name                = "${var.cluster_name}-primary"
+  location            = var.cluster_location
+  cluster             = google_container_cluster.jx_cluster.name
+  initial_node_count  = var.min_node_count
 
-    resource_limits {
-      resource_type = "cpu"
-      minimum       = ceil(var.min_node_count * var.machine_types_cpu[var.node_machine_type])
-      maximum       = ceil(var.max_node_count * var.machine_types_cpu[var.node_machine_type])
-    }
-
-    resource_limits {
-      resource_type = "memory"
-      minimum       = ceil(var.min_node_count * var.machine_types_memory[var.node_machine_type])
-      maximum       = ceil(var.max_node_count * var.machine_types_memory[var.node_machine_type])
-    }
+  autoscaling {
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
   }
 
   node_config {
@@ -81,7 +74,6 @@ resource "google_container_cluster" "jx_cluster" {
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
     }
-
   }
 }
 
@@ -90,7 +82,7 @@ module "jx-health" {
   source = "github.com/jenkins-x/terraform-jx-health?ref=main"
 
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary
   ]
 }
 
@@ -111,7 +103,7 @@ resource "kubernetes_namespace" "jenkins_x_namespace" {
     ]
   }
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary
   ]
 }
 
@@ -131,7 +123,7 @@ resource "kubernetes_config_map" "jenkins_x_requirements" {
     "jx-requirements.yml" = var.content
   }
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary
   ]
 }
 
@@ -175,6 +167,6 @@ resource "helm_release" "jx-git-operator" {
     ignore_changes = all
   }
   depends_on = [
-    google_container_cluster.jx_cluster
+    google_container_node_pool.primary
   ]
 }
