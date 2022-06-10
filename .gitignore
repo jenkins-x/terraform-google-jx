@@ -28,3 +28,4 @@ jx-requirements.yml
 
 # Editor specific files
 .idea/
+.vscode/
