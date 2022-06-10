@@ -11,7 +11,7 @@ spec:
       taskSpec:
         metadata: {}
         stepTemplate:
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@b8c01fa3c78e49707b1664fd573cbe2d129a2b78
+          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@versionStream
           resources:
             # override limits for all containers here
             limits: {}
