@@ -40,9 +40,13 @@ lint: init tf-version fmt ## Verifies Terraform syntax
 
 .PHONY: fmt
 fmt: ## Reformats Terraform files accoring to standard
+	terraform fmt -diff -recursive
+
+.PHONY: fmt-check
+fmt: ## Checks if Terraform files are formatted accoring to standard
 	terraform fmt -check -diff -recursive
 
-.PHONY: test 
+.PHONY: test
 test: ## Runs ShellSpec tests
 	shellspec --format document	
 

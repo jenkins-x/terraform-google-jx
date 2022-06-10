@@ -63,7 +63,7 @@ resource "google_storage_bucket" "vault_bucket" {
 // https://www.terraform.io/docs/providers/google/r/google_project_iam.html#google_project_iam_member
 // ----------------------------------------------------------------------------
 resource "google_service_account" "vault_sa" {
-  count        = var.external_vault && ! var.jx2 ? 0 : 1
+  count        = var.external_vault && !var.jx2 ? 0 : 1
   provider     = google
   account_id   = local.sa_name
   display_name = substr("Vault service account for cluster ${var.cluster_name}", 0, 100)

@@ -53,10 +53,10 @@ resource "google_container_cluster" "jx_cluster" {
 }
 
 resource "google_container_node_pool" "primary" {
-  name                = "${var.cluster_name}-primary"
-  location            = var.cluster_location
-  cluster             = google_container_cluster.jx_cluster.name
-  initial_node_count  = var.min_node_count
+  name               = "${var.cluster_name}-primary"
+  location           = var.cluster_location
+  cluster            = google_container_cluster.jx_cluster.name
+  initial_node_count = var.min_node_count
 
   autoscaling {
     min_node_count = var.min_node_count

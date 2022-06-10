@@ -80,7 +80,7 @@ variable "node_machine_type" {
 
 // https://cloud.google.com/compute/docs/machine-types
 variable "machine_types_cpu" {
-  type = map
+  type = map(any)
   default = {
     "e2-standard-2"  = 2
     "e2-standard-4"  = 4
@@ -194,7 +194,7 @@ variable "machine_types_cpu" {
 }
 
 variable "machine_types_memory" {
-  type = map
+  type = map(any)
   default = {
     "e2-standard-2"  = 8
     "e2-standard-4"  = 16
@@ -327,7 +327,7 @@ variable "release_channel" {
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 

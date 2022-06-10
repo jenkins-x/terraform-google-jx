@@ -188,7 +188,7 @@ variable "release_channel" {
 
 variable "resource_labels" {
   description = "Set of labels to be applied to the cluster"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
