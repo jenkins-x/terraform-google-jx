@@ -12,12 +12,18 @@ spec:
         metadata: {}
         stepTemplate:
           image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/pullrequest.yaml@5d822bdd78d093c62ecce619b1552f2f34fd1a5a
-          resources: {}
+          resources:
+            # override limits for all containers here
+            limits: {}          
           workingDir: /workspace/source
         steps:
         - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone-pr.yaml@versionStream
           name: ""
         - name: jx-variables
+          resources:
+            requests:
+              cpu: 400m
+              memory: 600Mi          
         - name: lint
           resources: {}
   podTemplate: {}
