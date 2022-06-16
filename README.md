@@ -119,10 +119,14 @@ The following two paragraphs provide the full list of configuration and output v
 | create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `true` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
+| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native | `bool` | `false` | no |
+| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only. Requires VPC-native | `bool` | `false` | no |
 | force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
 | gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
+| ip\_range\_pods | The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
+| ip\_range\_services | The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
 | jx2 | Is a Jenkins X 2 install | `bool` | `true` | no |
 | jx\_bot\_token | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
@@ -130,7 +134,10 @@ The following two paragraphs provide the full list of configuration and output v
 | jx\_git\_url | URL for the Jenins X cluster git repository | `string` | `""` | no |
 | kuberhealthy | Enables Kuberhealthy helm installation | `bool` | `true` | no |
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
+| master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
+| master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet | `string` | `"10.0.0.0/28"` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
+| max\_pods\_per\_node | Max gke nodes = 2^($CIDR\_RANGE\_PER\_NODE-$POD\_NETWORK\_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)) | `number` | `64` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
 | node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |

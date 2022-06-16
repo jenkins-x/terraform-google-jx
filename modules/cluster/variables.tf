@@ -73,6 +73,54 @@ variable "force_destroy" {
 }
 
 // cluster configuration
+variable "enable_private_endpoint" {
+  type        = bool
+  description = "(Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native"
+  default     = false
+}
+
+variable "enable_private_nodes" {
+  type        = bool
+  description = "(Beta) Whether nodes have internal IP addresses only. Requires VPC-native"
+  default     = false
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  description = "The IP range in CIDR notation to use for the hosted master network. This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet"
+  default     = "10.0.0.0/28"
+}
+
+variable "master_authorized_networks" {
+  type        = list(object({ cidr_block = string, display_name = string }))
+  description = "List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists)."
+  default     = []
+}
+
+variable "ip_range_pods" {
+  type        = string
+  description = "The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native"
+  default     = ""
+}
+
+# Max Pods per Node --- CIDR Range per Node
+# 8                     /28
+# 9–16                  /27
+# 17–32                 /26
+# 33–64                 /25
+# 65–110                /24
+variable "max_pods_per_node" {
+  type        = number
+  description = "Max gke nodes = 2^($CIDR_RANGE_PER_NODE-$POD_NETWORK_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr))"
+  default     = 64 # 2^(25-21) = 16 max nodes
+}
+
+variable "ip_range_services" {
+  type        = string
+  description = "The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native"
+  default     = ""
+}
+
 variable "node_machine_type" {
   description = "Node type for the Kubernetes cluster"
   type        = string
