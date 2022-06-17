@@ -29,24 +29,24 @@ resource "google_service_account" "velero_sa" {
 }
 
 resource "google_project_iam_member" "velero_sa_storage_admin_binding" {
-  count = var.enable_backup && var.jx2 ? 1 : 0
-
+  count    = var.enable_backup && var.jx2 ? 1 : 0
+  project  = var.gcp_project
   provider = google
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.velero_sa[0].email}"
 }
 
 resource "google_project_iam_member" "velero_sa_storage_object_admin_binding" {
-  count = var.enable_backup && var.jx2 ? 1 : 0
-
+  count    = var.enable_backup && var.jx2 ? 1 : 0
+  project  = var.gcp_project
   provider = google
   role     = "roles/storage.objectAdmin"
   member   = "serviceAccount:${google_service_account.velero_sa[0].email}"
 }
 
 resource "google_project_iam_member" "velero_sa_storage_object_creator_binding" {
-  count = var.enable_backup && var.jx2 ? 1 : 0
-
+  count    = var.enable_backup && var.jx2 ? 1 : 0
+  project  = var.gcp_project
   provider = google
   role     = "roles/storage.objectCreator"
   member   = "serviceAccount:${google_service_account.velero_sa[0].email}"

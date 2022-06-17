@@ -24,6 +24,7 @@ resource "google_service_account" "dns_sa" {
 
 resource "google_project_iam_member" "externaldns_sa_dns_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/dns.admin"
   member   = "serviceAccount:${google_service_account.dns_sa.email}"
 }

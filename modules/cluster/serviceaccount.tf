@@ -13,12 +13,14 @@ resource "google_service_account" "build_controller_sa" {
 
 resource "google_project_iam_member" "build_controller_sa_storage_object_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/storage.objectAdmin"
   member   = "serviceAccount:${google_service_account.build_controller_sa.email}"
 }
 
 resource "google_project_iam_member" "build_controller_sa_storage_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.build_controller_sa.email}"
 }
@@ -33,6 +35,7 @@ resource "google_service_account" "kaniko_sa" {
 
 resource "google_project_iam_member" "kaniko_sa_storage_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.kaniko_sa.email}"
 }
@@ -47,18 +50,21 @@ resource "google_service_account" "tekton_sa" {
 
 resource "google_project_iam_member" "tekton_sa_storage_object_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/storage.objectAdmin"
   member   = "serviceAccount:${google_service_account.tekton_sa.email}"
 }
 
 resource "google_project_iam_member" "tekton_sa_storage_admin_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.tekton_sa.email}"
 }
 
 resource "google_project_iam_member" "tekton_sa_project_viewer_binding" {
   provider = google
+  project  = var.gcp_project
   role     = "roles/viewer"
   member   = "serviceAccount:${google_service_account.tekton_sa.email}"
 }
@@ -74,16 +80,16 @@ resource "google_service_account" "jxui_sa" {
 }
 
 resource "google_project_iam_member" "ui_sa_storage_admin_binding" {
-  count = var.create_ui_sa ? 1 : 0
-
+  count    = var.create_ui_sa ? 1 : 0
+  project  = var.gcp_project
   provider = google
   role     = "roles/storage.admin"
   member   = "serviceAccount:${google_service_account.jxui_sa[0].email}"
 }
 
 resource "google_project_iam_member" "ui_sa_storage_object_admin_binding" {
-  count = var.create_ui_sa ? 1 : 0
-
+  count    = var.create_ui_sa ? 1 : 0
+  project  = var.gcp_project
   provider = google
   role     = "roles/storage.objectAdmin"
   member   = "serviceAccount:${google_service_account.jxui_sa[0].email}"
@@ -216,8 +222,8 @@ resource "google_service_account" "boot_sa" {
 }
 
 resource "google_project_iam_member" "boot_sa_storage_object_admin_binding" {
-  count = var.jx2 ? 0 : 1
-
+  count    = var.jx2 ? 0 : 1
+  project  = var.gcp_project
   provider = google
   role     = "roles/secretmanager.admin"
   member   = "serviceAccount:${google_service_account.boot_sa[count.index].email}"
