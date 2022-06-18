@@ -77,8 +77,9 @@ resource "google_container_cluster" "jx_cluster" {
 
   // should disable master auth
   master_auth {
-    username = ""
-    password = ""
+    client_certificate_config {
+      issue_client_certificate = false
+    }
   }
 
   maintenance_policy {
@@ -92,7 +93,7 @@ resource "google_container_cluster" "jx_cluster" {
   }
 
   workload_identity_config {
-    identity_namespace = "${var.gcp_project}.svc.id.goog"
+    workload_pool = "${var.gcp_project}.svc.id.goog"
   }
 
   resource_labels = var.resource_labels
@@ -119,7 +120,7 @@ resource "google_container_node_pool" "primary" {
     oauth_scopes = local.cluster_oauth_scopes
 
     workload_metadata_config {
-      node_metadata = "GKE_METADATA_SERVER"
+      mode = "GKE_METADATA"
     }
   }
 }

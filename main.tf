@@ -6,8 +6,10 @@
 terraform {
   required_version = ">= 0.12.0, < 2.0"
   required_providers {
-    google      = ">= 3.46.0, < 4.0.0"
-    google-beta = ">= 3.46.0, < 4.0.0"
+    google      = ">= 4.0.0, < 5.0.0"
+    google-beta = ">= 4.0.0, < 5.0.0"
+    kubernetes  = "~>1.11.0"
+    helm        = "~>1.3.0"
     random      = ">= 2.2.0"
     local       = ">= 1.2.0"
     null        = ">= 2.1.0"
@@ -26,23 +28,10 @@ provider "google-beta" {
   project = var.gcp_project
 }
 
-provider "random" {
-}
-
-provider "local" {
-}
-
-provider "null" {
-}
-
-provider "template" {
-}
-
 data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  version          = "~>1.11.0"
   load_config_file = false
 
   host                   = "https://${module.cluster.cluster_endpoint}"
@@ -51,8 +40,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  version = "~>1.3.0"
-  debug   = true
+  debug = true
 
   kubernetes {
     host                   = "https://${module.cluster.cluster_endpoint}"
