@@ -385,6 +385,12 @@ variable "node_preemptible" {
   default     = false
 }
 
+variable "node_spot" {
+  description = "Use spot nodes"
+  type        = bool
+  default     = false
+}
+
 variable "node_disk_type" {
   description = "Node disk type (pd-ssd or pd-standard)"
   type        = string
