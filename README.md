@@ -11,23 +11,23 @@ This repo contains a [Terraform](https://www.terraform.io/) module for provision
 
 <!-- TOC -->
 
-- [What is a Terraform module](#what-is-a-terraform-module)
-- [How do you use this module](#how-do-you-use-this-module)
+- [Jenkins X GKE Module](#jenkins-x-gke-module)
+  - [What is a Terraform module](#what-is-a-terraform-module)
+  - [How do you use this module](#how-do-you-use-this-module)
     - [Prerequisites](#prerequisites)
     - [Cluster provisioning](#cluster-provisioning)
-        - [Inputs](#inputs)
-        - [Outputs](#outputs)
+      - [Inputs](#inputs)
+      - [Outputs](#outputs)
     - [Running `jx boot`](#running-jx-boot)
     - [Using a custom domain](#using-a-custom-domain)
     - [Production cluster considerations](#production-cluster-considerations)
-    - [Configuring a Terraform backend](#configuring-a-terraform-backend)
-- [FAQ](#faq)
+  - [FAQ](#faq)
     - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
     - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
     - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
-- [Development](#development)
+  - [Development](#development)
     - [Releasing](#releasing)
-- [How do I contribute](#how-do-i-contribute)
+  - [How do I contribute](#how-do-i-contribute)
 
 <!-- /TOC -->
 
@@ -110,7 +110,7 @@ The following two paragraphs provide the full list of configuration and output v
 |------|-------------|------|---------|:--------:|
 | apex\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
 | apex\_domain\_gcp\_project | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
-| apex\_domain\_integration\_enabled | If parent / apex domain is managed in the same | `bool` | `true` | no |
+| apex\_domain\_integration\_enabled | Flag that when set attempts to create delegation records in apex domain to point to domain created by this module | `bool` | `true` | no |
 | bucket\_location | Bucket location for storage | `string` | `"US"` | no |
 | cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
 | cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
@@ -131,6 +131,7 @@ The following two paragraphs provide the full list of configuration and output v
 | jx2 | Is a Jenkins X 2 install | `bool` | `true` | no |
 | jx\_bot\_token | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
 | jx\_bot\_username | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
+| jx\_git\_operator\_version | The jx-git-operator helm chart version | `string` | `"0.0.192"` | no |
 | jx\_git\_url | URL for the Jenins X cluster git repository | `string` | `""` | no |
 | kuberhealthy | Enables Kuberhealthy helm installation | `bool` | `true` | no |
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
@@ -143,10 +144,11 @@ The following two paragraphs provide the full list of configuration and output v
 | node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
 | node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
 | node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
+| node\_spot | Use spot nodes | `bool` | `false` | no |
 | parent\_domain | \*\*Deprecated\*\* Please use apex\_domain variable instead.r | `string` | `""` | no |
 | parent\_domain\_gcp\_project | \*\*Deprecated\*\* Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
-| release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"UNSPECIFIED"` | no |
-| resource\_labels | Set of labels to be applied to the cluster | `map` | `{}` | no |
+| release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"REGULAR"` | no |
+| resource\_labels | Set of labels to be applied to the cluster | `map(any)` | `{}` | no |
 | subdomain | Optional sub domain for the installation | `string` | `""` | no |
 | tls\_email | Email used by Let's Encrypt. Required for TLS when apex\_domain is specified | `string` | `""` | no |
 | vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |

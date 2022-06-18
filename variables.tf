@@ -204,6 +204,12 @@ variable "node_preemptible" {
   default     = false
 }
 
+variable "node_spot" {
+  description = "Use spot nodes"
+  type        = bool
+  default     = false
+}
+
 variable "min_node_count" {
   description = "Minimum number of cluster nodes"
   type        = number

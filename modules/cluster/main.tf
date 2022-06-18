@@ -113,6 +113,7 @@ resource "google_container_node_pool" "primary" {
 
   node_config {
     preemptible  = var.node_preemptible
+    spot         = var.node_spot
     machine_type = var.node_machine_type
     disk_size_gb = var.node_disk_size
     disk_type    = var.node_disk_type
