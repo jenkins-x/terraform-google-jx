@@ -13,7 +13,6 @@ terraform {
     random      = ">= 3.3.2"
     local       = ">= 2.2.3"
     null        = ">= 2.1.0"
-    template    = ">= 2.2.0"
   }
 }
 
