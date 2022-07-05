@@ -32,7 +32,6 @@ data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  load_config_file = false
 
   host                   = "https://${module.cluster.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token
@@ -49,7 +48,6 @@ provider "helm" {
     client_key             = base64decode(module.cluster.client_client_key)
     cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
 
-    load_config_file = false
   }
 }
 
