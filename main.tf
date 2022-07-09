@@ -6,14 +6,13 @@
 terraform {
   required_version = ">= 0.12.0, < 2.0"
   required_providers {
-    google      = ">= 4.0.0, < 5.0.0"
-    google-beta = ">= 4.0.0, < 5.0.0"
-    kubernetes  = "~>1.11.0"
-    helm        = "~>1.3.0"
-    random      = ">= 2.2.0"
-    local       = ">= 1.2.0"
+    google      = ">= 4.26.0"
+    google-beta = ">= 4.26.0"
+    kubernetes  = ">=2.11.0"
+    helm        = ">=2.6.0"
+    random      = ">= 3.3.2"
+    local       = ">= 2.2.3"
     null        = ">= 2.1.0"
-    template    = ">= 2.1.0"
   }
 }
 
@@ -32,8 +31,6 @@ data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  load_config_file = false
-
   host                   = "https://${module.cluster.cluster_endpoint}"
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
@@ -48,8 +45,6 @@ provider "helm" {
     client_certificate     = base64decode(module.cluster.cluster_client_certificate)
     client_key             = base64decode(module.cluster.client_client_key)
     cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
-
-    load_config_file = false
   }
 }
 
