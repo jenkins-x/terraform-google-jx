@@ -133,9 +133,6 @@ resource "kubernetes_service_account" "build_controller_sa" {
       secret
     ]
   }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
 }
 
 // ----------------------------------------------------------------------------
@@ -157,9 +154,6 @@ resource "kubernetes_service_account" "kaniko_sa" {
       secret
     ]
   }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
 }
 
 resource "google_service_account_iam_member" "kaniko_sa_workload_identity_user" {
@@ -195,9 +189,6 @@ resource "kubernetes_service_account" "tekton_sa" {
       secret
     ]
   }
-  depends_on = [
-    google_container_cluster.jx_cluster,
-  ]
 }
 
 // ----------------------------------------------------------------------------

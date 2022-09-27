@@ -3,29 +3,21 @@ output "gcp_project" {
   value       = var.gcp_project
 }
 
-output "cluster_location" {
-  description = "The location of the created Kubernetes cluster"
-  value       = var.cluster_location
-}
 
-output "cluster_name" {
-  description = "The name of the created Kubernetes cluster"
-  value       = local.cluster_name
-}
 
 output "log_storage_url" {
   description = "The URL to the bucket for log storage"
-  value       = module.cluster.log_storage_url
+  value       = module.jx.log_storage_url
 }
 
 output "report_storage_url" {
   description = "The URL to the bucket for report storage"
-  value       = module.cluster.report_storage_url
+  value       = module.jx.report_storage_url
 }
 
 output "repository_storage_url" {
   description = "The URL to the bucket for artifact storage"
-  value       = module.cluster.repository_storage_url
+  value       = module.jx.repository_storage_url
 }
 
 output "vault_bucket_url" {
@@ -40,12 +32,12 @@ output "backup_bucket_url" {
 
 output "tekton_sa_email" {
   description = "The Tekton service account email address, useful to provide further IAM bindings"
-  value       = module.cluster.tekton_sa_email
+  value       = module.jx.tekton_sa_email
 }
 
 output "tekton_sa_name" {
   description = "The Tekton service account name, useful to provide further IAM bindings"
-  value       = module.cluster.tekton_sa_name
+  value       = module.jx.tekton_sa_name
 }
 
 
@@ -54,10 +46,7 @@ output "jx_requirements" {
   value       = local.content
 }
 
-output "connect" {
-  description = "The cluster connection string to use once Terraform apply finishes"
-  value       = "gcloud container clusters get-credentials ${local.cluster_name} --zone ${var.cluster_location} --project ${var.gcp_project}"
-}
+
 
 output "externaldns_ns" {
   description = "ExternalDNS nameservers"
