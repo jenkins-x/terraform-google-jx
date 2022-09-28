@@ -3,163 +3,25 @@
 //
 // Using pessimistic version locking for all versions
 // ----------------------------------------------------------------------------
-terraform {
-  required_version = ">= 0.12.0, < 2.0"
-  required_providers {
-    google      = ">= 4.26.0"
-    google-beta = ">= 4.26.0"
-    kubernetes  = ">=2.11.0"
-    helm        = ">=2.6.0"
-    random      = ">= 3.3.2"
-    local       = ">= 2.2.3"
-    null        = ">= 2.1.0"
-  }
-}
 
-// ----------------------------------------------------------------------------
-// Configure providers
-// ----------------------------------------------------------------------------
-provider "google" {
-  project = var.gcp_project
-}
 
-provider "google-beta" {
-  project = var.gcp_project
-}
 
-data "google_client_config" "default" {
-}
 
-provider "kubernetes" {
-  host                   = "https://${module.cluster.cluster_endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
-}
-
-provider "helm" {
-  debug = true
-
-  kubernetes {
-    host                   = "https://${module.cluster.cluster_endpoint}"
-    token                  = data.google_client_config.default.access_token
-    client_certificate     = base64decode(module.cluster.cluster_client_certificate)
-    client_key             = base64decode(module.cluster.client_client_key)
-    cluster_ca_certificate = base64decode(module.cluster.cluster_ca_certificate)
-  }
-}
-
-resource "random_id" "random" {
-  byte_length = 6
-}
-
-resource "random_pet" "current" {
-  prefix    = "tf-jx"
-  separator = "-"
-  keepers = {
-    # Keep the name consistent on executions
-    cluster_name = var.cluster_name
-  }
-}
-
-locals {
-  cluster_name = var.cluster_name != "" ? var.cluster_name : random_pet.current.id
-  # provide backwards compatibility with the deprecated zone variable
-  location       = var.zone != "" ? var.zone : var.cluster_location
+locals{
   external_vault = var.vault_url != "" ? true : false
+
 }
 
-// ----------------------------------------------------------------------------
-// Enable all required GCloud APIs
-//
-// https://www.terraform.io/docs/providers/google/r/google_project_service.html
-// ----------------------------------------------------------------------------
-resource "google_project_service" "cloudresourcemanager_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "compute_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "compute.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "iam_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "iam.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "cloudbuild_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "cloudbuild.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "containerregistry_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "containerregistry.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "containeranalysis_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "containeranalysis.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "serviceusage_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "serviceusage.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "container_api" {
-  provider           = google
-  project            = var.gcp_project
-  service            = "container.googleapis.com"
-  disable_on_destroy = false
-}
-
-// ----------------------------------------------------------------------------
-// Create Kubernetes cluster
-// ----------------------------------------------------------------------------
-module "cluster" {
-  source = "./modules/cluster"
+module "jx" {
+  source = "./modules/jx"
 
   gcp_project                = var.gcp_project
-  cluster_name               = local.cluster_name
-  cluster_location           = local.location
-  cluster_network            = var.cluster_network
-  cluster_subnetwork         = var.cluster_subnetwork
-  cluster_id                 = random_id.random.hex
-  enable_private_nodes       = var.enable_private_nodes
-  master_ipv4_cidr_block     = var.master_ipv4_cidr_block
-  master_authorized_networks = var.master_authorized_networks
-  ip_range_pods              = var.ip_range_pods
-  ip_range_services          = var.ip_range_services
-  max_pods_per_node          = var.max_pods_per_node
+  cluster_name               = var.cluster_name
+  cluster_id                 = var.cluster_id
   bucket_location            = var.bucket_location
   jenkins_x_namespace        = var.jenkins_x_namespace
   force_destroy              = var.force_destroy
 
-  node_machine_type = var.node_machine_type
-  node_disk_size    = var.node_disk_size
-  node_disk_type    = var.node_disk_type
-  node_preemptible  = var.node_preemptible
-  node_spot         = var.node_spot
-  min_node_count    = var.min_node_count
-  max_node_count    = var.max_node_count
-  release_channel   = var.release_channel
-  resource_labels   = var.resource_labels
 
   create_ui_sa = var.create_ui_sa
   jx2          = var.jx2
@@ -182,10 +44,10 @@ module "vault" {
   source = "./modules/vault"
 
   gcp_project         = var.gcp_project
-  cluster_name        = local.cluster_name
-  cluster_id          = random_id.random.hex
+  cluster_name        = var.cluster_name
+  cluster_id          = var.cluster_id
   bucket_location     = var.bucket_location
-  jenkins_x_namespace = module.cluster.jenkins_x_namespace
+  jenkins_x_namespace = module.jx.jenkins_x_namespace
   force_destroy       = var.force_destroy
   external_vault      = local.external_vault
   jx2                 = var.jx2
@@ -200,8 +62,8 @@ module "gsm" {
   source = "./modules/gsm"
 
   gcp_project  = var.gcp_project
-  cluster_name = local.cluster_name
-  cluster_id   = random_id.random.hex
+  cluster_name = var.cluster_name
+  cluster_id   = var.cluster_id
 }
 
 // ----------------------------------------------------------------------------
@@ -212,10 +74,10 @@ module "backup" {
 
   enable_backup       = var.enable_backup
   gcp_project         = var.gcp_project
-  cluster_name        = local.cluster_name
-  cluster_id          = random_id.random.hex
+  cluster_name        = var.cluster_name
+  cluster_id          = var.cluster_id
   bucket_location     = var.bucket_location
-  jenkins_x_namespace = module.cluster.jenkins_x_namespace
+  jenkins_x_namespace = module.jx.jenkins_x_namespace
   force_destroy       = var.force_destroy
   jx2                 = var.jx2
 }
@@ -228,16 +90,16 @@ module "dns" {
   source = "./modules/dns"
 
   gcp_project                     = var.gcp_project
-  cluster_name                    = local.cluster_name
+  cluster_name                    = var.cluster_name
   apex_domain                     = var.apex_domain != "" ? var.apex_domain : var.parent_domain
-  jenkins_x_namespace             = module.cluster.jenkins_x_namespace
+  jenkins_x_namespace             = module.jx.jenkins_x_namespace
   jx2                             = var.jx2
   subdomain                       = var.subdomain
   apex_domain_gcp_project         = var.apex_domain_gcp_project != "" ? var.apex_domain_gcp_project : (var.parent_domain_gcp_project != "" ? var.parent_domain_gcp_project : var.gcp_project)
   apex_domain_integration_enabled = var.apex_domain_integration_enabled
 
   depends_on = [
-    module.cluster
+    module.jx
   ]
 }
 
@@ -248,7 +110,7 @@ module "dns" {
 
 module "jx-boot" {
   source        = "./modules/jx-boot"
-  depends_on    = [module.cluster]
+  depends_on    = [module.jx]
   install_vault = !var.gsm ? true : false
 }
 
@@ -260,14 +122,14 @@ locals {
   interpolated_content = templatefile(local.requirements_file, {
     gcp_project                 = var.gcp_project
     zone                        = var.cluster_location
-    cluster_name                = local.cluster_name
+    cluster_name                = var.cluster_name
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers
     lets_encrypt_production     = var.lets_encrypt_production
     // Storage buckets
-    log_storage_url        = module.cluster.log_storage_url
-    report_storage_url     = module.cluster.report_storage_url
-    repository_storage_url = module.cluster.repository_storage_url
+    log_storage_url        = module.jx.log_storage_url
+    report_storage_url     = module.jx.report_storage_url
+    repository_storage_url = module.jx.repository_storage_url
     backup_bucket_url      = module.backup.backup_bucket_url
     // Vault
     external_vault  = local.external_vault
