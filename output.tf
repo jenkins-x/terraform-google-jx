@@ -48,6 +48,20 @@ output "tekton_sa_name" {
   value       = module.cluster.tekton_sa_name
 }
 
+output "argocd_sa" {
+  description = "The argocd service account object, useful to provide further IAM bindings"
+  value = length(module.argocd) > 0 ? module.argocd[0].argocd_sa : null
+}
+
+output "argocd_sa_email" {
+  description = "The argocd service account email address, useful to provide further IAM bindings"
+  value = length(module.argocd) > 0 ? module.argocd[0].argocd_sa_email : ""
+}
+
+output "argocd_sa_name" {
+  description = "The argocd service account name, useful to provide further IAM bindings"
+  value = length(module.argocd) > 0 ? module.argocd[0].argocd_sa_name : ""
+}
 
 output "jx_requirements" {
   description = "The jx-requirements rendered output"

@@ -297,6 +297,12 @@ variable "gsm" {
   default     = false
 }
 
+variable "argocd" {
+  description = "Enables Argo CD instead of jx-git-operator"
+  type        = bool
+  default     = false
+}
+
 variable "jx_git_url" {
   description = "URL for the Jenins X cluster git repository"
   type        = string
