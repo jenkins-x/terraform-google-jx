@@ -354,14 +354,26 @@ variable "machine_types_memory" {
     "n1-highcpu-96" = 86.4
   }
 }
-
-variable "min_node_count" {
+variable "initial_cluster_node_count" {
   description = "Minimum number of cluster nodes"
   type        = number
   default     = 3
 }
 
-variable "max_node_count" {
+
+variable "initial_primary_node_pool_node_count" {
+  description = "Minimum number of cluster nodes"
+  type        = number
+  default     = 3
+}
+
+variable "autoscaler_min_node_count" {
+  description = "Minimum number of cluster nodes"
+  type        = number
+  default     = 3
+}
+
+variable "autoscaler_max_node_count" {
   description = "Maximum number of cluster nodes"
   type        = number
   default     = 5
