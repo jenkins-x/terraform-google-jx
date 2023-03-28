@@ -379,6 +379,12 @@ variable "autoscaler_max_node_count" {
   default     = 5
 }
 
+variable "autoscaler_location_policy" {
+  description = "Maximum number of cluster nodes"
+  type        = number
+  default     = "ANY"
+}
+
 variable "release_channel" {
   description = "The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels"
   type        = string

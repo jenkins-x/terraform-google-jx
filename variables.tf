@@ -235,6 +235,12 @@ variable "autoscaler_max_node_count" {
   default     = 5
 }
 
+variable "autoscaler_location_policy" {
+  description = "Maximum number of cluster nodes"
+  type        = number
+  default     = "ANY"
+}
+
 variable "node_disk_size" {
   description = "Node disk size in GB"
   type        = string
