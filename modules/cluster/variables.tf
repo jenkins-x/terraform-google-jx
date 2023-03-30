@@ -354,17 +354,34 @@ variable "machine_types_memory" {
     "n1-highcpu-96" = 86.4
   }
 }
-
-variable "min_node_count" {
-  description = "Minimum number of cluster nodes"
+variable "initial_cluster_node_count" {
+  description = "Initial number of cluster nodes"
   type        = number
   default     = 3
 }
 
-variable "max_node_count" {
-  description = "Maximum number of cluster nodes"
+variable "initial_primary_node_pool_node_count" {
+  description = "Initial primary node pool nodes"
+  type        = number
+  default     = 3
+}
+
+variable "autoscaler_min_node_count" {
+  description = "primary node pool min nodes"
+  type        = number
+  default     = 3
+}
+
+variable "autoscaler_max_node_count" {
+  description = "primary node pool max nodes"
   type        = number
   default     = 5
+}
+
+variable "autoscaler_location_policy" {
+  description = "location policy for primary node pool"
+  type        = string
+  default     = "ANY"
 }
 
 variable "release_channel" {
