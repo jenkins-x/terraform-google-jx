@@ -210,6 +210,12 @@ variable "node_spot" {
   default     = false
 }
 
+variable "enable_primary_node_pool" {
+  description = "create a node pool for primary nodes if disabled you must create your own pool"
+  type        = bool
+  default     = true
+}
+
 variable "initial_cluster_node_count" {
   description = "Initial number of cluster nodes"
   type        = number

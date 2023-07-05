@@ -101,6 +101,7 @@ resource "google_container_cluster" "jx_cluster" {
 }
 
 resource "google_container_node_pool" "primary" {
+  count = var.enable_primary_node_pool ? 1 : 0
   name               = "${var.cluster_name}-primary"
   location           = var.cluster_location
   cluster            = google_container_cluster.jx_cluster.name

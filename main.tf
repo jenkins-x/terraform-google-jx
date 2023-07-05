@@ -150,7 +150,7 @@ module "cluster" {
   bucket_location            = var.bucket_location
   jenkins_x_namespace        = var.jenkins_x_namespace
   force_destroy              = var.force_destroy
-
+  enable_primary_node_pool = var.enable_primary_node_pool
   node_machine_type = var.node_machine_type
   node_disk_size    = var.node_disk_size
   node_disk_type    = var.node_disk_type
