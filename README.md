@@ -228,7 +228,7 @@ The following is a list of considerations for a production usecase.
     ```terraform
     module "jx" {
       source  = "jenkins-x/jx/google"
-      version = "1.2.4"
+      version = "1.11.3"
       # insert your configuration
     }
 
