@@ -137,6 +137,11 @@ The following two paragraphs provide the full list of configuration and output v
 | lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
 | master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
 | master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet | `string` | `"10.0.0.0/28"` | no |
+| enable\_primary\_node\_pool | enables or disables the primary node pool. It is recomended to deploy with this as true and disable it later if needed | `bool` | `true` | no |
+| autoscaler\_max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
+| autoscaler\_min\_node\_count| Minimum number of cluster nodes | `number` | `3` | no |
+| initial\_primary\_node\_pool\_node\_count | initial node count for the primary pool | `number` | `3` | no |
+| initial\_cluster\_node\_count | initial node count for the cluster | `number` | `3` | no |
 | max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
 | max\_pods\_per\_node | Max gke nodes = 2^($CIDR\_RANGE\_PER\_NODE-$POD\_NETWORK\_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)) | `number` | `64` | no |
 | min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
