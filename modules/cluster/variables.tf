@@ -506,6 +506,12 @@ variable "kuberhealthy" {
   default     = true
 }
 
+variable "argocd" {
+  description = "Enables Argo CD instead of jx-git-operator"
+  type        = bool
+  default     = false
+}
+
 variable "content" {
   description = "Interpolated jx-requirements.yml"
   type        = string

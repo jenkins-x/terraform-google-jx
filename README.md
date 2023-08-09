@@ -125,6 +125,7 @@ The following two paragraphs provide the full list of configuration and output v
 | gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
 | git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
 | gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
+| argocd | Enables gitops sync via ArgoCD instead of git-operator | `bool` | `false` | no |
 | ip\_range\_pods | The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
 | ip\_range\_services | The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
 | jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
@@ -169,6 +170,9 @@ The following two paragraphs provide the full list of configuration and output v
 
 | Name | Description |
 |------|-------------|
+| argocd\_sa | The argocd service account object, useful to provide further IAM bindings |
+| argocd\_sa\_email | The argocd service account email address, useful to provide further IAM bindings |
+| argocd\_sa\_name | The argocd service account name, useful to provide further IAM bindings |
 | backup\_bucket\_url | The URL to the bucket for backup storage |
 | cluster\_location | The location of the created Kubernetes cluster |
 | cluster\_name | The name of the created Kubernetes cluster |
