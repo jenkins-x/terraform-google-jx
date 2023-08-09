@@ -210,6 +210,13 @@ variable "node_spot" {
   default     = false
 }
 
+// Recommended to initially create this pool because the auth scops with elevated permissions are neccessary for creating the initial buckets and other resources, then you can delete it.
+variable "enable_primary_node_pool" {
+  description = "create a node pool for primary nodes if disabled you must create your own pool"
+  type        = bool
+  default     = true
+}
+
 variable "initial_cluster_node_count" {
   description = "Initial number of cluster nodes"
   type        = number

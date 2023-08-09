@@ -408,6 +408,12 @@ variable "node_spot" {
   default     = false
 }
 
+variable "enable_primary_node_pool" {
+  description = "create a node pool for primary nodes if disabled you must create your own pool"
+  type        = bool
+  default     = true
+}
+
 variable "node_disk_type" {
   description = "Node disk type (pd-ssd or pd-standard)"
   type        = string
