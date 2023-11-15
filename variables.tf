@@ -351,3 +351,10 @@ variable "kuberhealthy" {
   type        = bool
   default     = true
 }
+
+variable "delete_protect" {
+  description = "Flag used to set the `deletion_protection` attribute to prevent cluster deletion"
+  type        = bool
+  default     = true
+}
+

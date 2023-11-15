@@ -173,6 +173,7 @@ module "cluster" {
   jx_git_operator_version = var.jx_git_operator_version
 
   kuberhealthy = var.kuberhealthy
+  delete_protect             = var.delete_protect
 }
 
 // ----------------------------------------------------------------------------

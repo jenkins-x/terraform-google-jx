@@ -102,6 +102,8 @@ For more information on how to configure and use a custom domain, refer to [Usin
 If you just want to experiment with Jenkins X, you can set `force_destroy` to `true`.
 This allows you to remove all generated resources when running `terraform destroy`, including any generated buckets including their content.
 
+If you want to remove a cluster with the `terraform destroy` command and the cluster is protected by the `deletion_protection=true` attribute, you can override the attribute by setting the `delete_protect` variable to `false`. It is recommended to override this value and the time of cluster deletion and you should successfully apply the attribute value change before attempting the `terraform destroy` command.
+
 The following two paragraphs provide the full list of configuration and output variables of this Terraform module.
 
 #### Inputs
@@ -117,6 +119,7 @@ The following two paragraphs provide the full list of configuration and output v
 | cluster\_network | The name of the network (VPC) to which the cluster is connected | `string` | `"default"` | no |
 | cluster\_subnetwork | The name of the subnetwork to which the cluster is connected. Leave blank when using the 'default' vpc to generate a subnet for your cluster | `string` | `""` | no |
 | create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `true` | no |
+| delete\_protect | Flag used to set the `deletion_protection` attribute to prevent cluster deletion | `bool` | `true` | no |
 | dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
 | enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
 | enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native | `bool` | `false` | no |
