@@ -27,6 +27,7 @@ resource "google_container_cluster" "jx_cluster" {
   location                  = var.cluster_location
   network                   = var.cluster_network
   subnetwork                = var.cluster_subnetwork
+  deletion_protection       = var.delete_protect
   enable_kubernetes_alpha   = var.enable_kubernetes_alpha
   enable_legacy_abac        = var.enable_legacy_abac
   enable_shielded_nodes     = var.enable_shielded_nodes

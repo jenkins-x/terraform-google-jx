@@ -511,3 +511,10 @@ variable "content" {
   type        = string
   default     = ""
 }
+
+variable "delete_protect" {
+  description = "Flag used to set the `deletion_protection` attribute to prevent cluster deletion"
+  type        = bool
+  default     = true
+}
+
