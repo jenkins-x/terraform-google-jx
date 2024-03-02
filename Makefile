@@ -61,5 +61,5 @@ clean: ## Deletes temporary files
 
 .PHONY: markdown-table
 markdown-table: ## Creates markdown tables for in- and output of this module
-	terraform-docs markdown table .
+	terraform-docs .
 			

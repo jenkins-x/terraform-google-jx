@@ -106,86 +106,87 @@ If you want to remove a cluster with the `terraform destroy` command and the clu
 
 The following two paragraphs provide the full list of configuration and output variables of this Terraform module.
 
+<!-- BEGIN_TF_DOCS -->
 #### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| apex\_domain | The parent / apex domain to be used for the cluster | `string` | `""` | no |
-| apex\_domain\_gcp\_project | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
-| apex\_domain\_integration\_enabled | Flag that when set attempts to create delegation records in apex domain to point to domain created by this module | `bool` | `true` | no |
-| bucket\_location | Bucket location for storage | `string` | `"US"` | no |
-| cluster\_location | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
-| cluster\_name | Name of the Kubernetes cluster to create | `string` | `""` | no |
-| cluster\_network | The name of the network (VPC) to which the cluster is connected | `string` | `"default"` | no |
-| cluster\_subnetwork | The name of the subnetwork to which the cluster is connected. Leave blank when using the 'default' vpc to generate a subnet for your cluster | `string` | `""` | no |
-| create\_ui\_sa | Whether the service accounts for the UI should be created | `bool` | `true` | no |
-| delete\_protect | Flag used to set the `deletion_protection` attribute to prevent cluster deletion | `bool` | `true` | no |
-| dev\_env\_approvers | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
-| enable\_backup | Whether or not Velero backups should be enabled | `bool` | `false` | no |
-| enable\_private\_endpoint | (Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native | `bool` | `false` | no |
-| enable\_private\_nodes | (Beta) Whether nodes have internal IP addresses only. Requires VPC-native | `bool` | `false` | no |
-| force\_destroy | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
-| gcp\_project | The name of the GCP project to use | `string` | n/a | yes |
-| git\_owner\_requirement\_repos | The git id of the owner for the requirement repositories | `string` | `""` | no |
-| gsm | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
-| ip\_range\_pods | The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
-| ip\_range\_services | The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
-| jenkins\_x\_namespace | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
-| jx2 | Is a Jenkins X 2 install | `bool` | `true` | no |
-| jx\_bot\_token | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
-| jx\_bot\_username | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
-| jx\_git\_operator\_version | The jx-git-operator helm chart version | `string` | `"0.0.192"` | no |
-| jx\_git\_url | URL for the Jenins X cluster git repository | `string` | `""` | no |
-| kuberhealthy | Enables Kuberhealthy helm installation | `bool` | `true` | no |
-| lets\_encrypt\_production | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
-| master\_authorized\_networks | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
-| master\_ipv4\_cidr\_block | The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet | `string` | `"10.0.0.0/28"` | no |
-| enable\_primary\_node\_pool | enables or disables the primary node pool. It is recomended to deploy with this as true and disable it later if needed | `bool` | `true` | no |
-| autoscaler\_max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
-| autoscaler\_min\_node\_count| Minimum number of cluster nodes | `number` | `3` | no |
-| initial\_primary\_node\_pool\_node\_count | initial node count for the primary pool | `number` | `3` | no |
-| initial\_cluster\_node\_count | initial node count for the cluster | `number` | `3` | no |
-| max\_node\_count | Maximum number of cluster nodes | `number` | `5` | no |
-| max\_pods\_per\_node | Max gke nodes = 2^($CIDR\_RANGE\_PER\_NODE-$POD\_NETWORK\_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)) | `number` | `64` | no |
-| min\_node\_count | Minimum number of cluster nodes | `number` | `3` | no |
-| node\_disk\_size | Node disk size in GB | `string` | `"100"` | no |
-| node\_disk\_type | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
-| node\_machine\_type | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
-| node\_preemptible | Use preemptible nodes | `bool` | `false` | no |
-| node\_spot | Use spot nodes | `bool` | `false` | no |
-| parent\_domain | \*\*Deprecated\*\* Please use apex\_domain variable instead.r | `string` | `""` | no |
-| parent\_domain\_gcp\_project | \*\*Deprecated\*\* Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
-| release\_channel | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"REGULAR"` | no |
-| resource\_labels | Set of labels to be applied to the cluster | `map(any)` | `{}` | no |
-| subdomain | Optional sub domain for the installation | `string` | `""` | no |
-| tls\_email | Email used by Let's Encrypt. Required for TLS when apex\_domain is specified | `string` | `""` | no |
-| vault\_url | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
-| velero\_namespace | Kubernetes namespace for Velero | `string` | `"velero"` | no |
-| velero\_schedule | The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml)) | `string` | `"0 * * * *"` | no |
-| velero\_ttl | The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup)) | `string` | `"720h0m0s"` | no |
-| version\_stream\_ref | The git ref for version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"master"` | no |
-| version\_stream\_url | The URL for the version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"https://github.com/jenkins-x/jenkins-x-versions.git"` | no |
-| webhook | Jenkins X webhook handler for git provider | `string` | `"lighthouse"` | no |
-| zone | Zone in which to create the cluster (deprecated, use cluster\_location instead) | `string` | `""` | no |
+| <a name="input_apex_domain"></a> [apex\_domain](#input\_apex\_domain) | The parent / apex domain to be used for the cluster | `string` | `""` | no |
+| <a name="input_apex_domain_gcp_project"></a> [apex\_domain\_gcp\_project](#input\_apex\_domain\_gcp\_project) | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
+| <a name="input_apex_domain_integration_enabled"></a> [apex\_domain\_integration\_enabled](#input\_apex\_domain\_integration\_enabled) | Flag that when set attempts to create delegation records in apex domain to point to domain created by this module | `bool` | `true` | no |
+| <a name="input_autoscaler_location_policy"></a> [autoscaler\_location\_policy](#input\_autoscaler\_location\_policy) | location policy for primary node pool | `string` | `"ANY"` | no |
+| <a name="input_autoscaler_max_node_count"></a> [autoscaler\_max\_node\_count](#input\_autoscaler\_max\_node\_count) | primary node pool max nodes | `number` | `5` | no |
+| <a name="input_autoscaler_min_node_count"></a> [autoscaler\_min\_node\_count](#input\_autoscaler\_min\_node\_count) | primary node pool min nodes | `number` | `3` | no |
+| <a name="input_bucket_location"></a> [bucket\_location](#input\_bucket\_location) | Bucket location for storage | `string` | `"US"` | no |
+| <a name="input_cluster_location"></a> [cluster\_location](#input\_cluster\_location) | The location (region or zone) in which the cluster master will be created. If you specify a zone (such as us-central1-a), the cluster will be a zonal cluster with a single cluster master. If you specify a region (such as us-west1), the cluster will be a regional cluster with multiple masters spread across zones in the region | `string` | `"us-central1-a"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the Kubernetes cluster to create | `string` | `""` | no |
+| <a name="input_cluster_network"></a> [cluster\_network](#input\_cluster\_network) | The name of the network (VPC) to which the cluster is connected | `string` | `"default"` | no |
+| <a name="input_cluster_subnetwork"></a> [cluster\_subnetwork](#input\_cluster\_subnetwork) | The name of the subnetwork to which the cluster is connected. Leave blank when using the 'default' vpc to generate a subnet for your cluster | `string` | `""` | no |
+| <a name="input_create_ui_sa"></a> [create\_ui\_sa](#input\_create\_ui\_sa) | Whether the service accounts for the UI should be created | `bool` | `true` | no |
+| <a name="input_delete_protect"></a> [delete\_protect](#input\_delete\_protect) | Flag used to set the `deletion_protection` attribute to prevent cluster deletion | `bool` | `true` | no |
+| <a name="input_dev_env_approvers"></a> [dev\_env\_approvers](#input\_dev\_env\_approvers) | List of git users allowed to approve pull request for dev enviornment repository | `list(string)` | `[]` | no |
+| <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Whether or not Velero backups should be enabled | `bool` | `false` | no |
+| <a name="input_enable_primary_node_pool"></a> [enable\_primary\_node\_pool](#input\_enable\_primary\_node\_pool) | create a node pool for primary nodes if disabled you must create your own pool | `bool` | `true` | no |
+| <a name="input_enable_private_endpoint"></a> [enable\_private\_endpoint](#input\_enable\_private\_endpoint) | (Beta) Whether the master's internal IP address is used as the cluster endpoint. Requires VPC-native | `bool` | `false` | no |
+| <a name="input_enable_private_nodes"></a> [enable\_private\_nodes](#input\_enable\_private\_nodes) | (Beta) Whether nodes have internal IP addresses only. Requires VPC-native | `bool` | `false` | no |
+| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Flag to determine whether storage buckets get forcefully destroyed | `bool` | `false` | no |
+| <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | The name of the GCP project to use | `string` | n/a | yes |
+| <a name="input_git_owner_requirement_repos"></a> [git\_owner\_requirement\_repos](#input\_git\_owner\_requirement\_repos) | The git id of the owner for the requirement repositories | `string` | `""` | no |
+| <a name="input_gsm"></a> [gsm](#input\_gsm) | Enables Google Secrets Manager, not available with JX2 | `bool` | `false` | no |
+| <a name="input_initial_cluster_node_count"></a> [initial\_cluster\_node\_count](#input\_initial\_cluster\_node\_count) | Initial number of cluster nodes | `number` | `3` | no |
+| <a name="input_initial_primary_node_pool_node_count"></a> [initial\_primary\_node\_pool\_node\_count](#input\_initial\_primary\_node\_pool\_node\_count) | Initial primary node pool nodes | `number` | `3` | no |
+| <a name="input_ip_range_pods"></a> [ip\_range\_pods](#input\_ip\_range\_pods) | The IP range in CIDR notation to use for pods. Set to /netmask (e.g. /18) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
+| <a name="input_ip_range_services"></a> [ip\_range\_services](#input\_ip\_range\_services) | The IP range in CIDR notation use for services. Set to /netmask (e.g. /21) to have a range chosen with a specific netmask. Enables VPC-native | `string` | `""` | no |
+| <a name="input_jenkins_x_namespace"></a> [jenkins\_x\_namespace](#input\_jenkins\_x\_namespace) | Kubernetes namespace to install Jenkins X in | `string` | `"jx"` | no |
+| <a name="input_jx2"></a> [jx2](#input\_jx2) | Is a Jenkins X 2 install | `bool` | `true` | no |
+| <a name="input_jx_bot_token"></a> [jx\_bot\_token](#input\_jx\_bot\_token) | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
+| <a name="input_jx_bot_username"></a> [jx\_bot\_username](#input\_jx\_bot\_username) | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
+| <a name="input_jx_git_operator_version"></a> [jx\_git\_operator\_version](#input\_jx\_git\_operator\_version) | The jx-git-operator helm chart version | `string` | `"0.0.192"` | no |
+| <a name="input_jx_git_url"></a> [jx\_git\_url](#input\_jx\_git\_url) | URL for the Jenins X cluster git repository | `string` | `""` | no |
+| <a name="input_kuberhealthy"></a> [kuberhealthy](#input\_kuberhealthy) | Enables Kuberhealthy helm installation | `bool` | `true` | no |
+| <a name="input_lets_encrypt_production"></a> [lets\_encrypt\_production](#input\_lets\_encrypt\_production) | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
+| <a name="input_master_authorized_networks"></a> [master\_authorized\_networks](#input\_master\_authorized\_networks) | List of master authorized networks. If none are provided, disallow external access (except the cluster node IPs, which GKE automatically allowlists). | `list(object({ cidr_block = string, display_name = string }))` | `[]` | no |
+| <a name="input_master_ipv4_cidr_block"></a> [master\_ipv4\_cidr\_block](#input\_master\_ipv4\_cidr\_block) | The IP range in CIDR notation to use for the hosted master network.  This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet | `string` | `"10.0.0.0/28"` | no |
+| <a name="input_max_pods_per_node"></a> [max\_pods\_per\_node](#input\_max\_pods\_per\_node) | Max gke nodes = 2^($CIDR\_RANGE\_PER\_NODE-$POD\_NETWORK\_CIDR) (see [gke docs](https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr)) | `number` | `64` | no |
+| <a name="input_node_disk_size"></a> [node\_disk\_size](#input\_node\_disk\_size) | Node disk size in GB | `string` | `"100"` | no |
+| <a name="input_node_disk_type"></a> [node\_disk\_type](#input\_node\_disk\_type) | Node disk type, either pd-standard or pd-ssd | `string` | `"pd-standard"` | no |
+| <a name="input_node_machine_type"></a> [node\_machine\_type](#input\_node\_machine\_type) | Node type for the Kubernetes cluster | `string` | `"n1-standard-2"` | no |
+| <a name="input_node_preemptible"></a> [node\_preemptible](#input\_node\_preemptible) | Use preemptible nodes | `bool` | `false` | no |
+| <a name="input_node_spot"></a> [node\_spot](#input\_node\_spot) | Use spot nodes | `bool` | `false` | no |
+| <a name="input_parent_domain"></a> [parent\_domain](#input\_parent\_domain) | **Deprecated** Please use apex\_domain variable instead.r | `string` | `""` | no |
+| <a name="input_parent_domain_gcp_project"></a> [parent\_domain\_gcp\_project](#input\_parent\_domain\_gcp\_project) | **Deprecated** Please use apex\_domain\_gcp\_project variable instead. | `string` | `""` | no |
+| <a name="input_release_channel"></a> [release\_channel](#input\_release\_channel) | The GKE release channel to subscribe to.  See https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels | `string` | `"REGULAR"` | no |
+| <a name="input_resource_labels"></a> [resource\_labels](#input\_resource\_labels) | Set of labels to be applied to the cluster | `map(any)` | `{}` | no |
+| <a name="input_subdomain"></a> [subdomain](#input\_subdomain) | Optional sub domain for the installation | `string` | `""` | no |
+| <a name="input_tls_email"></a> [tls\_email](#input\_tls\_email) | Email used by Let's Encrypt. Required for TLS when apex\_domain is specified | `string` | `""` | no |
+| <a name="input_vault_url"></a> [vault\_url](#input\_vault\_url) | URL to an external Vault instance in case Jenkins X shall not create its own system Vault | `string` | `""` | no |
+| <a name="input_velero_namespace"></a> [velero\_namespace](#input\_velero\_namespace) | Kubernetes namespace for Velero | `string` | `"velero"` | no |
+| <a name="input_velero_schedule"></a> [velero\_schedule](#input\_velero\_schedule) | The Velero backup schedule in cron notation to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup.yaml)) | `string` | `"0 * * * *"` | no |
+| <a name="input_velero_ttl"></a> [velero\_ttl](#input\_velero\_ttl) | The the lifetime of a velero backup to be set in the Velero Schedule CRD (see [default-backup.yaml](https://github.com/jenkins-x/jenkins-x-boot-config/blob/master/systems/velero-backups/templates/default-backup)) | `string` | `"720h0m0s"` | no |
+| <a name="input_version_stream_ref"></a> [version\_stream\_ref](#input\_version\_stream\_ref) | The git ref for version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"master"` | no |
+| <a name="input_version_stream_url"></a> [version\_stream\_url](#input\_version\_stream\_url) | The URL for the version stream to use when booting Jenkins X. See https://jenkins-x.io/docs/concepts/version-stream/ | `string` | `"https://github.com/jenkins-x/jenkins-x-versions.git"` | no |
+| <a name="input_webhook"></a> [webhook](#input\_webhook) | Jenkins X webhook handler for git provider | `string` | `"lighthouse"` | no |
+| <a name="input_zone"></a> [zone](#input\_zone) | Zone in which to create the cluster (deprecated, use cluster\_location instead) | `string` | `""` | no |
 
 #### Outputs
 
 | Name | Description |
 |------|-------------|
-| backup\_bucket\_url | The URL to the bucket for backup storage |
-| cluster\_location | The location of the created Kubernetes cluster |
-| cluster\_name | The name of the created Kubernetes cluster |
-| connect | The cluster connection string to use once Terraform apply finishes |
-| externaldns\_dns\_name | ExternalDNS name |
-| externaldns\_ns | ExternalDNS nameservers |
-| gcp\_project | The GCP project in which the resources got created |
-| jx\_requirements | The jx-requirements rendered output |
-| log\_storage\_url | The URL to the bucket for log storage |
-| report\_storage\_url | The URL to the bucket for report storage |
-| repository\_storage\_url | The URL to the bucket for artifact storage |
-| tekton\_sa\_email | The Tekton service account email address, useful to provide further IAM bindings |
-| tekton\_sa\_name | The Tekton service account name, useful to provide further IAM bindings |
-| vault\_bucket\_url | The URL to the bucket for secret storage |
+| <a name="output_backup_bucket_url"></a> [backup\_bucket\_url](#output\_backup\_bucket\_url) | The URL to the bucket for backup storage |
+| <a name="output_cluster_location"></a> [cluster\_location](#output\_cluster\_location) | The location of the created Kubernetes cluster |
+| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | The name of the created Kubernetes cluster |
+| <a name="output_connect"></a> [connect](#output\_connect) | The cluster connection string to use once Terraform apply finishes |
+| <a name="output_externaldns_dns_name"></a> [externaldns\_dns\_name](#output\_externaldns\_dns\_name) | ExternalDNS name |
+| <a name="output_externaldns_ns"></a> [externaldns\_ns](#output\_externaldns\_ns) | ExternalDNS nameservers |
+| <a name="output_gcp_project"></a> [gcp\_project](#output\_gcp\_project) | The GCP project in which the resources got created |
+| <a name="output_jx_requirements"></a> [jx\_requirements](#output\_jx\_requirements) | The jx-requirements rendered output |
+| <a name="output_log_storage_url"></a> [log\_storage\_url](#output\_log\_storage\_url) | The URL to the bucket for log storage |
+| <a name="output_report_storage_url"></a> [report\_storage\_url](#output\_report\_storage\_url) | The URL to the bucket for report storage |
+| <a name="output_repository_storage_url"></a> [repository\_storage\_url](#output\_repository\_storage\_url) | The URL to the bucket for artifact storage |
+| <a name="output_tekton_sa_email"></a> [tekton\_sa\_email](#output\_tekton\_sa\_email) | The Tekton service account email address, useful to provide further IAM bindings |
+| <a name="output_tekton_sa_name"></a> [tekton\_sa\_name](#output\_tekton\_sa\_name) | The Tekton service account name, useful to provide further IAM bindings |
+| <a name="output_vault_bucket_url"></a> [vault\_bucket\_url](#output\_vault\_bucket\_url) | The URL to the bucket for secret storage |
+<!-- END_TF_DOCS -->
 
 ### Running `jx boot`
 
