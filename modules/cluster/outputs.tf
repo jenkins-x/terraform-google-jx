@@ -45,3 +45,11 @@ output "tekton_sa_email" {
 output "tekton_sa_name" {
   value = google_service_account.tekton_sa.name
 }
+
+output "artifact_registry_repository" {
+  value = local.artifact_registry_repository
+}
+
+output "artifact_registry_repository_name" {
+  value = local.artifact_repositoryid
+}

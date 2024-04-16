@@ -129,6 +129,12 @@ resource "google_project_service" "container_api" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "artifactregistry" {
+  provider           = google
+  project            = var.gcp_project
+  service            = "artifactregistry.googleapis.com"
+  disable_on_destroy = false
+}
 // ----------------------------------------------------------------------------
 // Create Kubernetes cluster
 // ----------------------------------------------------------------------------
@@ -148,6 +154,9 @@ module "cluster" {
   ip_range_services          = var.ip_range_services
   max_pods_per_node          = var.max_pods_per_node
   bucket_location            = var.bucket_location
+  artifact_enable            = var.artifact_enable
+  artifact_location          = var.artifact_location 
+  artifact_repository_id     = var.artifact_repository_id
   jenkins_x_namespace        = var.jenkins_x_namespace
   force_destroy              = var.force_destroy
   enable_primary_node_pool = var.enable_primary_node_pool
@@ -267,6 +276,10 @@ locals {
     git_owner_requirement_repos = var.git_owner_requirement_repos
     dev_env_approvers           = var.dev_env_approvers
     lets_encrypt_production     = var.lets_encrypt_production
+    // GCP Artifact
+    enable_artifact        = var.artifact_enable
+    registry               = module.cluster.artifact_registry_repository
+    docker_registry_org    = module.cluster.artifact_registry_repository_name
     // Storage buckets
     log_storage_url        = module.cluster.log_storage_url
     report_storage_url     = module.cluster.report_storage_url

@@ -237,3 +237,18 @@ resource "google_service_account_iam_member" "boot_sa_workload_identity_user" {
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.gcp_project}.svc.id.goog[jx-git-operator/jx-boot-job]"
 }
+
+// Artifact Registry
+resource "google_artifact_registry_repository_iam_member" "writers" {
+  count      = var.artifact_enable ? 1 : 0
+  project    = google_artifact_registry_repository.repo[count.index].project
+  location   = google_artifact_registry_repository.repo[count.index].location
+  repository = google_artifact_registry_repository.repo[count.index].name
+
+  role   = "roles/artifactregistry.writer"
+  member   = "serviceAccount:${google_service_account.tekton_sa.email}"
+
+  depends_on = [
+    google_artifact_registry_repository.repo
+  ]
+}

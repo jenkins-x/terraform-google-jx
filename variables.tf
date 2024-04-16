@@ -358,3 +358,25 @@ variable "delete_protect" {
   default     = true
 }
 
+// GCP Artifact
+variable "artifact_location" {
+  description = "artifact registry repository Location"
+  type        = string
+  default     = "us-central1" 
+}
+variable "artifact_repository_id" {
+  description = "artifact registry repository Name"
+  type        = string
+  default     = "oci"
+}
+variable "artifact_description" {
+  description = "artifact registry repository Description"
+  type        = string
+  default     = "jenkins-x Docker Repository" 
+}
+
+variable "artifact_enable" {
+  description = "Create artifact registry repository"
+  type        = bool
+  default     = true
+}
