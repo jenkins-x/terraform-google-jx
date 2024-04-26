@@ -32,14 +32,15 @@ The CI build will fail on lint issues.  To format and run locally execute `make 
 
 Helpful tip if using an IDE like intelij you can enable file watchers and auto format terraform files.
 
-## Generating terraform docs for the readme
+## Generating terraform docs and table of content in README.md
 
-### Prerequisite
+### Prerequisites
 
 - terraform-docs - for OSX `brew install terraform-docs` (v0.12+)
+- markdown-toc - `npm install --save markdown-toc`
 
-If you add or remove any terraform input or outputs you will need to regenerate the docs. Note that running the following will automatically update the README.md sections
+If you add or remove any terraform input or outputs or change headings in README.md you will need to regenerate the docs. Note that running the following will automatically update the README.md sections
 
 ```
-make markdown-table
+make README.md
 ```

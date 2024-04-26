@@ -9,27 +9,32 @@ compatibility issues to be aware of are around provider requirements.  For more 
 
 This repo contains a [Terraform](https://www.terraform.io/) module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
 
-<!-- TOC -->
+<!-- toc -->
 
-- [Jenkins X GKE Module](#jenkins-x-gke-module)
-  - [What is a Terraform module](#what-is-a-terraform-module)
-  - [How do you use this module](#how-do-you-use-this-module)
-    - [Prerequisites](#prerequisites)
-    - [Cluster provisioning](#cluster-provisioning)
-      - [Inputs](#inputs)
-      - [Outputs](#outputs)
-    - [Running `jx boot`](#running-jx-boot)
-    - [Using a custom domain](#using-a-custom-domain)
-    - [Production cluster considerations](#production-cluster-considerations)
-  - [FAQ](#faq)
-    - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
-    - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
-    - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
-  - [Development](#development)
-    - [Releasing](#releasing)
-  - [How do I contribute](#how-do-i-contribute)
+- [What is a Terraform module](#what-is-a-terraform-module)
+- [How do you use this module](#how-do-you-use-this-module)
+  - [Prerequisites](#prerequisites)
+  - [Cluster provisioning](#cluster-provisioning)
+    - [Inputs](#inputs)
+    - [Outputs](#outputs)
+  - [Artifact Registry in setup with multiple Jenkins X clusters](#artifact-registry-in-setup-with-multiple-jenkins-x-clusters)
+  - [Migration from Container to Artifact Registry](#migration-from-container-to-artifact-registry)
+    - [Configuration Note](#configuration-note)
+    - [Migration Options](#migration-options)
+      - [Don't Migrate Existing Images](#dont-migrate-existing-images)
+      - [Migrate Existing Images](#migrate-existing-images)
+  - [Using a custom domain](#using-a-custom-domain)
+  - [Production cluster considerations](#production-cluster-considerations)
+  - [Configuring a Terraform backend](#configuring-a-terraform-backend)
+- [FAQ](#faq)
+  - [How do I get the latest version of the terraform-google-jx module](#how-do-i-get-the-latest-version-of-the-terraform-google-jx-module)
+  - [How to I specify a specific google provider version](#how-to-i-specify-a-specific-google-provider-version)
+  - [Why do I need Application Default Credentials](#why-do-i-need-application-default-credentials)
+- [Development](#development)
+  - [Releasing](#releasing)
+- [How do I contribute](#how-do-i-contribute)
 
-<!-- /TOC -->
+<!-- tocstop -->
 
 ## What is a Terraform module
 
@@ -114,6 +119,10 @@ The following two paragraphs provide the full list of configuration and output v
 | <a name="input_apex_domain"></a> [apex\_domain](#input\_apex\_domain) | The parent / apex domain to be used for the cluster | `string` | `""` | no |
 | <a name="input_apex_domain_gcp_project"></a> [apex\_domain\_gcp\_project](#input\_apex\_domain\_gcp\_project) | The GCP project the apex domain is managed by, used to write recordsets for a subdomain if set.  Defaults to current project. | `string` | `""` | no |
 | <a name="input_apex_domain_integration_enabled"></a> [apex\_domain\_integration\_enabled](#input\_apex\_domain\_integration\_enabled) | Flag that when set attempts to create delegation records in apex domain to point to domain created by this module | `bool` | `true` | no |
+| <a name="input_artifact_description"></a> [artifact\_description](#input\_artifact\_description) | artifact registry repository Description | `string` | `"jenkins-x Docker Repository"` | no |
+| <a name="input_artifact_enable"></a> [artifact\_enable](#input\_artifact\_enable) | Create artifact registry repository | `bool` | `true` | no |
+| <a name="input_artifact_location"></a> [artifact\_location](#input\_artifact\_location) | artifact registry repository Location | `string` | `"us-central1"` | no |
+| <a name="input_artifact_repository_id"></a> [artifact\_repository\_id](#input\_artifact\_repository\_id) | artifact registry repository Name | `string` | `"oci"` | no |
 | <a name="input_autoscaler_location_policy"></a> [autoscaler\_location\_policy](#input\_autoscaler\_location\_policy) | location policy for primary node pool | `string` | `"ANY"` | no |
 | <a name="input_autoscaler_max_node_count"></a> [autoscaler\_max\_node\_count](#input\_autoscaler\_max\_node\_count) | primary node pool max nodes | `number` | `5` | no |
 | <a name="input_autoscaler_min_node_count"></a> [autoscaler\_min\_node\_count](#input\_autoscaler\_min\_node\_count) | primary node pool min nodes | `number` | `3` | no |
@@ -188,33 +197,52 @@ The following two paragraphs provide the full list of configuration and output v
 | <a name="output_vault_bucket_url"></a> [vault\_bucket\_url](#output\_vault\_bucket\_url) | The URL to the bucket for secret storage |
 <!-- END_TF_DOCS -->
 
-### Running `jx boot`
 
-A terraform output (_jx\_requirements_) is available after applying this Terraform module.
+### Artifact Registry in setup with multiple Jenkins X clusters
+In a multi cluster setup, you should leave the value of `artifact_enable` as `true` **only in a
+development cluster** and set `artifact_enable = false` for other clusters. A development cluster is
+one where application build pipelines are executed. If you have multiple development clusters you
+can set `artifact_repository_id` to different values for them. Alternatively you can have
+`artifact_enable = true` in one and manually copy the values of `cluster.registry` and
+`cluster.dockerRegistryOrg` from `jx-requirements.yml` from that cluster repository to the other
+cdevelopment cluster repositories.
 
-```sh
-terraform output jx_requirements
+If you leave `artifact_enable` as `true` for multiple clusters and don't override
+`artifact_repository_id` terraform will fail since it can't create an already existing repository.
+
+### Migration from Container to Artifact Registry
+
+Google has deprecated `gcr.io` and now recommends the use of Artifact Registry. The default of this module is now to create and use a repository in Artifact Registry for container images.
+
+Google GKE clusters automatically have permissions to download from the Artifact Registry. For multi cluster setups across different projects, additional permission configurations may be necessary.
+
+#### Configuration Note
+The `jx-requirements.yml` will be automatically updated by the Jenkins X boot job when triggered by a push to the main branch of the cluster repository.
+
+#### Migration Options
+Here are two strategies for transitioning container images from `gcr.io` to the Artifact Registry:
+
+##### Don't Migrate Existing Images
+- Continue developing applications as usual. New images, upon their release, will be pushed to the Artifact Registry.
+- **Important**: Ensure that all builds are triggered and applications are promoted before Google completely shuts down the Container Registry. This step is critical to avoid disruptions in service.
+To identify which images from you container registry are currently used in your cluster, you can use the following command line (replace `project_id` with your actual GCP project id):
+```bash
+kubectl get pods --all-namespaces -o jsonpath="{range .items[*].spec['initContainers', 'containers'][*]}{.image}{'\n'}{end}" | fgrep gcr.io/project_id | sort -u
 ```
 
-This `jx_requirements` output can be used as input to [Jenkins X Boot](https://jenkins-x.io/docs/getting-started/setup/boot/) which is responsible for installing all the required Jenkins X components into the cluster created by this module.
+##### Migrate Existing Images
+If you have a large number of applications running that are unlikely to be released in the coming
+year, migration of images to artifact registry while retaining the image names (in the domain
+`gcr.io`) could be considered. This means that existing helm charts will continue to work.
 
-![Jenkins X Installation/Update Flow](./images/terraform_google_jx.png)
+This process is not supported by this terraform module, instead you need to follow the steps outlined in the guide 
+[Set up repositories with gcr.io domain support](https://cloud.google.com/artifact-registry/docs/transition/setup-gcr-repo).
+These steps include create the a repository in Artifact Registry, migrate images to it from
+container registry and enable redirection of gcr.io traffic.
 
-:warning: **Note**: The generated _jx-requirements_ is only used for the first run of `jx boot`.
-During this first run of `jx boot` a git repository containing the source code for Jenkins X Boot is created.
-This (_new_) repository contains a _jx-requirements.yml_ (_which is now ahead of the jx-requirements output from terraform_) used by successive runs of `jx boot`.
-
-Execute:
-
-```sh
-terraform output jx_requirements > <some_empty_dir>/jx-requirements.yml
-# jenkins-x creates the environment repository directory localy before pushing to the Git server of choice
-cd <some_empty_dir>
-jx boot --requirements jx-requirements.yml
-```
-
-You are prompted for any further required configuration.
-The number of prompts depends on how much you have [pre-configured](#inputs) via your Terraform variables.
+If you keep the default settings for this module it will create another artifact repository that
+will be used for new images. If you want to use `gcr.io` artifact repository for new images you
+should set `artifact_enable = false`.
 
 ### Using a custom domain
 

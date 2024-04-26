@@ -43,7 +43,7 @@ fmt: ## Reformats Terraform files accoring to standard
 	terraform fmt -diff -recursive
 
 .PHONY: fmt-check
-fmt: ## Checks if Terraform files are formatted accoring to standard
+fmt-check: ## Checks if Terraform files are formatted accoring to standard
 	terraform fmt -check -diff -recursive
 
 .PHONY: test
@@ -60,6 +60,11 @@ clean: ## Deletes temporary files
 	@rm -f jx-requirements.yml
 
 .PHONY: markdown-table
-markdown-table: ## Creates markdown tables for in- and output of this module
+markdown-table: ## Creates markdown tables for in- and output of this module using https://terraform-docs.io/
 	terraform-docs .
-			
+
+.PHONY: markdown-toc
+markdown-toc: ## Creates table of content using https://github.com/jonschlinkert/markdown-toc
+	markdown-toc -i README.md  --bullets "-"
+
+README.md: markdown-table markdown-toc

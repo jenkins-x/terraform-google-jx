@@ -6,6 +6,10 @@ spec:
     project: "${gcp_project}"
     provider: gke
     zone: "${zone}"
+%{ if enable_artifact }
+    dockerRegistryOrg: "${docker_registry_org}"
+    registry: "${registry}"
+%{ endif }
   ingress:
 %{ if subdomain != "" }
     domain: "${subdomain}.${apex_domain}"

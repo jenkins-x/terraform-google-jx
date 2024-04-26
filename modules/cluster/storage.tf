@@ -33,3 +33,19 @@ resource "google_storage_bucket" "repository_bucket" {
 
   force_destroy = var.force_destroy
 }
+
+// Artifact Registry
+locals {
+   artifact_repositoryid = var.artifact_repository_id == "" ? var.cluster_name : var.artifact_repository_id
+   artifact_registry_repository = "${var.artifact_location}-docker.pkg.dev/${var.gcp_project}" 
+}
+
+resource "google_artifact_registry_repository" "repo" {
+      count                  = var.artifact_enable ? 1 : 0
+      format                 = "DOCKER"
+      location               = var.artifact_location
+      mode                   = "STANDARD_REPOSITORY"
+      project                = var.gcp_project
+      repository_id          = local.artifact_repositoryid
+      description            = var.artifact_description
+}
