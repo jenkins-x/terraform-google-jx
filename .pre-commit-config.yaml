@@ -1,7 +1,5 @@
 repos:
-- repo: https://github.com/Yelp/detect-secrets.git
-  rev: v0.12.4
+- repo: https://github.com/jenkins-x/jx-docs.git
+  rev: main
   hooks:
     - id: detect-secrets
-      args: ['--baseline', '.secrets.baseline']
-      exclude: .*/tests/.*
