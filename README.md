@@ -150,7 +150,7 @@ The following two paragraphs provide the full list of configuration and output v
 | <a name="input_jx2"></a> [jx2](#input\_jx2) | Is a Jenkins X 2 install | `bool` | `true` | no |
 | <a name="input_jx_bot_token"></a> [jx\_bot\_token](#input\_jx\_bot\_token) | Bot token used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
 | <a name="input_jx_bot_username"></a> [jx\_bot\_username](#input\_jx\_bot\_username) | Bot username used to interact with the Jenkins X cluster git repository | `string` | `""` | no |
-| <a name="input_jx_git_operator_version"></a> [jx\_git\_operator\_version](#input\_jx\_git\_operator\_version) | The jx-git-operator helm chart version | `string` | `"0.0.192"` | no |
+| <a name="input_jx_git_operator_version"></a> [jx\_git\_operator\_version](#input\_jx\_git\_operator\_version) | The jx-git-operator helm chart version | `string` | `"0.2.1"` | no |
 | <a name="input_jx_git_url"></a> [jx\_git\_url](#input\_jx\_git\_url) | URL for the Jenins X cluster git repository | `string` | `""` | no |
 | <a name="input_kuberhealthy"></a> [kuberhealthy](#input\_kuberhealthy) | Enables Kuberhealthy helm installation | `bool` | `true` | no |
 | <a name="input_lets_encrypt_production"></a> [lets\_encrypt\_production](#input\_lets\_encrypt\_production) | Flag to determine wether or not to use the Let's Encrypt production server. | `bool` | `true` | no |
