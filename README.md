@@ -1,10 +1,8 @@
 # Jenkins X GKE Module
 
-![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.12.0-blue.svg)
+![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.13.0-blue.svg)
 
-__NOTE:__ While the required minimum Terraform version is 0.12.0, automated CI tests are performed with 0.13 only.  The only expected
-compatibility issues to be aware of are around provider requirements.  For more information see [here](https://www.terraform.io/docs/configuration/provider-requirements.html#v0-12-compatible-provider-requirements)
-
+__NOTE:__ Automated CI tests are performed with 0.13 only.
 ---
 
 This repo contains a [Terraform](https://www.terraform.io/) module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
