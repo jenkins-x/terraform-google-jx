@@ -7,6 +7,9 @@ spec:
   pipelineSpec:
     tasks:
     - name: from-build-pack
+      debug:
+        breakpoints:
+          onFailure: "enabled"
       resources: {}
       taskSpec:
         metadata: {}
