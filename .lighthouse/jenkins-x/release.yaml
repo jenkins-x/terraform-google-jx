@@ -1,40 +1,33 @@
 apiVersion: tekton.dev/v1
-kind: PipelineRun
+kind: TaskRun
 metadata:
   name: release
 spec:
-  pipelineSpec:
-    tasks:
-    - name: from-build-pack
-      serviceAccountName: tekton-bot
-      debug:
-        breakpoints:
-          onFailure: "enabled"
+  serviceAccountName: tekton-bot
+  debug:
+    breakpoints:
+      onFailure: "enabled"
+  taskSpec:
+    metadata: {}
+    stepTemplate:
+      image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@versionStream
+      resources:
+        # override limits for all containers here
+        limits: {}
+      workingDir: /workspace/source
+    steps:
+    - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
+      name: ""
+    - name: next-version
       resources: {}
-      taskSpec:
-        metadata: {}
-        stepTemplate:
-          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/terraform/release.yaml@versionStream
-          resources:
-            # override limits for all containers here
-            limits: {}
-          workingDir: /workspace/source
-        steps:
-        - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
-          name: ""
-        - name: next-version
-          resources: {}
-        - name: jx-variables
-          resources:
-            requests:
-              cpu: 400m
-              memory: 600Mi          
-        - name: lint
-          resources: {}
-        - name: changelog
-          resources: {}
-        - name: promote
-          resources: {}
-  timeouts:
-    pipeline: 1h0m0s
-    tasks: 1h0m0s
+    - name: jx-variables
+      resources:
+        requests:
+          cpu: 400m
+          memory: 600Mi
+    - name: lint
+      resources: {}
+    - name: changelog
+      resources: {}
+    - name: promote
+      resources: {}
