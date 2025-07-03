@@ -4,15 +4,36 @@
 // Using pessimistic version locking for all versions
 // ----------------------------------------------------------------------------
 terraform {
-  required_version = ">= 0.12.0, < 2.0"
+  required_version = ">= 0.13.0, < 2.0"
   required_providers {
-    google      = ">= 4.26.0"
-    google-beta = ">= 4.26.0"
-    kubernetes  = ">=2.11.0"
-    helm        = ">=2.6.0"
-    random      = ">= 3.3.2"
-    local       = ">= 2.2.3"
-    null        = ">= 2.1.0"
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.26.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 4.26.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">=2.11.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">=2.6.0, < 3.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.3.2"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.2.3"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 2.1.0"
+    }
   }
 }
 
