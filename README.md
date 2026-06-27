@@ -2,7 +2,7 @@
 
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.13.0-blue.svg)
 
-__NOTE:__ Automated CI tests are performed with 0.13 only.
+__NOTE:__ Automated CI tests are performed with 1.1.9 only.
 ---
 
 This repo contains a [Terraform](https://www.terraform.io/) module for provisioning a Kubernetes cluster for [Jenkins X](https://jenkins-x.io/) on [Google Cloud](https://cloud.google.com/).
